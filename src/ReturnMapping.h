@@ -36,7 +36,7 @@ namespace fenicssolid
                                Eigen::Matrix<double, 6, 6>& consistent_tangent,
                                Eigen::Matrix<double, 6, 1>& trial_stresses,
                                Eigen::Matrix<double, 6, 1>& plastic_strain,
-                               double& equivalent_plastic_strain,
+                               double& equivalent_plastic_strain, double& q_n,
                                bool use_plastic_tangent=false);
   private:
 

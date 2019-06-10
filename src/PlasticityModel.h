@@ -29,10 +29,12 @@ namespace fenicssolid
     /// Hardening parameter
     virtual double hardening_parameter(double eps_p_eq) const;
 
+    // Edited by SAM--------------------------------------------
     /// Equivalent plastic strain
     virtual double kappa(double eps_p_eq,
                          const Eigen::Matrix<double, 6, 1>& stress,
                          double lambda_dot) const;
+    //------------------------------------------------------------
 
     /// Value of yield function f
     virtual double f(const Eigen::Matrix<double, 6, 1>& stress,
@@ -49,6 +51,37 @@ namespace fenicssolid
     /// Second derivative of g with respect to sigma
     virtual void ddg(Eigen::Matrix<double, 6, 6>& ddg_ddsigma,
                      const Eigen::Matrix<double, 6, 1>& stress) const = 0;
+    // ADDED BY SAM------------------------------------------------------------
+    /// Expression for df/d(q)
+    virtual void df_dq(Eigen::Matrix<double, 1, 1>& df_dQ,
+                       const Eigen::Matrix<double, 1, 1>& q) const;
+
+    // ADDED BY SAM------------------------------------------------------------
+    /// Expression for ddg/(d(sigma)d(q))
+    virtual void ddg_dsigma_dq(Eigen::Matrix<double, 6, 1>& ddg_dsgma_dq,
+                               const Eigen::Matrix<double, 6, 1>& stress,
+                               Eigen::Matrix<double, 1, 1>& q) const;
+    // ADDED BY SAM------------------------------------------------------------
+    /// Expression for M
+    virtual void M(Eigen::Matrix<double, 1, 1>& m,
+                   const Eigen::Matrix<double, 6, 1>& stress,
+                   Eigen::Matrix<double, 1, 1>& q) const;
+
+    // ADDED BY SAM------------------------------------------------------------
+    /// Expression for dM/(d(sigma))
+    virtual void dM_dsigma(Eigen::Matrix<double, 6, 1>& dM_dsgma,
+    const Eigen::Matrix<double, 6, 1>& stress) const;
+
+    // ADDED BY SAM------------------------------------------------------------
+    /// Expression for dM/(dq)
+    virtual void dM_dq(Eigen::Matrix<double, 1, 1>& dM_dQ,
+                       Eigen::Matrix<double, 1, 1>& q) const;
+
+    virtual double q_0() const;
+
+    void set_q_0(double q0);
+
+
 
     friend class ConstitutiveUpdate;
     friend class PlasticityProblem;
@@ -58,6 +91,8 @@ namespace fenicssolid
 
     // Model parameters
     double _hardening_parameter;
+
+    double q_0_default=0.0;
 
     // Elastic tangent
     Eigen::Matrix<double, 6, 6> elastic_tangent;

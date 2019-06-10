@@ -85,6 +85,8 @@ namespace fenicssolid
     // Internal variables
     std::shared_ptr<HistoryData> _eps_p;
     std::shared_ptr<HistoryData> _eps_p_equiv;
+    //ADDED BY SAM--------------------------------------------------
+    std::shared_ptr<HistoryData> _q;
 
     // Track points that deformed plastically at end of last increment
     boost::multi_array<bool, 2> _plastic_last;

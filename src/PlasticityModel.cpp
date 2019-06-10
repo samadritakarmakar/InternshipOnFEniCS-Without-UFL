@@ -41,7 +41,7 @@ double PlasticityModel::hardening_parameter(double const eps_p_eq) const
 {
   return _hardening_parameter;
 }
-//-----------------------------------------------------------------------------
+// Edited by SAM---------------------------------------------------------------
 double PlasticityModel::kappa(double eps_p_eq,
                               const Eigen::Matrix<double, 6, 1>& stress,
                               double lambda_dot) const
@@ -55,4 +55,44 @@ void PlasticityModel::dg(Eigen::Matrix<double, 6, 1>& dg_dsigma,
   // Assume associative flow (dg/dsigma = df/dsigma)
   df(dg_dsigma, stress);
 }
-//-----------------------------------------------------------------------------
+//ADDED BY SAM-------------------------------------------------------
+void PlasticityModel::df_dq(Eigen::Matrix<double, 1, 1> &df_dQ,const Eigen::Matrix<double, 1, 1> &q) const
+{
+    df_dQ.setZero();
+}
+
+void PlasticityModel::ddg_dsigma_dq(Eigen::Matrix<double, 6, 1> &ddg_dsgma_dq,
+                                    const Eigen::Matrix<double, 6, 1> &stress,
+                                    Eigen::Matrix<double, 1, 1> &q) const
+{
+    ddg_dsgma_dq.setZero();
+}
+
+void PlasticityModel::M(Eigen::Matrix<double, 1, 1> &m,
+                        const Eigen::Matrix<double, 6, 1> &stress,
+                        Eigen::Matrix<double, 1, 1> &q) const
+{
+    m.setZero();
+}
+
+void PlasticityModel::dM_dsigma(Eigen::Matrix<double, 6, 1> &dm_dsgma,
+                                const Eigen::Matrix<double, 6, 1> &stress) const
+{
+    dm_dsgma.setZero();
+}
+
+void PlasticityModel::dM_dq(Eigen::Matrix<double, 1, 1> &dm_dQ,
+                            Eigen::Matrix<double, 1, 1> &q) const
+{
+    dm_dQ.setZero();
+}
+
+double PlasticityModel:: q_0() const
+{
+    return q_0_default;
+}
+
+void PlasticityModel:: set_q_0(double q0)
+{
+    q_0_default=q0;
+}

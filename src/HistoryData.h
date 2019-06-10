@@ -37,6 +37,10 @@ public:
   HistoryData(std::shared_ptr<const dolfin::Mesh> mesh,
               std::shared_ptr<const dolfin::FiniteElement> element,
               const std::size_t);
+  /// Constructor overload
+  HistoryData(std::shared_ptr<const dolfin::Mesh> mesh,
+                           std::shared_ptr<const dolfin::FiniteElement> element,
+                           std::size_t size, double dataAtZero);
 
   /// Get local vector of values at current integration point with
   /// old values

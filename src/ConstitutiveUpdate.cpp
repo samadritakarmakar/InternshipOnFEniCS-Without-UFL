@@ -29,6 +29,9 @@ ConstitutiveUpdate::ConstitutiveUpdate(
 {
     _eps_p = std::make_shared<HistoryData>(u->function_space()->mesh(), sigma_element, 6);
     _eps_p_equiv = std::make_shared<HistoryData>(u->function_space()->mesh(), sigma_element, 1);
+    //ADDED BY SAM
+    _q = std::make_shared<HistoryData>(u->function_space()->mesh(), sigma_element, 1, plastic_model->q_0());
+    //--------------------------------------------------------------------------------
   // Get stress UFC element
   auto ufc_element_sigma = sigma_element->ufc_element();
   dolfin_assert(ufc_element_sigma);
@@ -95,7 +98,7 @@ void ConstitutiveUpdate::update(const dolfin::Cell& cell,
 
   Eigen::Matrix<double, 6, 6> cons_tangent;
   Eigen::Matrix<double, 6, 1> strain, strain_p, trial_stress;
-  Eigen::Matrix<double, 1, 1> strain_p_eq;
+  Eigen::Matrix<double, 1, 1> strain_p_eq, q_n;
 
   // Call functions on UFC coordinate mapping object
   /*
@@ -165,6 +168,7 @@ void ConstitutiveUpdate::update(const dolfin::Cell& cell,
     // Get equivalent plastic strain from previous converged time
     // step
     _eps_p_equiv->get_old_values(cell_index, ip, strain_p_eq);
+    _q->get_old_values(cell_index, ip, q_n);
 
     // Testing trial stresses, if yielding occurs the stresses are
     // mapped back onto the yield surface, and the updated parameters
@@ -172,7 +176,7 @@ void ConstitutiveUpdate::update(const dolfin::Cell& cell,
     const bool active = _plastic_last[cell_index][ip];
     return_mapping.closest_point_projection(_plastic_model, cons_tangent,
                                             trial_stress, strain_p,
-                                            strain_p_eq(0),
+                                            strain_p_eq(0), q_n(0),
                                             active);
     _plastic_last[cell_index][ip] = false;
 
@@ -181,6 +185,8 @@ void ConstitutiveUpdate::update(const dolfin::Cell& cell,
 
     // Update equivalent plastic strain for current load step
     _eps_p_equiv->set_new_values(cell_index, ip, strain_p_eq);
+    //ADDED BY SAM-------------------------------------------------
+    _q->set_new_values(cell_index, ip, q_n);
 
     // Copy data into structures
     if (_gdim == 3)

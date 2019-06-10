@@ -36,6 +36,29 @@ HistoryData::HistoryData(std::shared_ptr<const dolfin::Mesh> mesh,
 
   // FIXME: Test assumptions.
 }
+
+HistoryData::HistoryData(std::shared_ptr<const dolfin::Mesh> mesh,
+                         std::shared_ptr<const dolfin::FiniteElement> element,
+                         std::size_t size, double dataAtZero)
+{
+  // Number of cells
+  const std::size_t num_cells = mesh->num_cells();
+
+  // Num 'IP' dofs per IP
+  const std::size_t num_ip_dofs = element->value_dimension(0);
+
+  // Number of quadrature points per cell
+  const std::size_t num_ip = element->space_dimension()/num_ip_dofs;
+
+  _old_vals.resize(boost::extents[num_cells][num_ip][size]);
+  _cur_vals.resize(boost::extents[num_cells][num_ip][size]);
+  std::fill(_old_vals.data(), _old_vals.data() + _old_vals.num_elements(),
+            dataAtZero);
+  std::fill(_cur_vals.data(), _cur_vals.data() + _cur_vals.num_elements(),
+            dataAtZero);
+
+  // FIXME: Test assumptions.
+}
 //-----------------------------------------------------------------------------
 void HistoryData::update_history()
 {
