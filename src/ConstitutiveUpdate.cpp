@@ -186,6 +186,8 @@ void ConstitutiveUpdate::update(const dolfin::Cell& cell,
     // Update equivalent plastic strain for current load step
     _eps_p_equiv->set_new_values(cell_index, ip, strain_p_eq);
     //ADDED BY SAM-------------------------------------------------
+    //if (q_n(0,0)!=0.0)
+     //   std::cout<<"q_n ="<<q_n<<"\n";
     _q->set_new_values(cell_index, ip, q_n);
 
     // Copy data into structures
@@ -229,6 +231,7 @@ void ConstitutiveUpdate::update_history()
   // Update plastic elements
   const boost::multi_array<double, 3>& old_eps = _eps_p_equiv->old_data();
   const boost::multi_array<double, 3>& new_eps = _eps_p_equiv->current_data();
+  const boost::multi_array<double, 3>& new_q = _q->current_data();
 
   const std::size_t num_cells = _plastic_last.shape()[0];
   const std::size_t ip_per_cell = _plastic_last.shape()[1];
@@ -247,5 +250,6 @@ void ConstitutiveUpdate::update_history()
 
   _eps_p->update_history();
   _eps_p_equiv->update_history();
+  _q->update_history();
 }
 //-----------------------------------------------------------------------------

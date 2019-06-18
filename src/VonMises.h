@@ -40,6 +40,13 @@ namespace fenicssolid
     inline void ddg(Eigen::Matrix<double, 6, 6>& ddg_ddsigma,
                     const Eigen::Matrix<double, 6, 1>& stress) const;
 
+    ///ADDED BY SAM
+    inline void df_dq(double &df_dQ, const double &q) const;
+
+    virtual void M(double &m,
+                   const Eigen::Matrix<double, 6, 1>& stress,
+                   double q) const;
+//------------------------------------------------------------------------------------
   private:
 
     // Computes effective stresses

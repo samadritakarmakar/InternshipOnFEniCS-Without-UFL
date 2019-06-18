@@ -56,23 +56,23 @@ void PlasticityModel::dg(Eigen::Matrix<double, 6, 1>& dg_dsigma,
   df(dg_dsigma, stress);
 }
 //ADDED BY SAM-------------------------------------------------------
-void PlasticityModel::df_dq(Eigen::Matrix<double, 1, 1> &df_dQ,const Eigen::Matrix<double, 1, 1> &q) const
+void PlasticityModel::df_dq(double &df_dQ,const double &q) const
 {
-    df_dQ.setZero();
+    df_dQ=0;
 }
 
 void PlasticityModel::ddg_dsigma_dq(Eigen::Matrix<double, 6, 1> &ddg_dsgma_dq,
                                     const Eigen::Matrix<double, 6, 1> &stress,
-                                    Eigen::Matrix<double, 1, 1> &q) const
+                                    const double &q) const
 {
     ddg_dsgma_dq.setZero();
 }
 
-void PlasticityModel::M(Eigen::Matrix<double, 1, 1> &m,
+void PlasticityModel::M(double &m,
                         const Eigen::Matrix<double, 6, 1> &stress,
-                        Eigen::Matrix<double, 1, 1> &q) const
+                        double q) const
 {
-    m.setZero();
+    m=0;
 }
 
 void PlasticityModel::dM_dsigma(Eigen::Matrix<double, 6, 1> &dm_dsgma,
@@ -81,8 +81,8 @@ void PlasticityModel::dM_dsigma(Eigen::Matrix<double, 6, 1> &dm_dsgma,
     dm_dsgma.setZero();
 }
 
-void PlasticityModel::dM_dq(Eigen::Matrix<double, 1, 1> &dm_dQ,
-                            Eigen::Matrix<double, 1, 1> &q) const
+void PlasticityModel::dM_dq(double &dm_dQ,
+                            const double &q) const
 {
     dm_dQ.setZero();
 }

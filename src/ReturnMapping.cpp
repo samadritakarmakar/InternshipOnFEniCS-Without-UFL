@@ -28,7 +28,7 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
                                         Eigen::Matrix<double, 6, 6>& D,
                                         Eigen::Matrix<double, 6, 1>& trial_stresses,
                                         Eigen::Matrix<double, 6, 1>& plastic_strain,
-                                        double& equivalent_plastic_strain, double &qn,
+                                        double& equivalent_plastic_strain, double &q_n,
                                         bool use_plastic_tangent)
 {
   // Initialise variables
@@ -42,10 +42,11 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
   // ADDED BY SAM
   Eigen::Matrix<double, 7, 7> Q, XI_2, C_dud, D_dud;
   Eigen::Matrix<double, 7, 7> Qinv;
-  Eigen::Matrix<double, 1, 1> df_dQ, q_current, q_dot, q_n, M_current, dM_dQ, q_residual, Q4;
+  Eigen::Matrix<double, 1, 1> q_dot, Q4;
   Eigen::Matrix<double, 6, 1> ddg_dsgma_dq, Q2,dM_dsgma, Q3, zeroRow;
   Eigen::Matrix<double, 7, 1> residualCombined, df_dCombined, f_residualCombined, C_combined, delta_sigma_q, XI, zero;
   Eigen::Matrix<double, 1, 7> Rn;
+  double q_current,q_residual, M_current, dM_dQ, df_dQ;
   //----------------------------------------
 
   Eigen::Matrix<double, 6, 1> Rm, RinvQ;
@@ -76,6 +77,7 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
 
   // Evaluate yield function (trial stresses)
   double residual_f = plastic_model->f(sigma_current, equivalent_plastic_strain);
+  double residual_f_trial = residual_f;
 
   // Check for yielding
   if (residual_f/sigma_current.norm() > 1.0e-12)
@@ -85,23 +87,27 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
     plastic_model->dg(dg_dsigma, sigma_current);
     plastic_flag = true;
     // ADDED BY SAM------------------------------------------------------------
-    q_n(0,0)=qn;
     q_current=q_n;
     //------------------------------------------------------------------------
-
+    //ADDED BY SAM------------------------------------------------------------
+    //Setting Residuals to zero for 1st iteration.
+    sigma_residual.setZero();
+    q_residual=0;
+    residualCombined<<sigma_residual,
+                      q_residual;
     // Perform Newton iterations to project stress onto yield surface
-    while (std::abs(residual_f)/sigma_current.norm() > 1e-12)
+    while (abs(residual_f)> 1e-14* sigma_current.norm())
     {
       num_iterations++;
-      if (num_iterations > _maxit)
-        dolfin::error("Return mapping iterations > %d.", _maxit);
+      //if (num_iterations > _maxit)
+       // dolfin::error("Return mapping iterations > %d.", _maxit);
 
       // Reset sigma_residual in first step
-      if (num_iterations == 1)
-      {
-          sigma_residual.setZero();
-          q_residual.setZero();
-      }
+      //if (num_iterations == 1)
+      //{
+      //    sigma_residual.setZero();
+      //    q_residual.setZero();
+      //}
 
       // Compute second derivative (with respect to stresses) of
       // plastic potential
@@ -122,7 +128,7 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
       // ADDED BY SAM
       Q2 = delta_lambda*De*ddg_dsgma_dq;
       Q3 = delta_lambda*hardening_parameter*dM_dsgma;
-      Q4 = Eigen::Matrix<double, 1, 1>::Identity()+delta_lambda*hardening_parameter*dM_dQ;
+      Q4(0,0) = 1+delta_lambda*hardening_parameter*dM_dQ;
       Qinv<<Q1,Q2
       ,Q3.transpose(),Q4;
       //------------------------------------------------------------------------
@@ -137,8 +143,12 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
       // ADDED BY SAM------------------------------------------------------------
       df_dCombined<<df_dsigma,
               df_dQ;
-      residualCombined<<sigma_residual,
-                        q_residual;
+
+      //std::cout<<"sigma_residual =\n"<<sigma_residual<<"\n";
+      //std::cout<<"q_residual= "<<q_residual<<"\n";
+      //std::cout<<"residualCombined= "<<residualCombined<<"\n";
+
+      //std::cout<<"norm= "<<residualCombined.norm()/delta_sigma_q.norm()<<"\n";
       // lambda_dot, rate of plastic multiplier
       //const double residual_tmp = residual_f - sigma_residual.dot(Qinv*df_dsigma);
       //double lambda_dot = residual_tmp/(df_dsigma.dot(XI*dg_dsigma)
@@ -163,7 +173,7 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
       // Update current stress state
       sigma_current += sigma_dot;
       // ADDED BY SAM------------------------------------------------------------
-      q_current += q_dot;
+      q_current += q_dot(0,0);
       //-------------------------------------------------------------------------
 
       //Edited by SAM------------------------------------------------------------
@@ -185,15 +195,24 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
 
       // Compute normal normal to plastic potential at new stress state
       plastic_model->dg(dg_dsigma, sigma_current);
+      //ADDED BY SAM----------------------------------------------------------------
+      plastic_model->M(M_current, sigma_current, q_current);
 
       // Compute residual vector
       sigma_residual = sigma_current
         - (trial_stresses - delta_lambda*De*dg_dsigma);
+      //std::cout<<"sigma_residual =\n"<<sigma_residual<<"\n";
       // ADDED BY SAM------------------------------------------------------------
       q_residual = q_current -q_n+ delta_lambda*hardening_parameter*M_current;
+      residualCombined<<sigma_residual,
+                        q_residual;
+      //std::cout<<"q_residual= "<<q_residual;
       //-------------------------------------------------------------------------
+      std::cout<<"delta lambda ="<<delta_lambda;
+      std::cout<<" f trial = "<<residual_f_trial;
+      std::cout<<" while check is f "<<residual_f <<"\n";
     }
-
+    std::cout<<"num of iterations = "<<num_iterations<<"\n";
     // Update matrices
     plastic_model->ddg(ddg_ddsigma, sigma_current);
     // ADDED BY SAM------------------------------------------------------------
@@ -208,7 +227,7 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
     // ADDED BY SAM
     Q2 = delta_lambda*De*ddg_dsgma_dq;
     Q3 = delta_lambda*hardening_parameter*dM_dsgma;
-    Q4 = Eigen::Matrix<double, 1, 1>::Identity()+delta_lambda*hardening_parameter*dM_dQ;
+    Q4(0,0) = 1+delta_lambda*hardening_parameter*dM_dQ;
 
     Qinv<<Q1,Q2
     ,Q3.transpose(),Q4;
@@ -240,13 +259,15 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
     trial_stresses = sigma_current;
     //ADDED BY SAM-------------------------------------------
     q_n=q_current;
-    qn=q_n(0,0);
+    //qn=q_n(0,0);
+    //std::cout<<"qn= "<<qn<<"\n";
     //-------------------------------------------------------
 
     // Update plastic strains
     plastic_strain += delta_lambda*dg_dsigma;
   }
-  else if (use_plastic_tangent)
+  //else if (use_plastic_tangent)
+  else if(/* DISABLES CODE */ (false))
   {
     // Compute continuum tangent operator
     plastic_model->df(df_dsigma, sigma_current);
@@ -259,6 +280,7 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
     const double denom = df_dsigma.dot(De*dg_dsigma) + hardening_parameter*df_dQ*M_current;
     //---------------------------------------------------------------------------
     D = De - De*(dg_dsigma*(De*df_dsigma).transpose())/denom;
+    std::cout<<"WARNING!!!! Analytical tangent operator is being used\n";
   }
   else
   {

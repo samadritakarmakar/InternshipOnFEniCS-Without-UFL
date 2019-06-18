@@ -64,3 +64,16 @@ VonMises::effective_stress(const Eigen::Matrix<double, 6, 1>& stress) const
                                  - stress[4]*stress[4] - stress[5]*stress[5]));
 }
 //-----------------------------------------------------------------------------
+//ADDED BY SAM-----------------------------------------------------------------
+void VonMises::df_dq(double &df_dQ,const double &q) const
+{
+    df_dQ=-1;
+}
+
+void VonMises::M(double &m,
+                        const Eigen::Matrix<double, 6, 1> &stress,
+                        double q) const
+{
+    m=1;
+}
+//----------------------------------------------------------------------------
