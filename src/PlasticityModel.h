@@ -36,7 +36,7 @@ namespace fenicssolid
 
     /// Value of yield function f
     virtual double f(const Eigen::Matrix<double, 6, 1>& stress,
-                     double eps_eq_p) const = 0;
+                     double q) const = 0;
 
     /// First derivative of f with respect to sigma
     virtual void df(Eigen::Matrix<double, 6, 1>& df_dsigma,
@@ -68,7 +68,7 @@ namespace fenicssolid
     // ADDED BY SAM------------------------------------------------------------
     /// Expression for dM/(d(sigma))
     virtual void dM_dsigma(Eigen::Matrix<double, 6, 1>& dM_dsgma,
-    const Eigen::Matrix<double, 6, 1>& stress) const;
+    const Eigen::Matrix<double, 6, 1>& stress, double q) const;
 
     // ADDED BY SAM------------------------------------------------------------
     /// Expression for dM/(dq)

@@ -23,14 +23,14 @@ VonMises::VonMises(double E, double nu, double yield_stress,
 //-----------------------------------------------------------------------------
 double VonMises::hardening_parameter(double eps_p_eq) const
 {
-  return _hardening_parameter;
+  return -_hardening_parameter;
 }
 //-----------------------------------------------------------------------------
 double VonMises::f(const Eigen::Matrix<double, 6, 1>& stress,
-                   double eps_p_eq) const
+                   double q) const
 {
   return effective_stress(stress) - yield_stress
-    - _hardening_parameter*eps_p_eq;
+    - q;
 }
 //-----------------------------------------------------------------------------
 void VonMises::df(Eigen::Matrix<double, 6, 1>& df_dsigma,

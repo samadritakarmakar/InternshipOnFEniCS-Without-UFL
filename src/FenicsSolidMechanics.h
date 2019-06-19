@@ -14,7 +14,7 @@
 #include <ReturnMapping.h>
 #include <VonMises.h>
 #include <QuadratureFunction.h>
-
+#include <SinfoniettaClassica.h>
 #include <ConstitutiveUpdate.h>
 
 #endif

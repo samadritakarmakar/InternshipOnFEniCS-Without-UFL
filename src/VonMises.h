@@ -30,7 +30,7 @@ namespace fenicssolid
 
     /// Value of yield function f
     inline double f(const Eigen::Matrix<double, 6, 1>& stress,
-                    double eps_p_eq) const;
+                    double q) const;
 
     /// First derivative of f with respect to sigma
     inline void df(Eigen::Matrix<double, 6, 1>& df_dsigma,

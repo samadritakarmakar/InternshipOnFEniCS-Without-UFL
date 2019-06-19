@@ -76,7 +76,7 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
     = plastic_model->hardening_parameter(equivalent_plastic_strain);
 
   // Evaluate yield function (trial stresses)
-  double residual_f = plastic_model->f(sigma_current, equivalent_plastic_strain);
+  double residual_f = plastic_model->f(sigma_current, q_n);
   double residual_f_trial = residual_f;
 
   // Check for yielding
@@ -99,8 +99,8 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
     while (abs(residual_f)> 1e-14* sigma_current.norm())
     {
       num_iterations++;
-      //if (num_iterations > _maxit)
-       // dolfin::error("Return mapping iterations > %d.", _maxit);
+      if (num_iterations > _maxit)
+        dolfin::error("Return mapping iterations > %d.", _maxit);
 
       // Reset sigma_residual in first step
       //if (num_iterations == 1)
@@ -116,7 +116,7 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
       plastic_model->M(M_current, sigma_current, q_current);
       plastic_model->df_dq(df_dQ, q_current);
       plastic_model->ddg_dsigma_dq(ddg_dsgma_dq, sigma_current, q_current);
-      plastic_model->dM_dsigma(dM_dsgma, sigma_current);
+      plastic_model->dM_dsigma(dM_dsgma, sigma_current,q_current);
       plastic_model->dM_dq(dM_dQ, q_current);
 
       //q_n=q_current(0,0);
@@ -176,7 +176,7 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
       q_current += q_dot(0,0);
       //-------------------------------------------------------------------------
 
-      //Edited by SAM------------------------------------------------------------
+
       // Update equivalent plastic strain
       equivalent_plastic_strain
         = plastic_model->kappa(equivalent_plastic_strain, sigma_current,
@@ -188,7 +188,7 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
         = plastic_model->hardening_parameter(equivalent_plastic_strain);
 
       // Evaluate yield function at new stress state
-      residual_f = plastic_model->f(sigma_current, equivalent_plastic_strain);
+      residual_f = plastic_model->f(sigma_current, q_current);
 
       // Compute normal to yield surface at new stress state
       plastic_model->df(df_dsigma, sigma_current);
@@ -219,7 +219,7 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
     plastic_model->M(M_current, sigma_current, q_current);
     plastic_model->df_dq(df_dQ, q_current);
     plastic_model->ddg_dsigma_dq(ddg_dsgma_dq, sigma_current, q_current);
-    plastic_model->dM_dsigma(dM_dsgma, sigma_current);
+    plastic_model->dM_dsigma(dM_dsgma, sigma_current, q_current);
     plastic_model->dM_dq(dM_dQ, q_current);
     //-------------------------------------------------------------------------
     // Compute matrix Q

@@ -76,7 +76,7 @@ void PlasticityModel::M(double &m,
 }
 
 void PlasticityModel::dM_dsigma(Eigen::Matrix<double, 6, 1> &dm_dsgma,
-                                const Eigen::Matrix<double, 6, 1> &stress) const
+                                const Eigen::Matrix<double, 6, 1> &stress, double q) const
 {
     dm_dsgma.setZero();
 }
@@ -84,7 +84,7 @@ void PlasticityModel::dM_dsigma(Eigen::Matrix<double, 6, 1> &dm_dsgma,
 void PlasticityModel::dM_dq(double &dm_dQ,
                             const double &q) const
 {
-    dm_dQ.setZero();
+    dm_dQ=0;
 }
 
 double PlasticityModel:: q_0() const
