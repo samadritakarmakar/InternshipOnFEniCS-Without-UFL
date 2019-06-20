@@ -32,11 +32,6 @@ double SinfoniettaClassica::f(const Eigen::Matrix<double, 6, 1> &stress, double 
     double J_2xi=pow(xi.norm(),2.0);
     double J_3xi=3*xi.determinant();
     double f=3*beta_Internal*(mu-3.0)*(log(p_dash)+q)+9.0/4.0*(mu-1.0)*J_2xi+mu*J_3xi;
-    if (isnan(f))
-    {
-        std::cout<<"f is nan\n";
-        //throw;
-    }
     return f;
 }
 void SinfoniettaClassica::df(Eigen::Matrix<double, 6, 1>& df_dsigma,
