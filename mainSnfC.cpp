@@ -55,7 +55,7 @@ class DirichletBoundaryX2 : public SubDomain
 {
   bool inside(const Array<double>& x, bool on_boundary) const
   {
-      return on_boundary && (std::sqrt(x[0]*x[0]+x[1]*x[1]) > 0.0495-DOLFIN_EPS);
+      return on_boundary && (std::sqrt(x[0]*x[0]+x[1]*x[1]) > 2*0.0495-DOLFIN_EPS);
       //return on_boundary &&(x[2]>DOLFIN_EPS && x[2]<0.05-DOLFIN_EPS);
   }
 };

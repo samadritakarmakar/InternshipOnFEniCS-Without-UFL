@@ -41,7 +41,7 @@ include_directories("${PROJECT_SOURCE_DIR}/src")
 add_subdirectory(src/)
 
 # Executable
-#add_executable(${PROJECT_NAME} main.cpp Plas3D.h Plas3D.cpp)
+add_executable(${PROJECT_NAME} main.cpp Plas3D.h Plas3D.cpp)
 
 add_executable(demo_3D_P2_cylinder2_SnfC mainSnfC.cpp Plas3D.h Plas3D.cpp)
 
@@ -54,7 +54,7 @@ find_package(VTK HINTS ${VTK_DIR} $ENV{VTK_DIR} NO_MODULE QUIET)
 #target_link_libraries(${PROJECT_NAME} ${FENICS_SOLID_MECHANICS_LIBRARIES}
 #  ${DOLFIN_LIBRARIES} ${DOLFIN_3RD_PARTY_LIBRARIES} fenics-solid-mechanics)
 
-#target_link_libraries(${PROJECT_NAME} ${DOLFIN_LIBRARIES} ${DOLFIN_3RD_PARTY_LIBRARIES} fenics-solid-mechanics)
+target_link_libraries(${PROJECT_NAME} ${DOLFIN_LIBRARIES} ${DOLFIN_3RD_PARTY_LIBRARIES} fenics-solid-mechanics)
 target_link_libraries(demo_3D_P2_cylinder2_SnfC ${DOLFIN_LIBRARIES} ${DOLFIN_3RD_PARTY_LIBRARIES} fenics-solid-mechanics)
 
 

@@ -97,7 +97,7 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
     residualCombined<<sigma_residual,
                       q_residual;
     // Perform Newton iterations to project stress onto yield surface
-    while ((residual_f)> 1e-12)
+    while (abs(residual_f)> 1e-12*sigma_current.norm())
     {
       num_iterations++;
       if (num_iterations > _maxit)
@@ -255,7 +255,7 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
     D_dud = XI_2 - (XI*Rn)/(df_dCombined.dot(XI));
     D=D_dud.block(0,0,6,6);
     //ADDED BY Q
-    std::cout<<"sigma_current= "<<sigma_current <<"\n";
+    /*std::cout<<"sigma_current= "<<sigma_current <<"\n";
         std::cout<<"q_current= "<<q_current <<"\n";
         std::cout<<"M_current= "<<M_current <<"\n";
         std::cout<<"ddg_ddsigma= "<<ddg_ddsigma <<"\n";
@@ -266,7 +266,7 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
         std::cout<<"XI_2 = "<<XI_2 <<"\n";
         std::cout<<"df_dCombined = "<<df_dCombined <<"\n";
         std::cout<<"Rn = "<<Rn <<"\n";
-        std::cout<<"D = "<<D <<"\n";
+        std::cout<<"D = "<<D <<"\n";*/
     //
     // Stresses for next Newton iteration, trial stresses are
     // overwritten by current stresses
