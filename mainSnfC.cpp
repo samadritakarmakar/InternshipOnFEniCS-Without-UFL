@@ -78,10 +78,10 @@ int main()
   double t = 0.0;
 
   // Elastic time step, always one step.
-  double Edt  = 0.00001;
+  double Edt  = 0.001;
 
   // Load region 0, time step and number of steps
-  double dt0 = 0.00001;
+  double dt0 = 0.001;
   unsigned int dt0_steps = 3;
 
   // Load region 1, time step and number of steps
@@ -130,7 +130,6 @@ int main()
 
   // Slope of hardening (linear) and hardening parameter
   const double E_t = 0.1*E;
-  const double hardening_parameter = E_t/(1.0 - E_t/E);
 
   // Yield stress
   //const double yield_stress = 235.0e6;
@@ -139,13 +138,13 @@ int main()
   auto u = std::make_shared<Function>(V);
 
   // Object of class von Mises
-  double beta=1.2, phiDegree=36, betaP=0.001, varKappa=0.1, Pc=0, varP=0;
-  auto J2 = std::make_shared<const fenicssolid::SinfoniettaClassica>(E, nu, beta, phiDegree, betaP, varKappa, Pc, varP);
+  double beta=1.2, phiDegree=36, betaP=0.001, varKappa=0.1, Pc=50000, varP=0;
+  auto SncF = std::make_shared<const fenicssolid::SinfoniettaClassica>(E, nu, beta, phiDegree, betaP, varKappa, Pc, varP);
 
   // Constituive update
   auto constitutive_update
     = std::make_shared<fenicssolid::ConstitutiveUpdate>(u, element_s,
-                                                       Vs->dofmap(), J2);
+                                                       Vs->dofmap(), SncF);
 
   // Create forms and attach functions
   auto tangent
@@ -213,7 +212,7 @@ int main()
   // Create PlasticityProblem
   auto nonlinear_problem
     = std::make_shared<fenicssolid::PlasticityProblem>(a, L, u, tangent,
-                                                       stress, bcs, J2);
+                                                       stress, bcs, SncF);
 
   // Create nonlinear solver and set parameters
   dolfin::NewtonSolver nonlinear_solver;

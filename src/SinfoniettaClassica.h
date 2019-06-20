@@ -44,8 +44,7 @@ public:
 
     void set_q_0(double q0);
 
-    Eigen::Matrix<double, 6, 6> random;
-
+    double Get_MeanStress(const Eigen::Matrix<double, 3, 3> &stressTensor) const;
     Eigen::Matrix<double, 6, 1> GetVoigt_Delta_ij_over_Delta_mn() const;
     Eigen::Matrix<double, 6, 6> Get_P4_D() const;
     Eigen::Matrix<double, 3, 3> VoigtTo3By3Tensor(const Eigen::Matrix<double, 6, 1>& VoigtQuantity) const;
