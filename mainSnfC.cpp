@@ -55,7 +55,7 @@ class DirichletBoundaryX2 : public SubDomain
 {
   bool inside(const Array<double>& x, bool on_boundary) const
   {
-      return on_boundary && (std::sqrt(x[0]*x[0]+x[1]*x[1]) > 2*0.0495-DOLFIN_EPS);
+      return on_boundary && (std::sqrt(x[0]*x[0]+x[1]*x[1]) > 0.0495-DOLFIN_EPS);
       //return on_boundary &&(x[2]>DOLFIN_EPS && x[2]<0.05-DOLFIN_EPS);
   }
 };
@@ -78,10 +78,10 @@ int main()
   double t = 0.0;
 
   // Elastic time step, always one step.
-  double Edt  = 0.001;
+  double Edt  = 0.0001;
 
   // Load region 0, time step and number of steps
-  double dt0 = 0.001;
+  double dt0 = 0.0001;
   unsigned int dt0_steps = 3;
 
   // Load region 1, time step and number of steps
