@@ -23,12 +23,11 @@ double SinfoniettaClassica::f(const Eigen::Matrix<double, 6, 1> &stress, double 
 {
     Eigen::Matrix<double, 3, 3> stressTensor;
     stressTensor=VoigtTo3By3Tensor(stress);
-    //std::cout<<"stress =\n"<<stress<<"\n";
+    std::cout<<"stress =\n"<<stress<<"\n";
     //std::cout<<"stressTensor =\n"<<stressTensor<<"\n";
     Eigen::Matrix<double, 3, 3> stressDeviatoric;
     stressDeviatoric=GetDeviatoricQuantity(stressTensor);
     double p_dash=Get_MeanStress(stressTensor);
-    //std::cout<<"p_dash ="<<p_dash<<"\n";
     Eigen::Matrix<double, 3, 3> xi=stressDeviatoric/p_dash;
     double J_2xi=pow(xi.norm(),2.0);
     double J_3xi=3*xi.determinant();
@@ -36,7 +35,7 @@ double SinfoniettaClassica::f(const Eigen::Matrix<double, 6, 1> &stress, double 
     if (isnan(f))
     {
         std::cout<<"f is nan";
-        throw;
+        //throw;
     }
     return f;
 }
@@ -49,12 +48,12 @@ void SinfoniettaClassica::df(Eigen::Matrix<double, 6, 1>& df_dsigma,
     stressDeviatoric=GetDeviatoricQuantity(stressTensor);
     double p_dash=Get_MeanStress(stressTensor);
     Eigen::Matrix<double, 3, 3> df_dsigma_temp1=-(3.0*beta_Internal*(mu-3.0)/p_dash
-                                -9.0/2.0*(mu-1.0)*pow(stressDeviatoric.norm(),2)/pow(p_dash,3)
+                                -9.0/2.0*(mu-1.0)*pow(stressDeviatoric.norm(),2.0)/pow(p_dash,3.0)
                                -9.0*mu*stressDeviatoric.determinant()/pow(p_dash,4.0))*1.0/3.0*Eigen::Matrix<double, 3, 3>::Identity();
 
     Eigen::Matrix<double, 6, 6> P_D4=Get_P4_D();
-    Eigen::Matrix<double, 3, 3> df_dsigma_temp2=(9.0/2.0*(mu-1)*stressDeviatoric/pow(p_dash,2)
-                                               +3*mu*(stressDeviatoric*stressDeviatoric)/pow(p_dash,3));
+    Eigen::Matrix<double, 3, 3> df_dsigma_temp2=(9.0/2.0*(mu-1)*stressDeviatoric/pow(p_dash,2.0)
+                                               +3*mu*(stressDeviatoric*stressDeviatoric)/pow(p_dash,3.0));
 
     df_dsigma=Tensor3by3ToVoigt(df_dsigma_temp1)+(Tensor3by3ToVoigt(df_dsigma_temp2).transpose()*P_D4).transpose();
 }
@@ -73,9 +72,9 @@ void SinfoniettaClassica::dg(Eigen::Matrix<double, 6, 1>& dg_dsigma,
 
     Eigen::Matrix<double, 6, 6> P_D4=Get_P4_D();
     Eigen::Matrix<double, 3, 3> dg_dsigma_temp2=(9.0/2.0*(mu-1.0)*stressDeviatoric/pow(p_dash,2.0)
-                                               +3*mu*(stressDeviatoric*stressDeviatoric)/pow(p_dash,3.0));
+                                               +3.0*mu*(stressDeviatoric*stressDeviatoric)/pow(p_dash,3.0));
 
-    dg_dsigma=Tensor3by3ToVoigt(dg_dsigma_temp1)+(Tensor3by3ToVoigt(dg_dsigma_temp2).transpose()*P_D4).transpose();
+    dg_dsigma=Tensor3by3ToVoigt(dg_dsigma_temp1)+P_D4*Tensor3by3ToVoigt(dg_dsigma_temp2);
 }
 
 void SinfoniettaClassica::ddg(Eigen::Matrix<double, 6, 6>& ddg_ddsigma,
@@ -100,7 +99,7 @@ void SinfoniettaClassica::ddg(Eigen::Matrix<double, 6, 6>& ddg_ddsigma,
 void SinfoniettaClassica::df_dq(double &df_dQ,
                        const double &q) const
 {
-    df_dQ=3*beta_Internal*(mu-3);
+    df_dQ=3*beta_Internal*(mu-3.0);
 }
 
 void SinfoniettaClassica::M(double &m,
@@ -152,7 +151,10 @@ Eigen::Matrix<double, 6, 1> SinfoniettaClassica::GetVoigt_Delta_ij_over_Delta_mn
 {
     Eigen::Matrix<double, 6, 1> Voigt_Delta_ij_over_Delta_mn;
         Voigt_Delta_ij_over_Delta_mn.Zero();
-        Voigt_Delta_ij_over_Delta_mn.block(0,0,2,0)=Eigen::Matrix<double, 3, 1>::Ones();
+        //Voigt_Delta_ij_over_Delta_mn.block(0,0,2,0)=Eigen::Matrix<double, 3, 1>::Ones();
+        Voigt_Delta_ij_over_Delta_mn(0,0)=1.0;
+        Voigt_Delta_ij_over_Delta_mn(1,0)=1.0;
+        Voigt_Delta_ij_over_Delta_mn(2,0)=1.0;
         return Voigt_Delta_ij_over_Delta_mn;
 }
 

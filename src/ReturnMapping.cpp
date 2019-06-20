@@ -9,6 +9,7 @@
 #include <dolfin/common/constants.h>
 #include "PlasticityModel.h"
 #include "ReturnMapping.h"
+#include <math.h>
 
 using namespace fenicssolid;
 
@@ -211,6 +212,11 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
       std::cout<<"delta lambda ="<<delta_lambda;
       std::cout<<" f trial = "<<residual_f_trial;
       std::cout<<" while check is f "<<residual_f <<"\n";
+      if(isnanf(residual_f))
+      {
+          throw;
+      }
+
     }
     std::cout<<"num of iterations = "<<num_iterations<<"\n";
     // Update matrices
