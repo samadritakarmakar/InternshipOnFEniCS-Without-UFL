@@ -27219,7 +27219,7 @@ void plas3d_cell_integral_5_otherwise::tabulate_tensor(double * A,
     // 
     // and the following integral 0 metadata:
     // 
-    // estimated_polynomial_degree: 4
+    // estimated_polynomial_degree: 2
     // optimize:                    True
     // precision:                   16
     // quadrature_degree:           3
@@ -27282,17 +27282,71 @@ void plas3d_cell_integral_5_otherwise::tabulate_tensor(double * A,
     // Array of non-zero columns
     static const unsigned int nzc8[4] = {32, 33, 34, 35};
     
+    static const double FE1_C0_D001[5][2] = \
+    {{-1.0, 1},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999999, 1.0},
+    {-0.9999999999999998, 1.0}};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc10[2] = {0, 3};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc11[2] = {0, 2};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc12[2] = {0, 1};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc14[2] = {4, 7};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc15[2] = {4, 6};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc16[2] = {4, 5};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc18[2] = {8, 11};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc19[2] = {8, 10};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc20[2] = {8, 9};
+    
     // Reset values in the element tensor.
     for (unsigned int r = 0; r < 36; r++)
     {
       A[r] = 0.0;
     } // end loop over 'r'
+    // Number of operations to compute geometry constants: 27.
+    double G[18];
+    G[0] = K[3]*det;
+    G[1] = K[6]*det;
+    G[2] = K[0]*det;
+    G[3] = 0.5*K[4]*det;
+    G[4] = 0.5*K[7]*det;
+    G[5] = 0.5*K[0]*det;
+    G[6] = 0.5*K[3]*det;
+    G[7] = 0.5*K[6]*det;
+    G[8] = 0.5*K[1]*det;
+    G[9] = 0.5*K[5]*det;
+    G[10] = 0.5*K[8]*det;
+    G[11] = 0.5*K[2]*det;
+    G[12] = K[1]*det;
+    G[13] = K[4]*det;
+    G[14] = K[7]*det;
+    G[15] = K[2]*det;
+    G[16] = K[5]*det;
+    G[17] = K[8]*det;
     
     // Compute element tensor using UFL quadrature representation
     // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
     
     // Loop quadrature points for integral.
-    // Number of operations to compute element tensor for following IP loop = 855
+    // Number of operations to compute element tensor for following IP loop = 1440
     for (unsigned int ip = 0; ip < 5; ip++)
     {
       
@@ -27306,49 +27360,72 @@ void plas3d_cell_integral_5_otherwise::tabulate_tensor(double * A,
       double F6 = 0.0;
       double F7 = 0.0;
       double F8 = 0.0;
+      double F9 = 0.0;
+      double F10 = 0.0;
+      double F11 = 0.0;
+      double F12 = 0.0;
+      double F13 = 0.0;
+      double F14 = 0.0;
+      double F15 = 0.0;
+      double F16 = 0.0;
+      double F17 = 0.0;
+      
+      // Total number of operations to compute function values = 36
+      for (unsigned int r = 0; r < 2; r++)
+      {
+        F9 += FE1_C0_D001[ip][r]*w[0][nzc12[r]];
+        F10 += FE1_C0_D001[ip][r]*w[0][nzc11[r]];
+        F11 += FE1_C0_D001[ip][r]*w[0][nzc10[r]];
+        F12 += FE1_C0_D001[ip][r]*w[0][nzc16[r]];
+        F13 += FE1_C0_D001[ip][r]*w[0][nzc15[r]];
+        F14 += FE1_C0_D001[ip][r]*w[0][nzc14[r]];
+        F15 += FE1_C0_D001[ip][r]*w[0][nzc20[r]];
+        F16 += FE1_C0_D001[ip][r]*w[0][nzc19[r]];
+        F17 += FE1_C0_D001[ip][r]*w[0][nzc18[r]];
+      } // end loop over 'r'
       
       // Total number of operations to compute function values = 72
       for (unsigned int r = 0; r < 4; r++)
       {
-        F0 += FE0_C0[ip][r]*w[0][nzc0[r]];
-        F1 += FE0_C0[ip][r]*w[0][nzc3[r]];
-        F2 += FE0_C0[ip][r]*w[0][nzc6[r]];
-        F3 += FE0_C0[ip][r]*w[0][nzc1[r]];
-        F4 += FE0_C0[ip][r]*w[0][nzc4[r]];
-        F5 += FE0_C0[ip][r]*w[0][nzc7[r]];
-        F6 += FE0_C0[ip][r]*w[0][nzc2[r]];
-        F7 += FE0_C0[ip][r]*w[0][nzc5[r]];
-        F8 += FE0_C0[ip][r]*w[0][nzc8[r]];
+        F0 += FE0_C0[ip][r]*w[1][nzc0[r]];
+        F1 += FE0_C0[ip][r]*w[1][nzc3[r]];
+        F2 += FE0_C0[ip][r]*w[1][nzc6[r]];
+        F3 += FE0_C0[ip][r]*w[1][nzc1[r]];
+        F4 += FE0_C0[ip][r]*w[1][nzc4[r]];
+        F5 += FE0_C0[ip][r]*w[1][nzc7[r]];
+        F6 += FE0_C0[ip][r]*w[1][nzc2[r]];
+        F7 += FE0_C0[ip][r]*w[1][nzc5[r]];
+        F8 += FE0_C0[ip][r]*w[1][nzc8[r]];
       } // end loop over 'r'
       
-      // Number of operations to compute ip constants: 27
+      // Number of operations to compute ip constants: 108
       double I[9];
-      // Number of operations: 3
-      I[0] = W5[ip]*det*(w[1][ip] - F0);
+      // Number of operations: 8
+      I[0] = W5[ip]*(F10*G[0] + F11*G[1] + F9*G[2] - F0*det);
       
-      // Number of operations: 3
-      I[1] = W5[ip]*det*(w[1][ip + 15] - F3);
+      // Number of operations: 14
+      I[1] = W5[ip]*(F10*G[3] + F11*G[4] + F12*G[5] + F13*G[6] + F14*G[7] + F9*G[8] - F3*det);
       
-      // Number of operations: 3
-      I[2] = W5[ip]*det*(w[1][ip + 20] - F6);
+      // Number of operations: 14
+      I[2] = W5[ip]*(F10*G[9] + F11*G[10] + F15*G[5] + F16*G[6] + F17*G[7] + F9*G[11] - F6*det);
       
-      // Number of operations: 3
-      I[3] = W5[ip]*det*(w[1][ip + 15] - F1);
+      // Number of operations: 14
+      I[3] = W5[ip]*(F10*G[3] + F11*G[4] + F12*G[5] + F13*G[6] + F14*G[7] + F9*G[8] - F1*det);
       
-      // Number of operations: 3
-      I[4] = W5[ip]*det*(w[1][ip + 5] - F4);
+      // Number of operations: 8
+      I[4] = W5[ip]*(F12*G[12] + F13*G[13] + F14*G[14] - F4*det);
       
-      // Number of operations: 3
-      I[5] = W5[ip]*det*(w[1][ip + 25] - F7);
+      // Number of operations: 14
+      I[5] = W5[ip]*(F12*G[11] + F13*G[9] + F14*G[10] + F15*G[8] + F16*G[3] + F17*G[4] - F7*det);
       
-      // Number of operations: 3
-      I[6] = W5[ip]*det*(w[1][ip + 20] - F2);
+      // Number of operations: 14
+      I[6] = W5[ip]*(F10*G[9] + F11*G[10] + F15*G[5] + F16*G[6] + F17*G[7] + F9*G[11] - F2*det);
       
-      // Number of operations: 3
-      I[7] = W5[ip]*det*(w[1][ip + 25] - F5);
+      // Number of operations: 14
+      I[7] = W5[ip]*(F12*G[11] + F13*G[9] + F14*G[10] + F15*G[8] + F16*G[3] + F17*G[4] - F5*det);
       
-      // Number of operations: 3
-      I[8] = W5[ip]*det*(w[1][ip + 10] - F8);
+      // Number of operations: 8
+      I[8] = W5[ip]*(F15*G[15] + F16*G[16] + F17*G[17] - F8*det);
       
       
       // Number of operations for primary indices: 72
@@ -27555,7 +27632,7 @@ void plas3d_cell_integral_7_otherwise::tabulate_tensor(double * A,
     // 
     // and the following integral 0 metadata:
     // 
-    // estimated_polynomial_degree: 2
+    // estimated_polynomial_degree: 4
     // optimize:                    True
     // precision:                   16
     // quadrature_degree:           3
@@ -27618,85 +27695,17 @@ void plas3d_cell_integral_7_otherwise::tabulate_tensor(double * A,
     // Array of non-zero columns
     static const unsigned int nzc8[4] = {32, 33, 34, 35};
     
-    static const double FE2_C0_D001[5][10] = \
-    {{0.0, -1.885229172310387e-15, 0.0, -3.679135974939942e-15, 1.000000000000001, 1.000000000000006, -2.243920102470784e-15, 0.0, -1.0, -1},
-    {0.3333333333333342, -2.316362320731295e-15, 0.0, -0.3333333333333372, 0.666666666666668, 2.000000000000008, -2.187199124775406e-15, -1.095906633075524e-15, -0.6666666666666665, -2.0},
-    {0.3333333333333339, -1.011850266796735e-15, 0.0, -0.3333333333333374, 2.000000000000002, 0.6666666666666718, -3.672122420211553e-15, 0.0, -2.0, -0.6666666666666663},
-    {0.333333333333334, -2.28491983960103e-15, 1.11994551437464e-15, 0.9999999999999971, 0.6666666666666652, 0.6666666666666737, -1.747949220781824e-15, -1.333333333333334, -0.666666666666666, -0.6666666666666671},
-    {-0.9999999999999999, -1.859437530302942e-15, 0.0, -0.3333333333333374, 0.6666666666666682, 0.6666666666666721, -1.93844115146427e-15, 1.333333333333334, -0.6666666666666669, -0.6666666666666667}};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc22[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc26[10] = {10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc30[10] = {20, 21, 22, 23, 24, 25, 26, 27, 28, 29};
-    
-    static const double FE2_C0_D010[5][8] = \
-    {{1.149928286731703e-15, -2.523543805893162e-15, -2.835495863052288e-15, 1.000000000000001, 1.000000000000006, -1.000000000000001, 0.0, -1.000000000000001},
-    {0.3333333333333348, -2.93011074809286e-15, -0.3333333333333359, 0.6666666666666674, 2.000000000000006, -0.6666666666666673, -1.535291929935322e-15, -2.000000000000001},
-    {0.3333333333333344, -2.980558178472686e-15, 0.9999999999999967, 0.6666666666666674, 0.6666666666666731, -0.6666666666666671, -1.333333333333334, -0.6666666666666673},
-    {0.3333333333333347, -1.885325904241424e-15, -0.3333333333333356, 2.000000000000002, 0.6666666666666701, -2.000000000000002, 0.0, -0.6666666666666667},
-    {-0.9999999999999993, -2.428597000849257e-15, -0.3333333333333363, 0.6666666666666674, 0.6666666666666716, -0.6666666666666673, 1.333333333333333, -0.6666666666666671}};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc23[8] = {0, 1, 2, 4, 6, 7, 8, 9};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc27[8] = {10, 11, 12, 14, 16, 17, 18, 19};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc31[8] = {20, 21, 22, 24, 26, 27, 28, 29};
-    
-    static const double FE2_C0_D100[5][7] = \
-    {{1.023181226563178e-15, -1.106447953410065e-15, 1.000000000000001, 1.000000000000001, -1.000000000000001, -1.000000000000001, 0.0},
-    {0.3333333333333342, 0.999999999999999, 0.6666666666666671, 0.6666666666666671, -0.6666666666666669, -0.6666666666666674, -1.333333333333333},
-    {0.3333333333333345, -0.333333333333335, 0.6666666666666672, 2.000000000000001, -0.6666666666666671, -2.000000000000002, 0.0},
-    {0.3333333333333345, -0.3333333333333345, 2.000000000000002, 0.6666666666666667, -2.000000000000002, -0.666666666666667, 0.0},
-    {-0.9999999999999991, -0.333333333333334, 0.6666666666666673, 0.6666666666666671, -0.6666666666666671, -0.6666666666666674, 1.333333333333333}};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc24[7] = {0, 1, 5, 6, 7, 8, 9};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc28[7] = {10, 11, 15, 16, 17, 18, 19};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc32[7] = {20, 21, 25, 26, 27, 28, 29};
-    
     // Reset values in the element tensor.
     for (unsigned int r = 0; r < 36; r++)
     {
       A[r] = 0.0;
     } // end loop over 'r'
-    // Number of operations to compute geometry constants: 27.
-    double G[18];
-    G[0] = K[3]*det;
-    G[1] = K[6]*det;
-    G[2] = K[0]*det;
-    G[3] = 0.5*K[4]*det;
-    G[4] = 0.5*K[7]*det;
-    G[5] = 0.5*K[0]*det;
-    G[6] = 0.5*K[3]*det;
-    G[7] = 0.5*K[6]*det;
-    G[8] = 0.5*K[1]*det;
-    G[9] = 0.5*K[5]*det;
-    G[10] = 0.5*K[8]*det;
-    G[11] = 0.5*K[2]*det;
-    G[12] = K[1]*det;
-    G[13] = K[4]*det;
-    G[14] = K[7]*det;
-    G[15] = K[2]*det;
-    G[16] = K[5]*det;
-    G[17] = K[8]*det;
     
     // Compute element tensor using UFL quadrature representation
     // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
     
     // Loop quadrature points for integral.
-    // Number of operations to compute element tensor for following IP loop = 2010
+    // Number of operations to compute element tensor for following IP loop = 855
     for (unsigned int ip = 0; ip < 5; ip++)
     {
       
@@ -27710,82 +27719,49 @@ void plas3d_cell_integral_7_otherwise::tabulate_tensor(double * A,
       double F6 = 0.0;
       double F7 = 0.0;
       double F8 = 0.0;
-      double F9 = 0.0;
-      double F10 = 0.0;
-      double F11 = 0.0;
-      double F12 = 0.0;
-      double F13 = 0.0;
-      double F14 = 0.0;
-      double F15 = 0.0;
-      double F16 = 0.0;
-      double F17 = 0.0;
       
       // Total number of operations to compute function values = 72
       for (unsigned int r = 0; r < 4; r++)
       {
-        F0 += FE0_C0[ip][r]*w[1][nzc0[r]];
-        F1 += FE0_C0[ip][r]*w[1][nzc3[r]];
-        F2 += FE0_C0[ip][r]*w[1][nzc6[r]];
-        F3 += FE0_C0[ip][r]*w[1][nzc1[r]];
-        F4 += FE0_C0[ip][r]*w[1][nzc4[r]];
-        F5 += FE0_C0[ip][r]*w[1][nzc7[r]];
-        F6 += FE0_C0[ip][r]*w[1][nzc2[r]];
-        F7 += FE0_C0[ip][r]*w[1][nzc5[r]];
-        F8 += FE0_C0[ip][r]*w[1][nzc8[r]];
+        F0 += FE0_C0[ip][r]*w[0][nzc0[r]];
+        F1 += FE0_C0[ip][r]*w[0][nzc3[r]];
+        F2 += FE0_C0[ip][r]*w[0][nzc6[r]];
+        F3 += FE0_C0[ip][r]*w[0][nzc1[r]];
+        F4 += FE0_C0[ip][r]*w[0][nzc4[r]];
+        F5 += FE0_C0[ip][r]*w[0][nzc7[r]];
+        F6 += FE0_C0[ip][r]*w[0][nzc2[r]];
+        F7 += FE0_C0[ip][r]*w[0][nzc5[r]];
+        F8 += FE0_C0[ip][r]*w[0][nzc8[r]];
       } // end loop over 'r'
       
-      // Total number of operations to compute function values = 42
-      for (unsigned int r = 0; r < 7; r++)
-      {
-        F9 += FE2_C0_D100[ip][r]*w[0][nzc24[r]];
-        F12 += FE2_C0_D100[ip][r]*w[0][nzc28[r]];
-        F15 += FE2_C0_D100[ip][r]*w[0][nzc32[r]];
-      } // end loop over 'r'
-      
-      // Total number of operations to compute function values = 48
-      for (unsigned int r = 0; r < 8; r++)
-      {
-        F10 += FE2_C0_D010[ip][r]*w[0][nzc23[r]];
-        F13 += FE2_C0_D010[ip][r]*w[0][nzc27[r]];
-        F16 += FE2_C0_D010[ip][r]*w[0][nzc31[r]];
-      } // end loop over 'r'
-      
-      // Total number of operations to compute function values = 60
-      for (unsigned int r = 0; r < 10; r++)
-      {
-        F11 += FE2_C0_D001[ip][r]*w[0][nzc22[r]];
-        F14 += FE2_C0_D001[ip][r]*w[0][nzc26[r]];
-        F17 += FE2_C0_D001[ip][r]*w[0][nzc30[r]];
-      } // end loop over 'r'
-      
-      // Number of operations to compute ip constants: 108
+      // Number of operations to compute ip constants: 27
       double I[9];
-      // Number of operations: 8
-      I[0] = W5[ip]*(F10*G[0] + F11*G[1] + F9*G[2] - F0*det);
+      // Number of operations: 3
+      I[0] = W5[ip]*det*(w[1][ip] - F0);
       
-      // Number of operations: 14
-      I[1] = W5[ip]*(F10*G[3] + F11*G[4] + F12*G[5] + F13*G[6] + F14*G[7] + F9*G[8] - F3*det);
+      // Number of operations: 3
+      I[1] = W5[ip]*det*(w[1][ip + 15] - F3);
       
-      // Number of operations: 14
-      I[2] = W5[ip]*(F10*G[9] + F11*G[10] + F15*G[5] + F16*G[6] + F17*G[7] + F9*G[11] - F6*det);
+      // Number of operations: 3
+      I[2] = W5[ip]*det*(w[1][ip + 20] - F6);
       
-      // Number of operations: 14
-      I[3] = W5[ip]*(F10*G[3] + F11*G[4] + F12*G[5] + F13*G[6] + F14*G[7] + F9*G[8] - F1*det);
+      // Number of operations: 3
+      I[3] = W5[ip]*det*(w[1][ip + 15] - F1);
       
-      // Number of operations: 8
-      I[4] = W5[ip]*(F12*G[12] + F13*G[13] + F14*G[14] - F4*det);
+      // Number of operations: 3
+      I[4] = W5[ip]*det*(w[1][ip + 5] - F4);
       
-      // Number of operations: 14
-      I[5] = W5[ip]*(F12*G[11] + F13*G[9] + F14*G[10] + F15*G[8] + F16*G[3] + F17*G[4] - F7*det);
+      // Number of operations: 3
+      I[5] = W5[ip]*det*(w[1][ip + 25] - F7);
       
-      // Number of operations: 14
-      I[6] = W5[ip]*(F10*G[9] + F11*G[10] + F15*G[5] + F16*G[6] + F17*G[7] + F9*G[11] - F2*det);
+      // Number of operations: 3
+      I[6] = W5[ip]*det*(w[1][ip + 20] - F2);
       
-      // Number of operations: 14
-      I[7] = W5[ip]*(F12*G[11] + F13*G[9] + F14*G[10] + F15*G[8] + F16*G[3] + F17*G[4] - F5*det);
+      // Number of operations: 3
+      I[7] = W5[ip]*det*(w[1][ip + 25] - F5);
       
-      // Number of operations: 8
-      I[8] = W5[ip]*(F15*G[15] + F16*G[16] + F17*G[17] - F8*det);
+      // Number of operations: 3
+      I[8] = W5[ip]*det*(w[1][ip + 10] - F8);
       
       
       // Number of operations for primary indices: 72
@@ -27971,7 +27947,7 @@ plas3d_cell_integral_9_otherwise::~plas3d_cell_integral_9_otherwise()
 
 const std::vector<bool> & plas3d_cell_integral_9_otherwise::enabled_coefficients() const
 {
-static const std::vector<bool> enabled({true, true});
+static const std::vector<bool> enabled({true, true, true});
 return enabled;
 }
 
@@ -28055,17 +28031,83 @@ void plas3d_cell_integral_9_otherwise::tabulate_tensor(double * A,
     // Array of non-zero columns
     static const unsigned int nzc8[4] = {32, 33, 34, 35};
     
+    static const double FE1_C0_D001[5][2] = \
+    {{-1.0, 1},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999999, 1.0},
+    {-0.9999999999999998, 1.0}};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc10[2] = {0, 3};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc11[2] = {0, 2};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc12[2] = {0, 1};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc14[2] = {4, 7};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc15[2] = {4, 6};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc16[2] = {4, 5};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc18[2] = {8, 11};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc19[2] = {8, 10};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc20[2] = {8, 9};
+    
     // Reset values in the element tensor.
     for (unsigned int r = 0; r < 36; r++)
     {
       A[r] = 0.0;
     } // end loop over 'r'
+    // Number of operations to compute geometry constants: 57.
+    double G[30];
+    G[0] = 3844444.444444444*K[3]*det;
+    G[1] = 3844444.444444444*K[6]*det;
+    G[2] = 961111.1111111111*K[1]*det;
+    G[3] = 961111.1111111111*K[4]*det;
+    G[4] = 961111.1111111111*K[7]*det;
+    G[5] = 961111.1111111111*K[2]*det;
+    G[6] = 961111.1111111111*K[5]*det;
+    G[7] = 961111.1111111111*K[8]*det;
+    G[8] = 3844444.444444444*K[0]*det;
+    G[9] = -961111.1111111111*det;
+    G[10] = -3844444.444444444*det;
+    G[11] = 1441666.666666667*K[4]*det;
+    G[12] = 1441666.666666667*K[7]*det;
+    G[13] = 1441666.666666667*K[0]*det;
+    G[14] = 1441666.666666667*K[3]*det;
+    G[15] = 1441666.666666667*K[6]*det;
+    G[16] = 1441666.666666667*K[1]*det;
+    G[17] = -2883333.333333333*det;
+    G[18] = 1441666.666666667*K[5]*det;
+    G[19] = 1441666.666666667*K[8]*det;
+    G[20] = 1441666.666666667*K[2]*det;
+    G[21] = 961111.1111111111*K[3]*det;
+    G[22] = 961111.1111111111*K[6]*det;
+    G[23] = 3844444.444444444*K[1]*det;
+    G[24] = 3844444.444444444*K[4]*det;
+    G[25] = 3844444.444444444*K[7]*det;
+    G[26] = 961111.1111111111*K[0]*det;
+    G[27] = 3844444.444444444*K[2]*det;
+    G[28] = 3844444.444444444*K[5]*det;
+    G[29] = 3844444.444444444*K[8]*det;
     
     // Compute element tensor using UFL quadrature representation
     // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
     
     // Loop quadrature points for integral.
-    // Number of operations to compute element tensor for following IP loop = 855
+    // Number of operations to compute element tensor for following IP loop = 1755
     for (unsigned int ip = 0; ip < 5; ip++)
     {
       
@@ -28079,6 +28121,29 @@ void plas3d_cell_integral_9_otherwise::tabulate_tensor(double * A,
       double F6 = 0.0;
       double F7 = 0.0;
       double F8 = 0.0;
+      double F9 = 0.0;
+      double F10 = 0.0;
+      double F11 = 0.0;
+      double F12 = 0.0;
+      double F13 = 0.0;
+      double F14 = 0.0;
+      double F15 = 0.0;
+      double F16 = 0.0;
+      double F17 = 0.0;
+      
+      // Total number of operations to compute function values = 36
+      for (unsigned int r = 0; r < 2; r++)
+      {
+        F9 += FE1_C0_D001[ip][r]*w[1][nzc12[r]];
+        F10 += FE1_C0_D001[ip][r]*w[1][nzc11[r]];
+        F11 += FE1_C0_D001[ip][r]*w[1][nzc10[r]];
+        F12 += FE1_C0_D001[ip][r]*w[1][nzc16[r]];
+        F13 += FE1_C0_D001[ip][r]*w[1][nzc15[r]];
+        F14 += FE1_C0_D001[ip][r]*w[1][nzc14[r]];
+        F15 += FE1_C0_D001[ip][r]*w[1][nzc20[r]];
+        F16 += FE1_C0_D001[ip][r]*w[1][nzc19[r]];
+        F17 += FE1_C0_D001[ip][r]*w[1][nzc18[r]];
+      } // end loop over 'r'
       
       // Total number of operations to compute function values = 72
       for (unsigned int r = 0; r < 4; r++)
@@ -28094,34 +28159,34 @@ void plas3d_cell_integral_9_otherwise::tabulate_tensor(double * A,
         F8 += FE0_C0[ip][r]*w[0][nzc8[r]];
       } // end loop over 'r'
       
-      // Number of operations to compute ip constants: 27
+      // Number of operations to compute ip constants: 171
       double I[9];
-      // Number of operations: 3
-      I[0] = W5[ip]*det*(w[1][ip] - F0);
+      // Number of operations: 25
+      I[0] = W5[ip]*(F10*G[0] + F11*G[1] + F12*G[2] + F13*G[3] + F14*G[4] + F15*G[5] + F16*G[6] + F17*G[7] + F9*G[8] + G[10]*w[2][ip] + G[9]*(w[2][ip + 10] + w[2][ip + 5]) - F0*det);
       
-      // Number of operations: 3
-      I[1] = W5[ip]*det*(w[1][ip + 15] - F3);
+      // Number of operations: 16
+      I[1] = W5[ip]*(F10*G[11] + F11*G[12] + F12*G[13] + F13*G[14] + F14*G[15] + F9*G[16] + G[17]*w[2][ip + 15] - F3*det);
       
-      // Number of operations: 3
-      I[2] = W5[ip]*det*(w[1][ip + 20] - F6);
+      // Number of operations: 16
+      I[2] = W5[ip]*(F10*G[18] + F11*G[19] + F15*G[13] + F16*G[14] + F17*G[15] + F9*G[20] + G[17]*w[2][ip + 20] - F6*det);
       
-      // Number of operations: 3
-      I[3] = W5[ip]*det*(w[1][ip + 15] - F1);
+      // Number of operations: 16
+      I[3] = W5[ip]*(F10*G[11] + F11*G[12] + F12*G[13] + F13*G[14] + F14*G[15] + F9*G[16] + G[17]*w[2][ip + 15] - F1*det);
       
-      // Number of operations: 3
-      I[4] = W5[ip]*det*(w[1][ip + 5] - F4);
+      // Number of operations: 25
+      I[4] = W5[ip]*(F10*G[21] + F11*G[22] + F12*G[23] + F13*G[24] + F14*G[25] + F15*G[5] + F16*G[6] + F17*G[7] + F9*G[26] + G[10]*w[2][ip + 5] + G[9]*(w[2][ip + 10] + w[2][ip]) - F4*det);
       
-      // Number of operations: 3
-      I[5] = W5[ip]*det*(w[1][ip + 25] - F7);
+      // Number of operations: 16
+      I[5] = W5[ip]*(F12*G[20] + F13*G[18] + F14*G[19] + F15*G[16] + F16*G[11] + F17*G[12] + G[17]*w[2][ip + 25] - F7*det);
       
-      // Number of operations: 3
-      I[6] = W5[ip]*det*(w[1][ip + 20] - F2);
+      // Number of operations: 16
+      I[6] = W5[ip]*(F10*G[18] + F11*G[19] + F15*G[13] + F16*G[14] + F17*G[15] + F9*G[20] + G[17]*w[2][ip + 20] - F2*det);
       
-      // Number of operations: 3
-      I[7] = W5[ip]*det*(w[1][ip + 25] - F5);
+      // Number of operations: 16
+      I[7] = W5[ip]*(F12*G[20] + F13*G[18] + F14*G[19] + F15*G[16] + F16*G[11] + F17*G[12] + G[17]*w[2][ip + 25] - F5*det);
       
-      // Number of operations: 3
-      I[8] = W5[ip]*det*(w[1][ip + 10] - F8);
+      // Number of operations: 25
+      I[8] = W5[ip]*(F10*G[21] + F11*G[22] + F12*G[2] + F13*G[3] + F14*G[4] + F15*G[27] + F16*G[28] + F17*G[29] + F9*G[26] + G[10]*w[2][ip + 10] + G[9]*(w[2][ip + 5] + w[2][ip]) - F8*det);
       
       
       // Number of operations for primary indices: 72
@@ -28212,42 +28277,15 @@ void plas3d_cell_integral_10_otherwise::tabulate_tensor(double * A,
     // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
     
     // Values of basis functions at quadrature points.
-    static const double FE0_C0[5][4] = \
+    static const double FE0[5][4] = \
     {{0.2500000000000001, 0.25, 0.25, 0.25},
     {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
     {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
     {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
     {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
     
-    // Array of non-zero columns
-    static const unsigned int nzc0[4] = {0, 1, 2, 3};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc1[4] = {4, 5, 6, 7};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc2[4] = {8, 9, 10, 11};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc3[4] = {12, 13, 14, 15};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc4[4] = {16, 17, 18, 19};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc5[4] = {20, 21, 22, 23};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc6[4] = {24, 25, 26, 27};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc7[4] = {28, 29, 30, 31};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc8[4] = {32, 33, 34, 35};
-    
     // Reset values in the element tensor.
-    for (unsigned int r = 0; r < 1296; r++)
+    for (unsigned int r = 0; r < 16; r++)
     {
       A[r] = 0.0;
     } // end loop over 'r'
@@ -28256,7 +28294,7 @@ void plas3d_cell_integral_10_otherwise::tabulate_tensor(double * A,
     // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
     
     // Loop quadrature points for integral.
-    // Number of operations to compute element tensor for following IP loop = 2165
+    // Number of operations to compute element tensor for following IP loop = 245
     for (unsigned int ip = 0; ip < 5; ip++)
     {
       
@@ -28266,29 +28304,13 @@ void plas3d_cell_integral_10_otherwise::tabulate_tensor(double * A,
       I[0] = W5[ip]*det;
       
       
-      // Number of operations for primary indices: 432
+      // Number of operations for primary indices: 48
       for (unsigned int j = 0; j < 4; j++)
       {
         for (unsigned int k = 0; k < 4; k++)
         {
           // Number of operations to compute entry: 3
-          A[nzc0[j]*36 + nzc0[k]] += FE0_C0[ip][j]*FE0_C0[ip][k]*I[0];
-          // Number of operations to compute entry: 3
-          A[nzc1[j]*36 + nzc1[k]] += FE0_C0[ip][j]*FE0_C0[ip][k]*I[0];
-          // Number of operations to compute entry: 3
-          A[nzc2[j]*36 + nzc2[k]] += FE0_C0[ip][j]*FE0_C0[ip][k]*I[0];
-          // Number of operations to compute entry: 3
-          A[nzc3[j]*36 + nzc3[k]] += FE0_C0[ip][j]*FE0_C0[ip][k]*I[0];
-          // Number of operations to compute entry: 3
-          A[nzc4[j]*36 + nzc4[k]] += FE0_C0[ip][j]*FE0_C0[ip][k]*I[0];
-          // Number of operations to compute entry: 3
-          A[nzc5[j]*36 + nzc5[k]] += FE0_C0[ip][j]*FE0_C0[ip][k]*I[0];
-          // Number of operations to compute entry: 3
-          A[nzc6[j]*36 + nzc6[k]] += FE0_C0[ip][j]*FE0_C0[ip][k]*I[0];
-          // Number of operations to compute entry: 3
-          A[nzc7[j]*36 + nzc7[k]] += FE0_C0[ip][j]*FE0_C0[ip][k]*I[0];
-          // Number of operations to compute entry: 3
-          A[nzc8[j]*36 + nzc8[k]] += FE0_C0[ip][j]*FE0_C0[ip][k]*I[0];
+          A[j*4 + k] += FE0[ip][j]*FE0[ip][k]*I[0];
         } // end loop over 'k'
       } // end loop over 'j'
     } // end loop over 'ip'
@@ -28357,131 +28379,70 @@ void plas3d_cell_integral_11_otherwise::tabulate_tensor(double * A,
     // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
     
     // Values of basis functions at quadrature points.
-    static const double FE0_C0[5][4] = \
+    static const double FE0[5][4] = \
     {{0.2500000000000001, 0.25, 0.25, 0.25},
     {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
     {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
     {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
     {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
     
-    // Array of non-zero columns
-    static const unsigned int nzc0[4] = {0, 1, 2, 3};
+    static const double FE1_C0_D001[5][2] = \
+    {{-1.0, 1},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999999, 1.0},
+    {-0.9999999999999998, 1.0}};
     
     // Array of non-zero columns
-    static const unsigned int nzc1[4] = {4, 5, 6, 7};
+    static const unsigned int nzc1[2] = {0, 3};
     
     // Array of non-zero columns
-    static const unsigned int nzc2[4] = {8, 9, 10, 11};
+    static const unsigned int nzc2[2] = {0, 2};
     
     // Array of non-zero columns
-    static const unsigned int nzc3[4] = {12, 13, 14, 15};
+    static const unsigned int nzc3[2] = {0, 1};
     
     // Array of non-zero columns
-    static const unsigned int nzc4[4] = {16, 17, 18, 19};
+    static const unsigned int nzc5[2] = {4, 7};
     
     // Array of non-zero columns
-    static const unsigned int nzc5[4] = {20, 21, 22, 23};
+    static const unsigned int nzc6[2] = {4, 6};
     
     // Array of non-zero columns
-    static const unsigned int nzc6[4] = {24, 25, 26, 27};
+    static const unsigned int nzc7[2] = {4, 5};
     
     // Array of non-zero columns
-    static const unsigned int nzc7[4] = {28, 29, 30, 31};
+    static const unsigned int nzc9[2] = {8, 11};
     
     // Array of non-zero columns
-    static const unsigned int nzc8[4] = {32, 33, 34, 35};
-    
-    static const double FE2_C0_D001[5][10] = \
-    {{0.0, -1.885229172310387e-15, 0.0, -3.679135974939942e-15, 1.000000000000001, 1.000000000000006, -2.243920102470784e-15, 0.0, -1.0, -1},
-    {0.3333333333333342, -2.316362320731295e-15, 0.0, -0.3333333333333372, 0.666666666666668, 2.000000000000008, -2.187199124775406e-15, -1.095906633075524e-15, -0.6666666666666665, -2.0},
-    {0.3333333333333339, -1.011850266796735e-15, 0.0, -0.3333333333333374, 2.000000000000002, 0.6666666666666718, -3.672122420211553e-15, 0.0, -2.0, -0.6666666666666663},
-    {0.333333333333334, -2.28491983960103e-15, 1.11994551437464e-15, 0.9999999999999971, 0.6666666666666652, 0.6666666666666737, -1.747949220781824e-15, -1.333333333333334, -0.666666666666666, -0.6666666666666671},
-    {-0.9999999999999999, -1.859437530302942e-15, 0.0, -0.3333333333333374, 0.6666666666666682, 0.6666666666666721, -1.93844115146427e-15, 1.333333333333334, -0.6666666666666669, -0.6666666666666667}};
+    static const unsigned int nzc10[2] = {8, 10};
     
     // Array of non-zero columns
-    static const unsigned int nzc22[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc26[10] = {10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc30[10] = {20, 21, 22, 23, 24, 25, 26, 27, 28, 29};
-    
-    static const double FE2_C0_D010[5][8] = \
-    {{1.149928286731703e-15, -2.523543805893162e-15, -2.835495863052288e-15, 1.000000000000001, 1.000000000000006, -1.000000000000001, 0.0, -1.000000000000001},
-    {0.3333333333333348, -2.93011074809286e-15, -0.3333333333333359, 0.6666666666666674, 2.000000000000006, -0.6666666666666673, -1.535291929935322e-15, -2.000000000000001},
-    {0.3333333333333344, -2.980558178472686e-15, 0.9999999999999967, 0.6666666666666674, 0.6666666666666731, -0.6666666666666671, -1.333333333333334, -0.6666666666666673},
-    {0.3333333333333347, -1.885325904241424e-15, -0.3333333333333356, 2.000000000000002, 0.6666666666666701, -2.000000000000002, 0.0, -0.6666666666666667},
-    {-0.9999999999999993, -2.428597000849257e-15, -0.3333333333333363, 0.6666666666666674, 0.6666666666666716, -0.6666666666666673, 1.333333333333333, -0.6666666666666671}};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc23[8] = {0, 1, 2, 4, 6, 7, 8, 9};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc27[8] = {10, 11, 12, 14, 16, 17, 18, 19};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc31[8] = {20, 21, 22, 24, 26, 27, 28, 29};
-    
-    static const double FE2_C0_D100[5][7] = \
-    {{1.023181226563178e-15, -1.106447953410065e-15, 1.000000000000001, 1.000000000000001, -1.000000000000001, -1.000000000000001, 0.0},
-    {0.3333333333333342, 0.999999999999999, 0.6666666666666671, 0.6666666666666671, -0.6666666666666669, -0.6666666666666674, -1.333333333333333},
-    {0.3333333333333345, -0.333333333333335, 0.6666666666666672, 2.000000000000001, -0.6666666666666671, -2.000000000000002, 0.0},
-    {0.3333333333333345, -0.3333333333333345, 2.000000000000002, 0.6666666666666667, -2.000000000000002, -0.666666666666667, 0.0},
-    {-0.9999999999999991, -0.333333333333334, 0.6666666666666673, 0.6666666666666671, -0.6666666666666671, -0.6666666666666674, 1.333333333333333}};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc24[7] = {0, 1, 5, 6, 7, 8, 9};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc28[7] = {10, 11, 15, 16, 17, 18, 19};
-    
-    // Array of non-zero columns
-    static const unsigned int nzc32[7] = {20, 21, 25, 26, 27, 28, 29};
+    static const unsigned int nzc11[2] = {8, 9};
     
     // Reset values in the element tensor.
-    for (unsigned int r = 0; r < 36; r++)
+    for (unsigned int r = 0; r < 4; r++)
     {
       A[r] = 0.0;
     } // end loop over 'r'
-    // Number of operations to compute geometry constants: 57.
-    double G[30];
-    G[0] = 269230769230.7692*K[3]*det;
-    G[1] = 269230769230.7692*K[6]*det;
-    G[2] = 115384615384.6154*K[1]*det;
-    G[3] = 115384615384.6154*K[4]*det;
-    G[4] = 115384615384.6154*K[7]*det;
-    G[5] = 115384615384.6154*K[2]*det;
-    G[6] = 115384615384.6154*K[5]*det;
-    G[7] = 115384615384.6154*K[8]*det;
-    G[8] = 269230769230.7692*K[0]*det;
-    G[9] = -115384615384.6154*det;
-    G[10] = -269230769230.7692*det;
-    G[11] = 76923076923.07692*K[4]*det;
-    G[12] = 76923076923.07692*K[7]*det;
-    G[13] = 76923076923.07692*K[0]*det;
-    G[14] = 76923076923.07692*K[3]*det;
-    G[15] = 76923076923.07692*K[6]*det;
-    G[16] = 76923076923.07692*K[1]*det;
-    G[17] = -153846153846.1538*det;
-    G[18] = 76923076923.07692*K[5]*det;
-    G[19] = 76923076923.07692*K[8]*det;
-    G[20] = 76923076923.07692*K[2]*det;
-    G[21] = 115384615384.6154*K[3]*det;
-    G[22] = 115384615384.6154*K[6]*det;
-    G[23] = 269230769230.7692*K[1]*det;
-    G[24] = 269230769230.7692*K[4]*det;
-    G[25] = 269230769230.7692*K[7]*det;
-    G[26] = 115384615384.6154*K[0]*det;
-    G[27] = 269230769230.7692*K[2]*det;
-    G[28] = 269230769230.7692*K[5]*det;
-    G[29] = 269230769230.7692*K[8]*det;
+    // Number of operations to compute geometry constants: 19.
+    double G[10];
+    G[0] = -1922222.222222222*K[0]*det;
+    G[1] = -1922222.222222222*K[3]*det;
+    G[2] = -1922222.222222222*K[6]*det;
+    G[3] = -1922222.222222222*K[1]*det;
+    G[4] = -1922222.222222222*K[4]*det;
+    G[5] = -1922222.222222222*K[7]*det;
+    G[6] = -1922222.222222222*K[2]*det;
+    G[7] = -1922222.222222222*K[5]*det;
+    G[8] = -1922222.222222222*K[8]*det;
+    G[9] = 1922222.222222222*det;
     
     // Compute element tensor using UFL quadrature representation
     // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
     
     // Loop quadrature points for integral.
-    // Number of operations to compute element tensor for following IP loop = 2325
+    // Number of operations to compute element tensor for following IP loop = 380
     for (unsigned int ip = 0; ip < 5; ip++)
     {
       
@@ -28496,105 +28457,2712 @@ void plas3d_cell_integral_11_otherwise::tabulate_tensor(double * A,
       double F7 = 0.0;
       double F8 = 0.0;
       double F9 = 0.0;
-      double F10 = 0.0;
-      double F11 = 0.0;
-      double F12 = 0.0;
-      double F13 = 0.0;
-      double F14 = 0.0;
-      double F15 = 0.0;
-      double F16 = 0.0;
-      double F17 = 0.0;
       
-      // Total number of operations to compute function values = 72
+      // Total number of operations to compute function values = 36
+      for (unsigned int r = 0; r < 2; r++)
+      {
+        F1 += FE1_C0_D001[ip][r]*w[0][nzc3[r]];
+        F2 += FE1_C0_D001[ip][r]*w[0][nzc2[r]];
+        F3 += FE1_C0_D001[ip][r]*w[0][nzc1[r]];
+        F4 += FE1_C0_D001[ip][r]*w[0][nzc7[r]];
+        F5 += FE1_C0_D001[ip][r]*w[0][nzc6[r]];
+        F6 += FE1_C0_D001[ip][r]*w[0][nzc5[r]];
+        F7 += FE1_C0_D001[ip][r]*w[0][nzc11[r]];
+        F8 += FE1_C0_D001[ip][r]*w[0][nzc10[r]];
+        F9 += FE1_C0_D001[ip][r]*w[0][nzc9[r]];
+      } // end loop over 'r'
+      
+      // Total number of operations to compute function values = 8
       for (unsigned int r = 0; r < 4; r++)
       {
-        F0 += FE0_C0[ip][r]*w[0][nzc0[r]];
-        F1 += FE0_C0[ip][r]*w[0][nzc3[r]];
-        F2 += FE0_C0[ip][r]*w[0][nzc6[r]];
-        F3 += FE0_C0[ip][r]*w[0][nzc1[r]];
-        F4 += FE0_C0[ip][r]*w[0][nzc4[r]];
-        F5 += FE0_C0[ip][r]*w[0][nzc7[r]];
-        F6 += FE0_C0[ip][r]*w[0][nzc2[r]];
-        F7 += FE0_C0[ip][r]*w[0][nzc5[r]];
-        F8 += FE0_C0[ip][r]*w[0][nzc8[r]];
+        F0 += FE0[ip][r]*w[2][r];
       } // end loop over 'r'
       
-      // Total number of operations to compute function values = 42
-      for (unsigned int r = 0; r < 7; r++)
-      {
-        F9 += FE2_C0_D100[ip][r]*w[1][nzc24[r]];
-        F12 += FE2_C0_D100[ip][r]*w[1][nzc28[r]];
-        F15 += FE2_C0_D100[ip][r]*w[1][nzc32[r]];
-      } // end loop over 'r'
-      
-      // Total number of operations to compute function values = 48
-      for (unsigned int r = 0; r < 8; r++)
-      {
-        F10 += FE2_C0_D010[ip][r]*w[1][nzc23[r]];
-        F13 += FE2_C0_D010[ip][r]*w[1][nzc27[r]];
-        F16 += FE2_C0_D010[ip][r]*w[1][nzc31[r]];
-      } // end loop over 'r'
-      
-      // Total number of operations to compute function values = 60
-      for (unsigned int r = 0; r < 10; r++)
-      {
-        F11 += FE2_C0_D001[ip][r]*w[1][nzc22[r]];
-        F14 += FE2_C0_D001[ip][r]*w[1][nzc26[r]];
-        F17 += FE2_C0_D001[ip][r]*w[1][nzc30[r]];
-      } // end loop over 'r'
-      
-      // Number of operations to compute ip constants: 171
-      double I[9];
-      // Number of operations: 25
-      I[0] = W5[ip]*(F10*G[0] + F11*G[1] + F12*G[2] + F13*G[3] + F14*G[4] + F15*G[5] + F16*G[6] + F17*G[7] + F9*G[8] + G[10]*w[2][ip] + G[9]*(w[2][ip + 10] + w[2][ip + 5]) - F0*det);
-      
-      // Number of operations: 16
-      I[1] = W5[ip]*(F10*G[11] + F11*G[12] + F12*G[13] + F13*G[14] + F14*G[15] + F9*G[16] + G[17]*w[2][ip + 15] - F3*det);
-      
-      // Number of operations: 16
-      I[2] = W5[ip]*(F10*G[18] + F11*G[19] + F15*G[13] + F16*G[14] + F17*G[15] + F9*G[20] + G[17]*w[2][ip + 20] - F6*det);
-      
-      // Number of operations: 16
-      I[3] = W5[ip]*(F10*G[11] + F11*G[12] + F12*G[13] + F13*G[14] + F14*G[15] + F9*G[16] + G[17]*w[2][ip + 15] - F1*det);
-      
-      // Number of operations: 25
-      I[4] = W5[ip]*(F10*G[21] + F11*G[22] + F12*G[23] + F13*G[24] + F14*G[25] + F15*G[5] + F16*G[6] + F17*G[7] + F9*G[26] + G[10]*w[2][ip + 5] + G[9]*(w[2][ip + 10] + w[2][ip]) - F4*det);
-      
-      // Number of operations: 16
-      I[5] = W5[ip]*(F12*G[20] + F13*G[18] + F14*G[19] + F15*G[16] + F16*G[11] + F17*G[12] + G[17]*w[2][ip + 25] - F7*det);
-      
-      // Number of operations: 16
-      I[6] = W5[ip]*(F10*G[18] + F11*G[19] + F15*G[13] + F16*G[14] + F17*G[15] + F9*G[20] + G[17]*w[2][ip + 20] - F2*det);
-      
-      // Number of operations: 16
-      I[7] = W5[ip]*(F12*G[20] + F13*G[18] + F14*G[19] + F15*G[16] + F16*G[11] + F17*G[12] + G[17]*w[2][ip + 25] - F5*det);
-      
-      // Number of operations: 25
-      I[8] = W5[ip]*(F10*G[21] + F11*G[22] + F12*G[2] + F13*G[3] + F14*G[4] + F15*G[27] + F16*G[28] + F17*G[29] + F9*G[26] + G[10]*w[2][ip + 10] + G[9]*(w[2][ip + 5] + w[2][ip]) - F8*det);
+      // Number of operations to compute ip constants: 24
+      double I[1];
+      // Number of operations: 24
+      I[0] = W5[ip]*(F1*G[0] + F2*G[1] + F3*G[2] + F4*G[3] + F5*G[4] + F6*G[5] + F7*G[6] + F8*G[7] + F9*G[8] + G[9]*(w[1][ip + 10] + w[1][ip + 5] + w[1][ip]) - F0*det);
       
       
-      // Number of operations for primary indices: 72
+      // Number of operations for primary indices: 8
       for (unsigned int j = 0; j < 4; j++)
       {
         // Number of operations to compute entry: 2
-        A[nzc0[j]] += FE0_C0[ip][j]*I[0];
-        // Number of operations to compute entry: 2
-        A[nzc1[j]] += FE0_C0[ip][j]*I[1];
-        // Number of operations to compute entry: 2
-        A[nzc2[j]] += FE0_C0[ip][j]*I[2];
-        // Number of operations to compute entry: 2
-        A[nzc3[j]] += FE0_C0[ip][j]*I[3];
-        // Number of operations to compute entry: 2
-        A[nzc4[j]] += FE0_C0[ip][j]*I[4];
-        // Number of operations to compute entry: 2
-        A[nzc5[j]] += FE0_C0[ip][j]*I[5];
-        // Number of operations to compute entry: 2
-        A[nzc6[j]] += FE0_C0[ip][j]*I[6];
-        // Number of operations to compute entry: 2
-        A[nzc7[j]] += FE0_C0[ip][j]*I[7];
-        // Number of operations to compute entry: 2
-        A[nzc8[j]] += FE0_C0[ip][j]*I[8];
+        A[j] += FE0[ip][j]*I[0];
       } // end loop over 'j'
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_12_otherwise::plas3d_cell_integral_12_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_12_otherwise::~plas3d_cell_integral_12_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_12_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({});
+return enabled;
+}
+
+void plas3d_cell_integral_12_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 2
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    // Reset values in the element tensor.
+    for (unsigned int r = 0; r < 16; r++)
+    {
+      A[r] = 0.0;
+    } // end loop over 'r'
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 245
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Number of operations to compute ip constants: 1
+      double I[1];
+      // Number of operations: 1
+      I[0] = W5[ip]*det;
+      
+      
+      // Number of operations for primary indices: 48
+      for (unsigned int j = 0; j < 4; j++)
+      {
+        for (unsigned int k = 0; k < 4; k++)
+        {
+          // Number of operations to compute entry: 3
+          A[j*4 + k] += FE0[ip][j]*FE0[ip][k]*I[0];
+        } // end loop over 'k'
+      } // end loop over 'j'
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_13_otherwise::plas3d_cell_integral_13_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_13_otherwise::~plas3d_cell_integral_13_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_13_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({true, true, true});
+return enabled;
+}
+
+void plas3d_cell_integral_13_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 9
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    static const double FE1_C0_D001[5][2] = \
+    {{-1.0, 1},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999999, 1.0},
+    {-0.9999999999999998, 1.0}};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc1[2] = {0, 3};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc2[2] = {0, 2};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc3[2] = {0, 1};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc5[2] = {4, 7};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc6[2] = {4, 6};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc7[2] = {4, 5};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc9[2] = {8, 11};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc10[2] = {8, 10};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc11[2] = {8, 9};
+    
+    // Reset values in the element tensor.
+    for (unsigned int r = 0; r < 4; r++)
+    {
+      A[r] = 0.0;
+    } // end loop over 'r'
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 8170
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Coefficient declarations.
+      double F0 = 0.0;
+      double F1 = 0.0;
+      double F2 = 0.0;
+      double F3 = 0.0;
+      double F4 = 0.0;
+      double F5 = 0.0;
+      double F6 = 0.0;
+      double F7 = 0.0;
+      double F8 = 0.0;
+      double F9 = 0.0;
+      
+      // Total number of operations to compute function values = 36
+      for (unsigned int r = 0; r < 2; r++)
+      {
+        F1 += FE1_C0_D001[ip][r]*w[0][nzc3[r]];
+        F2 += FE1_C0_D001[ip][r]*w[0][nzc2[r]];
+        F3 += FE1_C0_D001[ip][r]*w[0][nzc1[r]];
+        F4 += FE1_C0_D001[ip][r]*w[0][nzc7[r]];
+        F5 += FE1_C0_D001[ip][r]*w[0][nzc6[r]];
+        F6 += FE1_C0_D001[ip][r]*w[0][nzc5[r]];
+        F7 += FE1_C0_D001[ip][r]*w[0][nzc11[r]];
+        F8 += FE1_C0_D001[ip][r]*w[0][nzc10[r]];
+        F9 += FE1_C0_D001[ip][r]*w[0][nzc9[r]];
+      } // end loop over 'r'
+      
+      // Total number of operations to compute function values = 8
+      for (unsigned int r = 0; r < 4; r++)
+      {
+        F0 += FE0[ip][r]*w[2][r];
+      } // end loop over 'r'
+      
+      // Number of operations to compute ip constants: 1582
+      double I[1];
+      // Number of operations: 1582
+      I[0] = W5[ip]*det*(std::sqrt(1.5*((2883333.333333333*(0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip])-0.3333333333333333*(2883333.333333333*(0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10]) + 2883333.333333333*(0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) - w[1][ip + 5]) + 2883333.333333333*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip])))*(2883333.333333333*(0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip])-0.3333333333333333*(2883333.333333333*(0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10]) + 2883333.333333333*(0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) - w[1][ip + 5]) + 2883333.333333333*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]))) + (2883333.333333333*(0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) - w[1][ip + 5]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip])-0.3333333333333333*(2883333.333333333*(0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10]) + 2883333.333333333*(0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) - w[1][ip + 5]) + 2883333.333333333*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip])))*(2883333.333333333*(0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) - w[1][ip + 5]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip])-0.3333333333333333*(2883333.333333333*(0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10]) + 2883333.333333333*(0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) - w[1][ip + 5]) + 2883333.333333333*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]))) + (2883333.333333333*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip])-0.3333333333333333*(2883333.333333333*(0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10]) + 2883333.333333333*(0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) - w[1][ip + 5]) + 2883333.333333333*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip])))*(2883333.333333333*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip])-0.3333333333333333*(2883333.333333333*(0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10]) + 2883333.333333333*(0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) - w[1][ip + 5]) + 2883333.333333333*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]))) + 2883333.333333333*(0.5*(F1*K[1] + F2*K[4] + F3*K[7] + F4*K[0] + F5*K[3] + F6*K[6]) - w[1][ip + 15])*2883333.333333333*(0.5*(F1*K[1] + F2*K[4] + F3*K[7] + F4*K[0] + F5*K[3] + F6*K[6]) - w[1][ip + 15]) + 2883333.333333333*(0.5*(F1*K[1] + F2*K[4] + F3*K[7] + F4*K[0] + F5*K[3] + F6*K[6]) - w[1][ip + 15])*2883333.333333333*(0.5*(F1*K[1] + F2*K[4] + F3*K[7] + F4*K[0] + F5*K[3] + F6*K[6]) - w[1][ip + 15]) + 2883333.333333333*(0.5*(F1*K[2] + F2*K[5] + F3*K[8] + F7*K[0] + F8*K[3] + F9*K[6]) - w[1][ip + 20])*2883333.333333333*(0.5*(F1*K[2] + F2*K[5] + F3*K[8] + F7*K[0] + F8*K[3] + F9*K[6]) - w[1][ip + 20]) + 2883333.333333333*(0.5*(F1*K[2] + F2*K[5] + F3*K[8] + F7*K[0] + F8*K[3] + F9*K[6]) - w[1][ip + 20])*2883333.333333333*(0.5*(F1*K[2] + F2*K[5] + F3*K[8] + F7*K[0] + F8*K[3] + F9*K[6]) - w[1][ip + 20]) + 2883333.333333333*(0.5*(F4*K[2] + F5*K[5] + F6*K[8] + F7*K[1] + F8*K[4] + F9*K[7]) - w[1][ip + 25])*2883333.333333333*(0.5*(F4*K[2] + F5*K[5] + F6*K[8] + F7*K[1] + F8*K[4] + F9*K[7]) - w[1][ip + 25]) + 2883333.333333333*(0.5*(F4*K[2] + F5*K[5] + F6*K[8] + F7*K[1] + F8*K[4] + F9*K[7]) - w[1][ip + 25])*2883333.333333333*(0.5*(F4*K[2] + F5*K[5] + F6*K[8] + F7*K[1] + F8*K[4] + F9*K[7]) - w[1][ip + 25]))) - F0);
+      
+      
+      // Number of operations for primary indices: 8
+      for (unsigned int j = 0; j < 4; j++)
+      {
+        // Number of operations to compute entry: 2
+        A[j] += FE0[ip][j]*I[0];
+      } // end loop over 'j'
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_14_otherwise::plas3d_cell_integral_14_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_14_otherwise::~plas3d_cell_integral_14_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_14_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({});
+return enabled;
+}
+
+void plas3d_cell_integral_14_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 2
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    // Reset values in the element tensor.
+    for (unsigned int r = 0; r < 16; r++)
+    {
+      A[r] = 0.0;
+    } // end loop over 'r'
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 245
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Number of operations to compute ip constants: 1
+      double I[1];
+      // Number of operations: 1
+      I[0] = W5[ip]*det;
+      
+      
+      // Number of operations for primary indices: 48
+      for (unsigned int j = 0; j < 4; j++)
+      {
+        for (unsigned int k = 0; k < 4; k++)
+        {
+          // Number of operations to compute entry: 3
+          A[j*4 + k] += FE0[ip][j]*FE0[ip][k]*I[0];
+        } // end loop over 'k'
+      } // end loop over 'j'
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_15_otherwise::plas3d_cell_integral_15_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_15_otherwise::~plas3d_cell_integral_15_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_15_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({true, true});
+return enabled;
+}
+
+void plas3d_cell_integral_15_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 2
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    static const double FE1_C0_D001[5][2] = \
+    {{-1.0, 1},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999999, 1.0},
+    {-0.9999999999999998, 1.0}};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc1[2] = {0, 3};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc2[2] = {0, 2};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc3[2] = {0, 1};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc5[2] = {4, 7};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc6[2] = {4, 6};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc7[2] = {4, 5};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc9[2] = {8, 11};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc10[2] = {8, 10};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc11[2] = {8, 9};
+    
+    // Reset values in the element tensor.
+    for (unsigned int r = 0; r < 4; r++)
+    {
+      A[r] = 0.0;
+    } // end loop over 'r'
+    // Number of operations to compute geometry constants: 9.
+    double G[9];
+    G[0] = K[0]*det;
+    G[1] = K[3]*det;
+    G[2] = K[6]*det;
+    G[3] = K[1]*det;
+    G[4] = K[4]*det;
+    G[5] = K[7]*det;
+    G[6] = K[2]*det;
+    G[7] = K[5]*det;
+    G[8] = K[8]*det;
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 360
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Coefficient declarations.
+      double F0 = 0.0;
+      double F1 = 0.0;
+      double F2 = 0.0;
+      double F3 = 0.0;
+      double F4 = 0.0;
+      double F5 = 0.0;
+      double F6 = 0.0;
+      double F7 = 0.0;
+      double F8 = 0.0;
+      double F9 = 0.0;
+      
+      // Total number of operations to compute function values = 36
+      for (unsigned int r = 0; r < 2; r++)
+      {
+        F1 += FE1_C0_D001[ip][r]*w[0][nzc3[r]];
+        F2 += FE1_C0_D001[ip][r]*w[0][nzc2[r]];
+        F3 += FE1_C0_D001[ip][r]*w[0][nzc1[r]];
+        F4 += FE1_C0_D001[ip][r]*w[0][nzc7[r]];
+        F5 += FE1_C0_D001[ip][r]*w[0][nzc6[r]];
+        F6 += FE1_C0_D001[ip][r]*w[0][nzc5[r]];
+        F7 += FE1_C0_D001[ip][r]*w[0][nzc11[r]];
+        F8 += FE1_C0_D001[ip][r]*w[0][nzc10[r]];
+        F9 += FE1_C0_D001[ip][r]*w[0][nzc9[r]];
+      } // end loop over 'r'
+      
+      // Total number of operations to compute function values = 8
+      for (unsigned int r = 0; r < 4; r++)
+      {
+        F0 += FE0[ip][r]*w[1][r];
+      } // end loop over 'r'
+      
+      // Number of operations to compute ip constants: 20
+      double I[1];
+      // Number of operations: 20
+      I[0] = W5[ip]*(F1*G[0] + F2*G[1] + F3*G[2] + F4*G[3] + F5*G[4] + F6*G[5] + F7*G[6] + F8*G[7] + F9*G[8] - F0*det);
+      
+      
+      // Number of operations for primary indices: 8
+      for (unsigned int j = 0; j < 4; j++)
+      {
+        // Number of operations to compute entry: 2
+        A[j] += FE0[ip][j]*I[0];
+      } // end loop over 'j'
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_16_otherwise::plas3d_cell_integral_16_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_16_otherwise::~plas3d_cell_integral_16_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_16_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({});
+return enabled;
+}
+
+void plas3d_cell_integral_16_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 2
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    // Reset values in the element tensor.
+    for (unsigned int r = 0; r < 16; r++)
+    {
+      A[r] = 0.0;
+    } // end loop over 'r'
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 245
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Number of operations to compute ip constants: 1
+      double I[1];
+      // Number of operations: 1
+      I[0] = W5[ip]*det;
+      
+      
+      // Number of operations for primary indices: 48
+      for (unsigned int j = 0; j < 4; j++)
+      {
+        for (unsigned int k = 0; k < 4; k++)
+        {
+          // Number of operations to compute entry: 3
+          A[j*4 + k] += FE0[ip][j]*FE0[ip][k]*I[0];
+        } // end loop over 'k'
+      } // end loop over 'j'
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_17_otherwise::plas3d_cell_integral_17_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_17_otherwise::~plas3d_cell_integral_17_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_17_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({true, true});
+return enabled;
+}
+
+void plas3d_cell_integral_17_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 2
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    static const double FE1_C0_D001[5][2] = \
+    {{-1.0, 1},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999999, 1.0},
+    {-0.9999999999999998, 1.0}};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc9[2] = {8, 11};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc10[2] = {8, 10};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc11[2] = {8, 9};
+    
+    // Reset values in the element tensor.
+    for (unsigned int r = 0; r < 4; r++)
+    {
+      A[r] = 0.0;
+    } // end loop over 'r'
+    // Number of operations to compute geometry constants: 3.
+    double G[3];
+    G[0] = K[2]*det;
+    G[1] = K[5]*det;
+    G[2] = K[8]*det;
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 180
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Coefficient declarations.
+      double F0 = 0.0;
+      double F1 = 0.0;
+      double F2 = 0.0;
+      double F3 = 0.0;
+      
+      // Total number of operations to compute function values = 12
+      for (unsigned int r = 0; r < 2; r++)
+      {
+        F0 += FE1_C0_D001[ip][r]*w[0][nzc11[r]];
+        F1 += FE1_C0_D001[ip][r]*w[0][nzc10[r]];
+        F2 += FE1_C0_D001[ip][r]*w[0][nzc9[r]];
+      } // end loop over 'r'
+      
+      // Total number of operations to compute function values = 8
+      for (unsigned int r = 0; r < 4; r++)
+      {
+        F3 += FE0[ip][r]*w[1][r];
+      } // end loop over 'r'
+      
+      // Number of operations to compute ip constants: 8
+      double I[1];
+      // Number of operations: 8
+      I[0] = W5[ip]*(F0*G[0] + F1*G[1] + F2*G[2] - F3*det);
+      
+      
+      // Number of operations for primary indices: 8
+      for (unsigned int j = 0; j < 4; j++)
+      {
+        // Number of operations to compute entry: 2
+        A[j] += FE0[ip][j]*I[0];
+      } // end loop over 'j'
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_18_otherwise::plas3d_cell_integral_18_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_18_otherwise::~plas3d_cell_integral_18_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_18_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({});
+return enabled;
+}
+
+void plas3d_cell_integral_18_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 2
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    // Reset values in the element tensor.
+    for (unsigned int r = 0; r < 16; r++)
+    {
+      A[r] = 0.0;
+    } // end loop over 'r'
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 245
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Number of operations to compute ip constants: 1
+      double I[1];
+      // Number of operations: 1
+      I[0] = W5[ip]*det;
+      
+      
+      // Number of operations for primary indices: 48
+      for (unsigned int j = 0; j < 4; j++)
+      {
+        for (unsigned int k = 0; k < 4; k++)
+        {
+          // Number of operations to compute entry: 3
+          A[j*4 + k] += FE0[ip][j]*FE0[ip][k]*I[0];
+        } // end loop over 'k'
+      } // end loop over 'j'
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_19_otherwise::plas3d_cell_integral_19_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_19_otherwise::~plas3d_cell_integral_19_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_19_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({true, true});
+return enabled;
+}
+
+void plas3d_cell_integral_19_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 4
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    // Reset values in the element tensor.
+    for (unsigned int r = 0; r < 4; r++)
+    {
+      A[r] = 0.0;
+    } // end loop over 'r'
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 105
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Coefficient declarations.
+      double F0 = 0.0;
+      
+      // Total number of operations to compute function values = 8
+      for (unsigned int r = 0; r < 4; r++)
+      {
+        F0 += FE0[ip][r]*w[1][r];
+      } // end loop over 'r'
+      
+      // Number of operations to compute ip constants: 5
+      double I[1];
+      // Number of operations: 5
+      I[0] = W5[ip]*det*(w[0][ip + 10] + w[0][ip + 5] + w[0][ip] - F0);
+      
+      
+      // Number of operations for primary indices: 8
+      for (unsigned int j = 0; j < 4; j++)
+      {
+        // Number of operations to compute entry: 2
+        A[j] += FE0[ip][j]*I[0];
+      } // end loop over 'j'
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_20_otherwise::plas3d_cell_integral_20_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_20_otherwise::~plas3d_cell_integral_20_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_20_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({});
+return enabled;
+}
+
+void plas3d_cell_integral_20_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 2
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    // Reset values in the element tensor.
+    for (unsigned int r = 0; r < 16; r++)
+    {
+      A[r] = 0.0;
+    } // end loop over 'r'
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 245
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Number of operations to compute ip constants: 1
+      double I[1];
+      // Number of operations: 1
+      I[0] = W5[ip]*det;
+      
+      
+      // Number of operations for primary indices: 48
+      for (unsigned int j = 0; j < 4; j++)
+      {
+        for (unsigned int k = 0; k < 4; k++)
+        {
+          // Number of operations to compute entry: 3
+          A[j*4 + k] += FE0[ip][j]*FE0[ip][k]*I[0];
+        } // end loop over 'k'
+      } // end loop over 'j'
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_21_otherwise::plas3d_cell_integral_21_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_21_otherwise::~plas3d_cell_integral_21_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_21_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({true, true});
+return enabled;
+}
+
+void plas3d_cell_integral_21_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 2
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    static const double FE1_C0_D001[5][2] = \
+    {{-1.0, 1},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999999, 1.0},
+    {-0.9999999999999998, 1.0}};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc1[2] = {0, 3};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc2[2] = {0, 2};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc3[2] = {0, 1};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc5[2] = {4, 7};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc6[2] = {4, 6};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc7[2] = {4, 5};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc9[2] = {8, 11};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc10[2] = {8, 10};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc11[2] = {8, 9};
+    
+    // Reset values in the element tensor.
+    for (unsigned int r = 0; r < 4; r++)
+    {
+      A[r] = 0.0;
+    } // end loop over 'r'
+    // Number of operations to compute geometry constants: 180.
+    double G[45];
+    G[0] = det*(0.5*(K[1]*K[1] + K[2]*K[2]) + K[0]*K[0]);
+    G[1] = det*(2.0*K[0]*K[3] + K[1]*K[4] + K[2]*K[5]);
+    G[2] = det*(2.0*K[0]*K[6] + K[1]*K[7] + K[2]*K[8]);
+    G[3] = K[0]*K[1]*det;
+    G[4] = K[1]*K[3]*det;
+    G[5] = K[1]*K[6]*det;
+    G[6] = K[0]*K[2]*det;
+    G[7] = K[2]*K[3]*det;
+    G[8] = K[2]*K[6]*det;
+    G[9] = det*(0.5*(K[4]*K[4] + K[5]*K[5]) + K[3]*K[3]);
+    G[10] = det*(2.0*K[3]*K[6] + K[4]*K[7] + K[5]*K[8]);
+    G[11] = K[0]*K[4]*det;
+    G[12] = K[3]*K[4]*det;
+    G[13] = K[4]*K[6]*det;
+    G[14] = K[0]*K[5]*det;
+    G[15] = K[3]*K[5]*det;
+    G[16] = K[5]*K[6]*det;
+    G[17] = det*(0.5*(K[7]*K[7] + K[8]*K[8]) + K[6]*K[6]);
+    G[18] = K[0]*K[7]*det;
+    G[19] = K[3]*K[7]*det;
+    G[20] = K[6]*K[7]*det;
+    G[21] = K[0]*K[8]*det;
+    G[22] = K[3]*K[8]*det;
+    G[23] = K[6]*K[8]*det;
+    G[24] = det*(0.5*(K[0]*K[0] + K[2]*K[2]) + K[1]*K[1]);
+    G[25] = det*(2.0*K[1]*K[4] + K[0]*K[3] + K[2]*K[5]);
+    G[26] = det*(2.0*K[1]*K[7] + K[0]*K[6] + K[2]*K[8]);
+    G[27] = K[1]*K[2]*det;
+    G[28] = K[2]*K[4]*det;
+    G[29] = K[2]*K[7]*det;
+    G[30] = det*(0.5*(K[3]*K[3] + K[5]*K[5]) + K[4]*K[4]);
+    G[31] = det*(2.0*K[4]*K[7] + K[3]*K[6] + K[5]*K[8]);
+    G[32] = K[1]*K[5]*det;
+    G[33] = K[4]*K[5]*det;
+    G[34] = K[5]*K[7]*det;
+    G[35] = det*(0.5*(K[6]*K[6] + K[8]*K[8]) + K[7]*K[7]);
+    G[36] = K[1]*K[8]*det;
+    G[37] = K[4]*K[8]*det;
+    G[38] = K[7]*K[8]*det;
+    G[39] = det*(0.5*(K[0]*K[0] + K[1]*K[1]) + K[2]*K[2]);
+    G[40] = det*(2.0*K[2]*K[5] + K[0]*K[3] + K[1]*K[4]);
+    G[41] = det*(2.0*K[2]*K[8] + K[0]*K[6] + K[1]*K[7]);
+    G[42] = det*(0.5*(K[3]*K[3] + K[4]*K[4]) + K[5]*K[5]);
+    G[43] = det*(2.0*K[5]*K[8] + K[3]*K[6] + K[4]*K[7]);
+    G[44] = det*(0.5*(K[6]*K[6] + K[7]*K[7]) + K[8]*K[8]);
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 765
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Coefficient declarations.
+      double F0 = 0.0;
+      double F1 = 0.0;
+      double F2 = 0.0;
+      double F3 = 0.0;
+      double F4 = 0.0;
+      double F5 = 0.0;
+      double F6 = 0.0;
+      double F7 = 0.0;
+      double F8 = 0.0;
+      double F9 = 0.0;
+      
+      // Total number of operations to compute function values = 36
+      for (unsigned int r = 0; r < 2; r++)
+      {
+        F1 += FE1_C0_D001[ip][r]*w[0][nzc3[r]];
+        F2 += FE1_C0_D001[ip][r]*w[0][nzc2[r]];
+        F3 += FE1_C0_D001[ip][r]*w[0][nzc1[r]];
+        F4 += FE1_C0_D001[ip][r]*w[0][nzc7[r]];
+        F5 += FE1_C0_D001[ip][r]*w[0][nzc6[r]];
+        F6 += FE1_C0_D001[ip][r]*w[0][nzc5[r]];
+        F7 += FE1_C0_D001[ip][r]*w[0][nzc11[r]];
+        F8 += FE1_C0_D001[ip][r]*w[0][nzc10[r]];
+        F9 += FE1_C0_D001[ip][r]*w[0][nzc9[r]];
+      } // end loop over 'r'
+      
+      // Total number of operations to compute function values = 8
+      for (unsigned int r = 0; r < 4; r++)
+      {
+        F0 += FE0[ip][r]*w[1][r];
+      } // end loop over 'r'
+      
+      // Number of operations to compute ip constants: 101
+      double I[1];
+      // Number of operations: 101
+      I[0] = W5[ip]*(F1*F1*G[0] + F2*(F1*G[1] + F2*G[9]) + F3*(F1*G[2] + F2*G[10] + F3*G[17]) + F4*(F1*G[3] + F2*G[11] + F3*G[18] + F4*G[24]) + F5*(F1*G[4] + F2*G[12] + F3*G[19] + F4*G[25] + F5*G[30]) + F6*(F1*G[5] + F2*G[13] + F3*G[20] + F4*G[26] + F5*G[31] + F6*G[35]) + F7*(F1*G[6] + F2*G[14] + F3*G[21] + F4*G[27] + F5*G[32] + F6*G[36] + F7*G[39]) + F8*(F1*G[7] + F2*G[15] + F3*G[22] + F4*G[28] + F5*G[33] + F6*G[37] + F7*G[40] + F8*G[42]) + F9*(F1*G[8] + F2*G[16] + F3*G[23] + F4*G[29] + F5*G[34] + F6*G[38] + F7*G[41] + F8*G[43] + F9*G[44]) - F0*det);
+      
+      
+      // Number of operations for primary indices: 8
+      for (unsigned int j = 0; j < 4; j++)
+      {
+        // Number of operations to compute entry: 2
+        A[j] += FE0[ip][j]*I[0];
+      } // end loop over 'j'
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_22_otherwise::plas3d_cell_integral_22_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_22_otherwise::~plas3d_cell_integral_22_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_22_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({});
+return enabled;
+}
+
+void plas3d_cell_integral_22_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 2
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    // Reset values in the element tensor.
+    for (unsigned int r = 0; r < 16; r++)
+    {
+      A[r] = 0.0;
+    } // end loop over 'r'
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 245
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Number of operations to compute ip constants: 1
+      double I[1];
+      // Number of operations: 1
+      I[0] = W5[ip]*det;
+      
+      
+      // Number of operations for primary indices: 48
+      for (unsigned int j = 0; j < 4; j++)
+      {
+        for (unsigned int k = 0; k < 4; k++)
+        {
+          // Number of operations to compute entry: 3
+          A[j*4 + k] += FE0[ip][j]*FE0[ip][k]*I[0];
+        } // end loop over 'k'
+      } // end loop over 'j'
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_23_otherwise::plas3d_cell_integral_23_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_23_otherwise::~plas3d_cell_integral_23_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_23_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({true, true});
+return enabled;
+}
+
+void plas3d_cell_integral_23_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 7
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    // Reset values in the element tensor.
+    for (unsigned int r = 0; r < 4; r++)
+    {
+      A[r] = 0.0;
+    } // end loop over 'r'
+    // Number of operations to compute geometry constants: 1.
+    double G[1];
+    G[0] = 2.0*det;
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 155
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Coefficient declarations.
+      double F0 = 0.0;
+      
+      // Total number of operations to compute function values = 8
+      for (unsigned int r = 0; r < 4; r++)
+      {
+        F0 += FE0[ip][r]*w[1][r];
+      } // end loop over 'r'
+      
+      // Number of operations to compute ip constants: 15
+      double I[1];
+      // Number of operations: 15
+      I[0] = W5[ip]*(G[0]*(w[0][ip + 15]*w[0][ip + 15] + w[0][ip + 20]*w[0][ip + 20] + w[0][ip + 25]*w[0][ip + 25]) + det*(w[0][ip + 10]*w[0][ip + 10] + w[0][ip + 5]*w[0][ip + 5] + w[0][ip]*w[0][ip] - F0));
+      
+      
+      // Number of operations for primary indices: 8
+      for (unsigned int j = 0; j < 4; j++)
+      {
+        // Number of operations to compute entry: 2
+        A[j] += FE0[ip][j]*I[0];
+      } // end loop over 'j'
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_24_otherwise::plas3d_cell_integral_24_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_24_otherwise::~plas3d_cell_integral_24_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_24_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({true, true});
+return enabled;
+}
+
+void plas3d_cell_integral_24_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 1
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    static const double FE1_C0_D001[5][2] = \
+    {{-1.0, 1},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999999, 1.0},
+    {-0.9999999999999998, 1.0}};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc1[2] = {0, 3};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc2[2] = {0, 2};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc3[2] = {0, 1};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc5[2] = {4, 7};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc6[2] = {4, 6};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc7[2] = {4, 5};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc9[2] = {8, 11};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc10[2] = {8, 10};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc11[2] = {8, 9};
+    
+    // Reset values in the element tensor.
+    A[0] = 0.0;
+    // Number of operations to compute geometry constants: 9.
+    double G[9];
+    G[0] = K[0]*det;
+    G[1] = K[3]*det;
+    G[2] = K[6]*det;
+    G[3] = K[1]*det;
+    G[4] = K[4]*det;
+    G[5] = K[7]*det;
+    G[6] = K[2]*det;
+    G[7] = K[5]*det;
+    G[8] = K[8]*det;
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 325
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Coefficient declarations.
+      double F0 = 0.0;
+      double F1 = 0.0;
+      double F2 = 0.0;
+      double F3 = 0.0;
+      double F4 = 0.0;
+      double F5 = 0.0;
+      double F6 = 0.0;
+      double F7 = 0.0;
+      double F8 = 0.0;
+      double F9 = 0.0;
+      
+      // Total number of operations to compute function values = 36
+      for (unsigned int r = 0; r < 2; r++)
+      {
+        F1 += FE1_C0_D001[ip][r]*w[0][nzc3[r]];
+        F2 += FE1_C0_D001[ip][r]*w[0][nzc2[r]];
+        F3 += FE1_C0_D001[ip][r]*w[0][nzc1[r]];
+        F4 += FE1_C0_D001[ip][r]*w[0][nzc7[r]];
+        F5 += FE1_C0_D001[ip][r]*w[0][nzc6[r]];
+        F6 += FE1_C0_D001[ip][r]*w[0][nzc5[r]];
+        F7 += FE1_C0_D001[ip][r]*w[0][nzc11[r]];
+        F8 += FE1_C0_D001[ip][r]*w[0][nzc10[r]];
+        F9 += FE1_C0_D001[ip][r]*w[0][nzc9[r]];
+      } // end loop over 'r'
+      
+      // Total number of operations to compute function values = 8
+      for (unsigned int r = 0; r < 4; r++)
+      {
+        F0 += FE0[ip][r]*w[1][r];
+      } // end loop over 'r'
+      
+      // Number of operations to compute ip constants: 20
+      double I[1];
+      // Number of operations: 20
+      I[0] = W5[ip]*(F1*G[0] + F2*G[1] + F3*G[2] + F4*G[3] + F5*G[4] + F6*G[5] + F7*G[6] + F8*G[7] + F9*G[8] - F0*det);
+      
+      
+      // Number of operations for primary indices: 1
+      // Number of operations to compute entry: 1
+      A[0] += I[0];
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_25_otherwise::plas3d_cell_integral_25_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_25_otherwise::~plas3d_cell_integral_25_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_25_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({true, true});
+return enabled;
+}
+
+void plas3d_cell_integral_25_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 3
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    // Reset values in the element tensor.
+    A[0] = 0.0;
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 70
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Coefficient declarations.
+      double F0 = 0.0;
+      
+      // Total number of operations to compute function values = 8
+      for (unsigned int r = 0; r < 4; r++)
+      {
+        F0 += FE0[ip][r]*w[1][r];
+      } // end loop over 'r'
+      
+      // Number of operations to compute ip constants: 5
+      double I[1];
+      // Number of operations: 5
+      I[0] = W5[ip]*det*(w[0][ip + 10] + w[0][ip + 5] + w[0][ip] - F0);
+      
+      
+      // Number of operations for primary indices: 1
+      // Number of operations to compute entry: 1
+      A[0] += I[0];
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_26_otherwise::plas3d_cell_integral_26_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_26_otherwise::~plas3d_cell_integral_26_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_26_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({true, true});
+return enabled;
+}
+
+void plas3d_cell_integral_26_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 1
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    static const double FE1_C0_D001[5][2] = \
+    {{-1.0, 1},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999999, 1.0},
+    {-0.9999999999999998, 1.0}};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc9[2] = {8, 11};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc10[2] = {8, 10};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc11[2] = {8, 9};
+    
+    // Reset values in the element tensor.
+    A[0] = 0.0;
+    // Number of operations to compute geometry constants: 3.
+    double G[3];
+    G[0] = K[2]*det;
+    G[1] = K[5]*det;
+    G[2] = K[8]*det;
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 145
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Coefficient declarations.
+      double F0 = 0.0;
+      double F1 = 0.0;
+      double F2 = 0.0;
+      double F3 = 0.0;
+      
+      // Total number of operations to compute function values = 12
+      for (unsigned int r = 0; r < 2; r++)
+      {
+        F0 += FE1_C0_D001[ip][r]*w[0][nzc11[r]];
+        F1 += FE1_C0_D001[ip][r]*w[0][nzc10[r]];
+        F2 += FE1_C0_D001[ip][r]*w[0][nzc9[r]];
+      } // end loop over 'r'
+      
+      // Total number of operations to compute function values = 8
+      for (unsigned int r = 0; r < 4; r++)
+      {
+        F3 += FE0[ip][r]*w[1][r];
+      } // end loop over 'r'
+      
+      // Number of operations to compute ip constants: 8
+      double I[1];
+      // Number of operations: 8
+      I[0] = W5[ip]*(F0*G[0] + F1*G[1] + F2*G[2] - F3*det);
+      
+      
+      // Number of operations for primary indices: 1
+      // Number of operations to compute entry: 1
+      A[0] += I[0];
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_27_otherwise::plas3d_cell_integral_27_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_27_otherwise::~plas3d_cell_integral_27_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_27_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({true, true});
+return enabled;
+}
+
+void plas3d_cell_integral_27_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 1
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    static const double FE1_C0_D001[5][2] = \
+    {{-1.0, 1},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999999, 1.0},
+    {-0.9999999999999998, 1.0}};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc1[2] = {0, 3};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc2[2] = {0, 2};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc3[2] = {0, 1};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc5[2] = {4, 7};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc6[2] = {4, 6};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc7[2] = {4, 5};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc9[2] = {8, 11};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc10[2] = {8, 10};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc11[2] = {8, 9};
+    
+    // Reset values in the element tensor.
+    A[0] = 0.0;
+    // Number of operations to compute geometry constants: 180.
+    double G[45];
+    G[0] = det*(0.5*(K[1]*K[1] + K[2]*K[2]) + K[0]*K[0]);
+    G[1] = det*(2.0*K[0]*K[3] + K[1]*K[4] + K[2]*K[5]);
+    G[2] = det*(2.0*K[0]*K[6] + K[1]*K[7] + K[2]*K[8]);
+    G[3] = K[0]*K[1]*det;
+    G[4] = K[1]*K[3]*det;
+    G[5] = K[1]*K[6]*det;
+    G[6] = K[0]*K[2]*det;
+    G[7] = K[2]*K[3]*det;
+    G[8] = K[2]*K[6]*det;
+    G[9] = det*(0.5*(K[4]*K[4] + K[5]*K[5]) + K[3]*K[3]);
+    G[10] = det*(2.0*K[3]*K[6] + K[4]*K[7] + K[5]*K[8]);
+    G[11] = K[0]*K[4]*det;
+    G[12] = K[3]*K[4]*det;
+    G[13] = K[4]*K[6]*det;
+    G[14] = K[0]*K[5]*det;
+    G[15] = K[3]*K[5]*det;
+    G[16] = K[5]*K[6]*det;
+    G[17] = det*(0.5*(K[7]*K[7] + K[8]*K[8]) + K[6]*K[6]);
+    G[18] = K[0]*K[7]*det;
+    G[19] = K[3]*K[7]*det;
+    G[20] = K[6]*K[7]*det;
+    G[21] = K[0]*K[8]*det;
+    G[22] = K[3]*K[8]*det;
+    G[23] = K[6]*K[8]*det;
+    G[24] = det*(0.5*(K[0]*K[0] + K[2]*K[2]) + K[1]*K[1]);
+    G[25] = det*(2.0*K[1]*K[4] + K[0]*K[3] + K[2]*K[5]);
+    G[26] = det*(2.0*K[1]*K[7] + K[0]*K[6] + K[2]*K[8]);
+    G[27] = K[1]*K[2]*det;
+    G[28] = K[2]*K[4]*det;
+    G[29] = K[2]*K[7]*det;
+    G[30] = det*(0.5*(K[3]*K[3] + K[5]*K[5]) + K[4]*K[4]);
+    G[31] = det*(2.0*K[4]*K[7] + K[3]*K[6] + K[5]*K[8]);
+    G[32] = K[1]*K[5]*det;
+    G[33] = K[4]*K[5]*det;
+    G[34] = K[5]*K[7]*det;
+    G[35] = det*(0.5*(K[6]*K[6] + K[8]*K[8]) + K[7]*K[7]);
+    G[36] = K[1]*K[8]*det;
+    G[37] = K[4]*K[8]*det;
+    G[38] = K[7]*K[8]*det;
+    G[39] = det*(0.5*(K[0]*K[0] + K[1]*K[1]) + K[2]*K[2]);
+    G[40] = det*(2.0*K[2]*K[5] + K[0]*K[3] + K[1]*K[4]);
+    G[41] = det*(2.0*K[2]*K[8] + K[0]*K[6] + K[1]*K[7]);
+    G[42] = det*(0.5*(K[3]*K[3] + K[4]*K[4]) + K[5]*K[5]);
+    G[43] = det*(2.0*K[5]*K[8] + K[3]*K[6] + K[4]*K[7]);
+    G[44] = det*(0.5*(K[6]*K[6] + K[7]*K[7]) + K[8]*K[8]);
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 730
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Coefficient declarations.
+      double F0 = 0.0;
+      double F1 = 0.0;
+      double F2 = 0.0;
+      double F3 = 0.0;
+      double F4 = 0.0;
+      double F5 = 0.0;
+      double F6 = 0.0;
+      double F7 = 0.0;
+      double F8 = 0.0;
+      double F9 = 0.0;
+      
+      // Total number of operations to compute function values = 36
+      for (unsigned int r = 0; r < 2; r++)
+      {
+        F1 += FE1_C0_D001[ip][r]*w[0][nzc3[r]];
+        F2 += FE1_C0_D001[ip][r]*w[0][nzc2[r]];
+        F3 += FE1_C0_D001[ip][r]*w[0][nzc1[r]];
+        F4 += FE1_C0_D001[ip][r]*w[0][nzc7[r]];
+        F5 += FE1_C0_D001[ip][r]*w[0][nzc6[r]];
+        F6 += FE1_C0_D001[ip][r]*w[0][nzc5[r]];
+        F7 += FE1_C0_D001[ip][r]*w[0][nzc11[r]];
+        F8 += FE1_C0_D001[ip][r]*w[0][nzc10[r]];
+        F9 += FE1_C0_D001[ip][r]*w[0][nzc9[r]];
+      } // end loop over 'r'
+      
+      // Total number of operations to compute function values = 8
+      for (unsigned int r = 0; r < 4; r++)
+      {
+        F0 += FE0[ip][r]*w[1][r];
+      } // end loop over 'r'
+      
+      // Number of operations to compute ip constants: 101
+      double I[1];
+      // Number of operations: 101
+      I[0] = W5[ip]*(F1*F1*G[0] + F2*(F1*G[1] + F2*G[9]) + F3*(F1*G[2] + F2*G[10] + F3*G[17]) + F4*(F1*G[3] + F2*G[11] + F3*G[18] + F4*G[24]) + F5*(F1*G[4] + F2*G[12] + F3*G[19] + F4*G[25] + F5*G[30]) + F6*(F1*G[5] + F2*G[13] + F3*G[20] + F4*G[26] + F5*G[31] + F6*G[35]) + F7*(F1*G[6] + F2*G[14] + F3*G[21] + F4*G[27] + F5*G[32] + F6*G[36] + F7*G[39]) + F8*(F1*G[7] + F2*G[15] + F3*G[22] + F4*G[28] + F5*G[33] + F6*G[37] + F7*G[40] + F8*G[42]) + F9*(F1*G[8] + F2*G[16] + F3*G[23] + F4*G[29] + F5*G[34] + F6*G[38] + F7*G[41] + F8*G[43] + F9*G[44]) - F0*det);
+      
+      
+      // Number of operations for primary indices: 1
+      // Number of operations to compute entry: 1
+      A[0] += I[0];
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_28_otherwise::plas3d_cell_integral_28_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_28_otherwise::~plas3d_cell_integral_28_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_28_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({true, true});
+return enabled;
+}
+
+void plas3d_cell_integral_28_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 6
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    // Reset values in the element tensor.
+    A[0] = 0.0;
+    // Number of operations to compute geometry constants: 1.
+    double G[1];
+    G[0] = 2.0*det;
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 120
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Coefficient declarations.
+      double F0 = 0.0;
+      
+      // Total number of operations to compute function values = 8
+      for (unsigned int r = 0; r < 4; r++)
+      {
+        F0 += FE0[ip][r]*w[1][r];
+      } // end loop over 'r'
+      
+      // Number of operations to compute ip constants: 15
+      double I[1];
+      // Number of operations: 15
+      I[0] = W5[ip]*(G[0]*(w[0][ip + 15]*w[0][ip + 15] + w[0][ip + 20]*w[0][ip + 20] + w[0][ip + 25]*w[0][ip + 25]) + det*(w[0][ip + 10]*w[0][ip + 10] + w[0][ip + 5]*w[0][ip + 5] + w[0][ip]*w[0][ip] - F0));
+      
+      
+      // Number of operations for primary indices: 1
+      // Number of operations to compute entry: 1
+      A[0] += I[0];
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_29_otherwise::plas3d_cell_integral_29_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_29_otherwise::~plas3d_cell_integral_29_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_29_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({true, true, true});
+return enabled;
+}
+
+void plas3d_cell_integral_29_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 3
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    static const double FE1_C0_D001[5][2] = \
+    {{-1.0, 1},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999999, 1.0},
+    {-0.9999999999999998, 1.0}};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc1[2] = {0, 3};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc2[2] = {0, 2};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc3[2] = {0, 1};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc5[2] = {4, 7};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc6[2] = {4, 6};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc7[2] = {4, 5};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc9[2] = {8, 11};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc10[2] = {8, 10};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc11[2] = {8, 9};
+    
+    // Reset values in the element tensor.
+    A[0] = 0.0;
+    // Number of operations to compute geometry constants: 19.
+    double G[10];
+    G[0] = -1922222.222222222*K[0]*det;
+    G[1] = -1922222.222222222*K[3]*det;
+    G[2] = -1922222.222222222*K[6]*det;
+    G[3] = -1922222.222222222*K[1]*det;
+    G[4] = -1922222.222222222*K[4]*det;
+    G[5] = -1922222.222222222*K[7]*det;
+    G[6] = -1922222.222222222*K[2]*det;
+    G[7] = -1922222.222222222*K[5]*det;
+    G[8] = -1922222.222222222*K[8]*det;
+    G[9] = 1922222.222222222*det;
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 345
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Coefficient declarations.
+      double F0 = 0.0;
+      double F1 = 0.0;
+      double F2 = 0.0;
+      double F3 = 0.0;
+      double F4 = 0.0;
+      double F5 = 0.0;
+      double F6 = 0.0;
+      double F7 = 0.0;
+      double F8 = 0.0;
+      double F9 = 0.0;
+      
+      // Total number of operations to compute function values = 36
+      for (unsigned int r = 0; r < 2; r++)
+      {
+        F1 += FE1_C0_D001[ip][r]*w[0][nzc3[r]];
+        F2 += FE1_C0_D001[ip][r]*w[0][nzc2[r]];
+        F3 += FE1_C0_D001[ip][r]*w[0][nzc1[r]];
+        F4 += FE1_C0_D001[ip][r]*w[0][nzc7[r]];
+        F5 += FE1_C0_D001[ip][r]*w[0][nzc6[r]];
+        F6 += FE1_C0_D001[ip][r]*w[0][nzc5[r]];
+        F7 += FE1_C0_D001[ip][r]*w[0][nzc11[r]];
+        F8 += FE1_C0_D001[ip][r]*w[0][nzc10[r]];
+        F9 += FE1_C0_D001[ip][r]*w[0][nzc9[r]];
+      } // end loop over 'r'
+      
+      // Total number of operations to compute function values = 8
+      for (unsigned int r = 0; r < 4; r++)
+      {
+        F0 += FE0[ip][r]*w[2][r];
+      } // end loop over 'r'
+      
+      // Number of operations to compute ip constants: 24
+      double I[1];
+      // Number of operations: 24
+      I[0] = W5[ip]*(F1*G[0] + F2*G[1] + F3*G[2] + F4*G[3] + F5*G[4] + F6*G[5] + F7*G[6] + F8*G[7] + F9*G[8] + G[9]*(w[1][ip + 10] + w[1][ip + 5] + w[1][ip]) - F0*det);
+      
+      
+      // Number of operations for primary indices: 1
+      // Number of operations to compute entry: 1
+      A[0] += I[0];
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_30_otherwise::plas3d_cell_integral_30_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_30_otherwise::~plas3d_cell_integral_30_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_30_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({true, true, true});
+return enabled;
+}
+
+void plas3d_cell_integral_30_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 8
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    static const double FE1_C0_D001[5][2] = \
+    {{-1.0, 1},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999998, 1.0},
+    {-0.9999999999999999, 1.0},
+    {-0.9999999999999998, 1.0}};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc1[2] = {0, 3};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc2[2] = {0, 2};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc3[2] = {0, 1};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc5[2] = {4, 7};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc6[2] = {4, 6};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc7[2] = {4, 5};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc9[2] = {8, 11};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc10[2] = {8, 10};
+    
+    // Array of non-zero columns
+    static const unsigned int nzc11[2] = {8, 9};
+    
+    // Reset values in the element tensor.
+    A[0] = 0.0;
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 8135
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Coefficient declarations.
+      double F0 = 0.0;
+      double F1 = 0.0;
+      double F2 = 0.0;
+      double F3 = 0.0;
+      double F4 = 0.0;
+      double F5 = 0.0;
+      double F6 = 0.0;
+      double F7 = 0.0;
+      double F8 = 0.0;
+      double F9 = 0.0;
+      
+      // Total number of operations to compute function values = 36
+      for (unsigned int r = 0; r < 2; r++)
+      {
+        F1 += FE1_C0_D001[ip][r]*w[0][nzc3[r]];
+        F2 += FE1_C0_D001[ip][r]*w[0][nzc2[r]];
+        F3 += FE1_C0_D001[ip][r]*w[0][nzc1[r]];
+        F4 += FE1_C0_D001[ip][r]*w[0][nzc7[r]];
+        F5 += FE1_C0_D001[ip][r]*w[0][nzc6[r]];
+        F6 += FE1_C0_D001[ip][r]*w[0][nzc5[r]];
+        F7 += FE1_C0_D001[ip][r]*w[0][nzc11[r]];
+        F8 += FE1_C0_D001[ip][r]*w[0][nzc10[r]];
+        F9 += FE1_C0_D001[ip][r]*w[0][nzc9[r]];
+      } // end loop over 'r'
+      
+      // Total number of operations to compute function values = 8
+      for (unsigned int r = 0; r < 4; r++)
+      {
+        F0 += FE0[ip][r]*w[2][r];
+      } // end loop over 'r'
+      
+      // Number of operations to compute ip constants: 1582
+      double I[1];
+      // Number of operations: 1582
+      I[0] = W5[ip]*det*(std::sqrt(1.5*((2883333.333333333*(0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip])-0.3333333333333333*(2883333.333333333*(0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10]) + 2883333.333333333*(0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) - w[1][ip + 5]) + 2883333.333333333*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip])))*(2883333.333333333*(0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip])-0.3333333333333333*(2883333.333333333*(0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10]) + 2883333.333333333*(0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) - w[1][ip + 5]) + 2883333.333333333*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]))) + (2883333.333333333*(0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) - w[1][ip + 5]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip])-0.3333333333333333*(2883333.333333333*(0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10]) + 2883333.333333333*(0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) - w[1][ip + 5]) + 2883333.333333333*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip])))*(2883333.333333333*(0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) - w[1][ip + 5]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip])-0.3333333333333333*(2883333.333333333*(0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10]) + 2883333.333333333*(0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) - w[1][ip + 5]) + 2883333.333333333*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]))) + (2883333.333333333*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip])-0.3333333333333333*(2883333.333333333*(0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10]) + 2883333.333333333*(0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) - w[1][ip + 5]) + 2883333.333333333*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip])))*(2883333.333333333*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip])-0.3333333333333333*(2883333.333333333*(0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10]) + 2883333.333333333*(0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) - w[1][ip + 5]) + 2883333.333333333*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]) + 961111.1111111111*(0.5*(F1*K[0] + F1*K[0] + F2*K[3] + F2*K[3] + F3*K[6] + F3*K[6]) + 0.5*(F4*K[1] + F4*K[1] + F5*K[4] + F5*K[4] + F6*K[7] + F6*K[7]) + 0.5*(F7*K[2] + F7*K[2] + F8*K[5] + F8*K[5] + F9*K[8] + F9*K[8]) - w[1][ip + 10] - w[1][ip + 5] - w[1][ip]))) + 2883333.333333333*(0.5*(F1*K[1] + F2*K[4] + F3*K[7] + F4*K[0] + F5*K[3] + F6*K[6]) - w[1][ip + 15])*2883333.333333333*(0.5*(F1*K[1] + F2*K[4] + F3*K[7] + F4*K[0] + F5*K[3] + F6*K[6]) - w[1][ip + 15]) + 2883333.333333333*(0.5*(F1*K[1] + F2*K[4] + F3*K[7] + F4*K[0] + F5*K[3] + F6*K[6]) - w[1][ip + 15])*2883333.333333333*(0.5*(F1*K[1] + F2*K[4] + F3*K[7] + F4*K[0] + F5*K[3] + F6*K[6]) - w[1][ip + 15]) + 2883333.333333333*(0.5*(F1*K[2] + F2*K[5] + F3*K[8] + F7*K[0] + F8*K[3] + F9*K[6]) - w[1][ip + 20])*2883333.333333333*(0.5*(F1*K[2] + F2*K[5] + F3*K[8] + F7*K[0] + F8*K[3] + F9*K[6]) - w[1][ip + 20]) + 2883333.333333333*(0.5*(F1*K[2] + F2*K[5] + F3*K[8] + F7*K[0] + F8*K[3] + F9*K[6]) - w[1][ip + 20])*2883333.333333333*(0.5*(F1*K[2] + F2*K[5] + F3*K[8] + F7*K[0] + F8*K[3] + F9*K[6]) - w[1][ip + 20]) + 2883333.333333333*(0.5*(F4*K[2] + F5*K[5] + F6*K[8] + F7*K[1] + F8*K[4] + F9*K[7]) - w[1][ip + 25])*2883333.333333333*(0.5*(F4*K[2] + F5*K[5] + F6*K[8] + F7*K[1] + F8*K[4] + F9*K[7]) - w[1][ip + 25]) + 2883333.333333333*(0.5*(F4*K[2] + F5*K[5] + F6*K[8] + F7*K[1] + F8*K[4] + F9*K[7]) - w[1][ip + 25])*2883333.333333333*(0.5*(F4*K[2] + F5*K[5] + F6*K[8] + F7*K[1] + F8*K[4] + F9*K[7]) - w[1][ip + 25]))) - F0);
+      
+      
+      // Number of operations for primary indices: 1
+      // Number of operations to compute entry: 1
+      A[0] += I[0];
+    } // end loop over 'ip'
+}
+
+
+plas3d_cell_integral_31_otherwise::plas3d_cell_integral_31_otherwise() : ufc::cell_integral()
+{
+
+}
+
+plas3d_cell_integral_31_otherwise::~plas3d_cell_integral_31_otherwise()
+{
+
+}
+
+const std::vector<bool> & plas3d_cell_integral_31_otherwise::enabled_coefficients() const
+{
+static const std::vector<bool> enabled({true});
+return enabled;
+}
+
+void plas3d_cell_integral_31_otherwise::tabulate_tensor(double * A,
+                                    const double * const * w,
+                                    const double * coordinate_dofs,
+                                    int cell_orientation) const
+{
+    // This function was generated using 'quadrature' representation
+    // with the following integrals metadata:
+    // 
+    // num_cells:         None
+    // optimize:          True
+    // precision:         16
+    // quadrature_degree: 3
+    // quadrature_rule:   'default'
+    // representation:    'quadrature'
+    // 
+    // and the following integral 0 metadata:
+    // 
+    // estimated_polynomial_degree: 1
+    // optimize:                    True
+    // precision:                   16
+    // quadrature_degree:           3
+    // quadrature_rule:             'default'
+    // representation:              'quadrature'
+    // Compute Jacobian
+    double J[9];
+    compute_jacobian_tetrahedron_3d(J, coordinate_dofs);
+    
+    // Compute Jacobian inverse and determinant
+    double K[9];
+    double detJ;
+    compute_jacobian_inverse_tetrahedron_3d(K, detJ, J);
+    
+    // Set scale factor
+    const double det = std::abs(detJ);
+    
+    // Compute cell volume
+    
+    
+    // Compute circumradius
+    
+    
+    // Array of quadrature weights.
+    static const double W5[5] = {-0.1333333333333333, 0.075, 0.075, 0.075, 0.075};
+    // Quadrature points on the UFC reference element: (0.25, 0.25, 0.25), (0.5, 0.1666666666666666, 0.1666666666666666), (0.1666666666666666, 0.5, 0.1666666666666666), (0.1666666666666666, 0.1666666666666666, 0.5), (0.1666666666666666, 0.1666666666666666, 0.1666666666666666)
+    
+    // Values of basis functions at quadrature points.
+    static const double FE0[5][4] = \
+    {{0.2500000000000001, 0.25, 0.25, 0.25},
+    {0.1666666666666668, 0.4999999999999999, 0.1666666666666667, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.5, 0.1666666666666667},
+    {0.1666666666666668, 0.1666666666666666, 0.1666666666666667, 0.5},
+    {0.5000000000000001, 0.1666666666666665, 0.1666666666666667, 0.1666666666666667}};
+    
+    // Reset values in the element tensor.
+    A[0] = 0.0;
+    
+    // Compute element tensor using UFL quadrature representation
+    // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
+    
+    // Loop quadrature points for integral.
+    // Number of operations to compute element tensor for following IP loop = 55
+    for (unsigned int ip = 0; ip < 5; ip++)
+    {
+      
+      // Coefficient declarations.
+      double F0 = 0.0;
+      
+      // Total number of operations to compute function values = 8
+      for (unsigned int r = 0; r < 4; r++)
+      {
+        F0 += FE0[ip][r]*w[0][r];
+      } // end loop over 'r'
+      
+      // Number of operations to compute ip constants: 2
+      double I[1];
+      // Number of operations: 2
+      I[0] = F0*W5[ip]*det;
+      
+      
+      // Number of operations for primary indices: 1
+      // Number of operations to compute entry: 1
+      A[0] += I[0];
     } // end loop over 'ip'
 }
 
@@ -29792,7 +32360,7 @@ plas3d_form_5::~plas3d_form_5()
 
 const char * plas3d_form_5::signature() const
 {
-    return "00c32770459452fcbbd0c88071e2964afcd67dea0f513f7f12b64d1ea1e405b04f0dcb536a3891078ec964d52d5808e41f73d1112a994fdf5f0d481dae88f973";
+    return "4964a78c5c419695b3ed7f9425d5e4272c012d1ed5c1b95b9773b00524d404d81ab56efb0bd9443fab7e8fc3a1569fa93d75ef62e2e4e03b4f167d04bf150820";
 }
 
 std::size_t plas3d_form_5::rank() const
@@ -29837,9 +32405,9 @@ ufc::finite_element * plas3d_form_5::create_finite_element(std::size_t i) const
     case 0:
         return new plas3d_finite_element_7();
     case 1:
-        return new plas3d_finite_element_7();
+        return new plas3d_finite_element_6();
     case 2:
-        return new plas3d_finite_element_1();
+        return new plas3d_finite_element_7();
     default:
         return nullptr;
     }
@@ -29852,9 +32420,9 @@ ufc::dofmap * plas3d_form_5::create_dofmap(std::size_t i) const
     case 0:
         return new plas3d_dofmap_7();
     case 1:
-        return new plas3d_dofmap_7();
+        return new plas3d_dofmap_6();
     case 2:
-        return new plas3d_dofmap_1();
+        return new plas3d_dofmap_7();
     default:
         return nullptr;
     }
@@ -30266,7 +32834,7 @@ plas3d_form_7::~plas3d_form_7()
 
 const char * plas3d_form_7::signature() const
 {
-    return "47fc400adbf0cbf774d6ad5ed373486104183ffe9afcdde2b2d66212929f37fcb95c8b60d5c26eaea7ff6e32a4b2a5a77c99295a355d57320d8c4cab49bc69a5";
+    return "00c32770459452fcbbd0c88071e2964afcd67dea0f513f7f12b64d1ea1e405b04f0dcb536a3891078ec964d52d5808e41f73d1112a994fdf5f0d481dae88f973";
 }
 
 std::size_t plas3d_form_7::rank() const
@@ -30311,9 +32879,9 @@ ufc::finite_element * plas3d_form_7::create_finite_element(std::size_t i) const
     case 0:
         return new plas3d_finite_element_7();
     case 1:
-        return new plas3d_finite_element_4();
-    case 2:
         return new plas3d_finite_element_7();
+    case 2:
+        return new plas3d_finite_element_1();
     default:
         return nullptr;
     }
@@ -30326,9 +32894,9 @@ ufc::dofmap * plas3d_form_7::create_dofmap(std::size_t i) const
     case 0:
         return new plas3d_dofmap_7();
     case 1:
-        return new plas3d_dofmap_4();
-    case 2:
         return new plas3d_dofmap_7();
+    case 2:
+        return new plas3d_dofmap_1();
     default:
         return nullptr;
     }
@@ -30740,7 +33308,7 @@ plas3d_form_9::~plas3d_form_9()
 
 const char * plas3d_form_9::signature() const
 {
-    return "00c32770459452fcbbd0c88071e2964afcd67dea0f513f7f12b64d1ea1e405b04f0dcb536a3891078ec964d52d5808e41f73d1112a994fdf5f0d481dae88f973";
+    return "18b49da2b7f7d14954ce34e16ab84d2e44b291e9af3d03773250ad0535a48460fd565ecb457fc2e1c7fe22627e9da98f56c41b2947ab0986c5a9e7e42a870eb4";
 }
 
 std::size_t plas3d_form_9::rank() const
@@ -30750,16 +33318,16 @@ std::size_t plas3d_form_9::rank() const
 
 std::size_t plas3d_form_9::num_coefficients() const
 {
-    return 2;
+    return 3;
 }
 
 std::size_t plas3d_form_9::original_coefficient_position(std::size_t i) const
 {
-    if (i >= 2)
+    if (i >= 3)
     {
         throw std::runtime_error("Invalid original coefficient index.");
     }
-    static const std::vector<std::size_t> position = {0, 1};
+    static const std::vector<std::size_t> position = {0, 1, 2};
     return position[i];
 }
 
@@ -30787,6 +33355,8 @@ ufc::finite_element * plas3d_form_9::create_finite_element(std::size_t i) const
     case 1:
         return new plas3d_finite_element_7();
     case 2:
+        return new plas3d_finite_element_6();
+    case 3:
         return new plas3d_finite_element_1();
     default:
         return nullptr;
@@ -30802,6 +33372,8 @@ ufc::dofmap * plas3d_form_9::create_dofmap(std::size_t i) const
     case 1:
         return new plas3d_dofmap_7();
     case 2:
+        return new plas3d_dofmap_6();
+    case 3:
         return new plas3d_dofmap_1();
     default:
         return nullptr;
@@ -30981,7 +33553,7 @@ plas3d_form_10::~plas3d_form_10()
 
 const char * plas3d_form_10::signature() const
 {
-    return "0df54b3513f57762438951718681802bc4d2be220760333128a13784caa4018f65abc16eee6ca1e38c4bf9ad6429ca530bf45ac0ea4402e541d546eaaedfab0d";
+    return "60cc4f4e9623abce1c1f27a46d6b99bcf1e29731583b27042840fb890baf118b422edffccf5e65646061ca0e728b41e6620a32d9fdff29093939eaeb0f1a26f2";
 }
 
 std::size_t plas3d_form_10::rank() const
@@ -31020,9 +33592,9 @@ ufc::finite_element * plas3d_form_10::create_finite_element(std::size_t i) const
     switch (i)
     {
     case 0:
-        return new plas3d_finite_element_7();
+        return new plas3d_finite_element_5();
     case 1:
-        return new plas3d_finite_element_7();
+        return new plas3d_finite_element_5();
     default:
         return nullptr;
     }
@@ -31033,9 +33605,9 @@ ufc::dofmap * plas3d_form_10::create_dofmap(std::size_t i) const
     switch (i)
     {
     case 0:
-        return new plas3d_dofmap_7();
+        return new plas3d_dofmap_5();
     case 1:
-        return new plas3d_dofmap_7();
+        return new plas3d_dofmap_5();
     default:
         return nullptr;
     }
@@ -31214,7 +33786,7 @@ plas3d_form_11::~plas3d_form_11()
 
 const char * plas3d_form_11::signature() const
 {
-    return "3b4747a13fea63b504a9ec45bdd76a4525b85dad43c58986e6964ba958cdafacbac85bc21f46652b711c15d77cb8814e4efa9296fe09ae7190086f19c1f99f5c";
+    return "6194205a8784fb0917e8ed809fcbdcc69a5754789447c57c6fffec78104c61ea2f5195757bfe1c84b7343ea56ab38794c65ebe6cd01bb36727d2ee486d112d2d";
 }
 
 std::size_t plas3d_form_11::rank() const
@@ -31257,13 +33829,13 @@ ufc::finite_element * plas3d_form_11::create_finite_element(std::size_t i) const
     switch (i)
     {
     case 0:
-        return new plas3d_finite_element_7();
+        return new plas3d_finite_element_5();
     case 1:
-        return new plas3d_finite_element_7();
+        return new plas3d_finite_element_6();
     case 2:
-        return new plas3d_finite_element_4();
-    case 3:
         return new plas3d_finite_element_1();
+    case 3:
+        return new plas3d_finite_element_5();
     default:
         return nullptr;
     }
@@ -31274,13 +33846,13 @@ ufc::dofmap * plas3d_form_11::create_dofmap(std::size_t i) const
     switch (i)
     {
     case 0:
-        return new plas3d_dofmap_7();
+        return new plas3d_dofmap_5();
     case 1:
-        return new plas3d_dofmap_7();
+        return new plas3d_dofmap_6();
     case 2:
-        return new plas3d_dofmap_4();
-    case 3:
         return new plas3d_dofmap_1();
+    case 3:
+        return new plas3d_dofmap_5();
     default:
         return nullptr;
     }
@@ -31442,6 +34014,4754 @@ ufc::interface_integral * plas3d_form_11::create_default_interface_integral() co
 }
 
 ufc::overlap_integral * plas3d_form_11::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_12::plas3d_form_12() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_12::~plas3d_form_12()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_12::signature() const
+{
+    return "60cc4f4e9623abce1c1f27a46d6b99bcf1e29731583b27042840fb890baf118b422edffccf5e65646061ca0e728b41e6620a32d9fdff29093939eaeb0f1a26f2";
+}
+
+std::size_t plas3d_form_12::rank() const
+{
+    return 2;
+}
+
+std::size_t plas3d_form_12::num_coefficients() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_12::original_coefficient_position(std::size_t i) const
+{
+    throw std::runtime_error("Invalid original coefficient index.");
+    return i;
+}
+
+ufc::finite_element * plas3d_form_12::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_12::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_12::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_12::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_5();
+    case 1:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_12::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_5();
+    case 1:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_12::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_12::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_12::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_12::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_12::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_12::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_12::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_12::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_12::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_12::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_12::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_12::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_12::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_12::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_12::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_12::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_12::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_12::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_12::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_12::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_12::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_12::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_12::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_12::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_12::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_12_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_12::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_12::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_12::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_12::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_12::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_12::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_12::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_13::plas3d_form_13() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_13::~plas3d_form_13()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_13::signature() const
+{
+    return "5d2414bfbfeb28d6a4119dd69f73a500e3ea1fe6013cf0c78682355ab74c23def0e43e2f374d080cfe3d27d56a07185fe06653ffbb4048edd479544b35c358bb";
+}
+
+std::size_t plas3d_form_13::rank() const
+{
+    return 1;
+}
+
+std::size_t plas3d_form_13::num_coefficients() const
+{
+    return 3;
+}
+
+std::size_t plas3d_form_13::original_coefficient_position(std::size_t i) const
+{
+    if (i >= 3)
+    {
+        throw std::runtime_error("Invalid original coefficient index.");
+    }
+    static const std::vector<std::size_t> position = {0, 1, 2};
+    return position[i];
+}
+
+ufc::finite_element * plas3d_form_13::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_13::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_13::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_13::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_5();
+    case 1:
+        return new plas3d_finite_element_6();
+    case 2:
+        return new plas3d_finite_element_1();
+    case 3:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_13::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_5();
+    case 1:
+        return new plas3d_dofmap_6();
+    case 2:
+        return new plas3d_dofmap_1();
+    case 3:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_13::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_13::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_13::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_13::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_13::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_13::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_13::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_13::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_13::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_13::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_13::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_13::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_13::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_13::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_13::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_13::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_13::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_13::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_13::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_13::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_13::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_13::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_13::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_13::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_13::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_13_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_13::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_13::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_13::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_13::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_13::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_13::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_13::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_14::plas3d_form_14() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_14::~plas3d_form_14()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_14::signature() const
+{
+    return "60cc4f4e9623abce1c1f27a46d6b99bcf1e29731583b27042840fb890baf118b422edffccf5e65646061ca0e728b41e6620a32d9fdff29093939eaeb0f1a26f2";
+}
+
+std::size_t plas3d_form_14::rank() const
+{
+    return 2;
+}
+
+std::size_t plas3d_form_14::num_coefficients() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_14::original_coefficient_position(std::size_t i) const
+{
+    throw std::runtime_error("Invalid original coefficient index.");
+    return i;
+}
+
+ufc::finite_element * plas3d_form_14::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_14::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_14::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_14::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_5();
+    case 1:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_14::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_5();
+    case 1:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_14::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_14::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_14::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_14::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_14::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_14::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_14::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_14::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_14::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_14::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_14::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_14::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_14::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_14::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_14::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_14::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_14::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_14::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_14::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_14::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_14::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_14::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_14::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_14::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_14::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_14_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_14::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_14::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_14::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_14::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_14::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_14::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_14::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_15::plas3d_form_15() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_15::~plas3d_form_15()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_15::signature() const
+{
+    return "fa8c3f64c5277754e14c625712b22ed54b4f5a59afde055a9f3826a24a0e5dc240152d398f0d5a27c70a4307b63a03daedeaa37c21f061fafabbbf22d9f7d663";
+}
+
+std::size_t plas3d_form_15::rank() const
+{
+    return 1;
+}
+
+std::size_t plas3d_form_15::num_coefficients() const
+{
+    return 2;
+}
+
+std::size_t plas3d_form_15::original_coefficient_position(std::size_t i) const
+{
+    if (i >= 2)
+    {
+        throw std::runtime_error("Invalid original coefficient index.");
+    }
+    static const std::vector<std::size_t> position = {0, 1};
+    return position[i];
+}
+
+ufc::finite_element * plas3d_form_15::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_15::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_15::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_15::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_5();
+    case 1:
+        return new plas3d_finite_element_6();
+    case 2:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_15::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_5();
+    case 1:
+        return new plas3d_dofmap_6();
+    case 2:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_15::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_15::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_15::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_15::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_15::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_15::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_15::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_15::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_15::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_15::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_15::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_15::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_15::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_15::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_15::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_15::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_15::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_15::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_15::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_15::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_15::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_15::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_15::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_15::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_15::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_15_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_15::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_15::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_15::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_15::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_15::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_15::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_15::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_16::plas3d_form_16() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_16::~plas3d_form_16()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_16::signature() const
+{
+    return "60cc4f4e9623abce1c1f27a46d6b99bcf1e29731583b27042840fb890baf118b422edffccf5e65646061ca0e728b41e6620a32d9fdff29093939eaeb0f1a26f2";
+}
+
+std::size_t plas3d_form_16::rank() const
+{
+    return 2;
+}
+
+std::size_t plas3d_form_16::num_coefficients() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_16::original_coefficient_position(std::size_t i) const
+{
+    throw std::runtime_error("Invalid original coefficient index.");
+    return i;
+}
+
+ufc::finite_element * plas3d_form_16::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_16::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_16::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_16::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_5();
+    case 1:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_16::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_5();
+    case 1:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_16::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_16::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_16::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_16::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_16::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_16::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_16::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_16::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_16::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_16::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_16::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_16::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_16::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_16::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_16::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_16::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_16::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_16::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_16::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_16::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_16::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_16::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_16::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_16::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_16::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_16_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_16::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_16::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_16::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_16::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_16::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_16::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_16::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_17::plas3d_form_17() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_17::~plas3d_form_17()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_17::signature() const
+{
+    return "8361332b19cc6e41df4f04b2b95055dd18d2ff736e899fe3a4f7354de88521020d862dc3a79e8adecd840219816e673847b6a9be334a85144652c26f8cd0323e";
+}
+
+std::size_t plas3d_form_17::rank() const
+{
+    return 1;
+}
+
+std::size_t plas3d_form_17::num_coefficients() const
+{
+    return 2;
+}
+
+std::size_t plas3d_form_17::original_coefficient_position(std::size_t i) const
+{
+    if (i >= 2)
+    {
+        throw std::runtime_error("Invalid original coefficient index.");
+    }
+    static const std::vector<std::size_t> position = {0, 1};
+    return position[i];
+}
+
+ufc::finite_element * plas3d_form_17::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_17::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_17::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_17::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_5();
+    case 1:
+        return new plas3d_finite_element_6();
+    case 2:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_17::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_5();
+    case 1:
+        return new plas3d_dofmap_6();
+    case 2:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_17::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_17::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_17::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_17::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_17::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_17::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_17::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_17::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_17::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_17::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_17::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_17::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_17::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_17::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_17::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_17::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_17::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_17::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_17::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_17::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_17::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_17::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_17::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_17::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_17::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_17_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_17::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_17::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_17::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_17::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_17::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_17::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_17::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_18::plas3d_form_18() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_18::~plas3d_form_18()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_18::signature() const
+{
+    return "60cc4f4e9623abce1c1f27a46d6b99bcf1e29731583b27042840fb890baf118b422edffccf5e65646061ca0e728b41e6620a32d9fdff29093939eaeb0f1a26f2";
+}
+
+std::size_t plas3d_form_18::rank() const
+{
+    return 2;
+}
+
+std::size_t plas3d_form_18::num_coefficients() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_18::original_coefficient_position(std::size_t i) const
+{
+    throw std::runtime_error("Invalid original coefficient index.");
+    return i;
+}
+
+ufc::finite_element * plas3d_form_18::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_18::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_18::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_18::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_5();
+    case 1:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_18::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_5();
+    case 1:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_18::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_18::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_18::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_18::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_18::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_18::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_18::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_18::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_18::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_18::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_18::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_18::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_18::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_18::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_18::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_18::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_18::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_18::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_18::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_18::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_18::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_18::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_18::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_18::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_18::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_18_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_18::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_18::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_18::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_18::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_18::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_18::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_18::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_19::plas3d_form_19() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_19::~plas3d_form_19()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_19::signature() const
+{
+    return "d5d84ba477ecb6a8c76771f6951241269ceceb656db13e9d04333c33ff08e86279a650f14f5d6bcc658fe0be76f7ee644177d9b47d56c1f7c2d56445ab4748e5";
+}
+
+std::size_t plas3d_form_19::rank() const
+{
+    return 1;
+}
+
+std::size_t plas3d_form_19::num_coefficients() const
+{
+    return 2;
+}
+
+std::size_t plas3d_form_19::original_coefficient_position(std::size_t i) const
+{
+    if (i >= 2)
+    {
+        throw std::runtime_error("Invalid original coefficient index.");
+    }
+    static const std::vector<std::size_t> position = {0, 1};
+    return position[i];
+}
+
+ufc::finite_element * plas3d_form_19::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_19::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_19::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_19::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_5();
+    case 1:
+        return new plas3d_finite_element_1();
+    case 2:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_19::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_5();
+    case 1:
+        return new plas3d_dofmap_1();
+    case 2:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_19::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_19::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_19::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_19::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_19::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_19::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_19::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_19::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_19::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_19::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_19::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_19::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_19::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_19::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_19::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_19::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_19::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_19::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_19::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_19::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_19::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_19::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_19::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_19::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_19::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_19_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_19::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_19::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_19::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_19::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_19::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_19::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_19::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_20::plas3d_form_20() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_20::~plas3d_form_20()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_20::signature() const
+{
+    return "60cc4f4e9623abce1c1f27a46d6b99bcf1e29731583b27042840fb890baf118b422edffccf5e65646061ca0e728b41e6620a32d9fdff29093939eaeb0f1a26f2";
+}
+
+std::size_t plas3d_form_20::rank() const
+{
+    return 2;
+}
+
+std::size_t plas3d_form_20::num_coefficients() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_20::original_coefficient_position(std::size_t i) const
+{
+    throw std::runtime_error("Invalid original coefficient index.");
+    return i;
+}
+
+ufc::finite_element * plas3d_form_20::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_20::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_20::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_20::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_5();
+    case 1:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_20::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_5();
+    case 1:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_20::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_20::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_20::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_20::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_20::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_20::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_20::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_20::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_20::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_20::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_20::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_20::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_20::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_20::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_20::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_20::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_20::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_20::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_20::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_20::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_20::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_20::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_20::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_20::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_20::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_20_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_20::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_20::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_20::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_20::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_20::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_20::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_20::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_21::plas3d_form_21() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_21::~plas3d_form_21()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_21::signature() const
+{
+    return "ba9ecdda39032f5960d61f06d6b01682fe270b83a8cc934a37d0155fe611e0357e7c14477fdb3be07dc64ff2295de2a9b3d49b4ce8dcd67dfb5ba2435a9de4e6";
+}
+
+std::size_t plas3d_form_21::rank() const
+{
+    return 1;
+}
+
+std::size_t plas3d_form_21::num_coefficients() const
+{
+    return 2;
+}
+
+std::size_t plas3d_form_21::original_coefficient_position(std::size_t i) const
+{
+    if (i >= 2)
+    {
+        throw std::runtime_error("Invalid original coefficient index.");
+    }
+    static const std::vector<std::size_t> position = {0, 1};
+    return position[i];
+}
+
+ufc::finite_element * plas3d_form_21::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_21::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_21::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_21::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_5();
+    case 1:
+        return new plas3d_finite_element_6();
+    case 2:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_21::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_5();
+    case 1:
+        return new plas3d_dofmap_6();
+    case 2:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_21::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_21::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_21::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_21::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_21::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_21::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_21::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_21::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_21::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_21::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_21::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_21::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_21::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_21::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_21::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_21::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_21::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_21::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_21::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_21::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_21::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_21::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_21::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_21::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_21::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_21_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_21::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_21::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_21::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_21::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_21::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_21::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_21::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_22::plas3d_form_22() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_22::~plas3d_form_22()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_22::signature() const
+{
+    return "60cc4f4e9623abce1c1f27a46d6b99bcf1e29731583b27042840fb890baf118b422edffccf5e65646061ca0e728b41e6620a32d9fdff29093939eaeb0f1a26f2";
+}
+
+std::size_t plas3d_form_22::rank() const
+{
+    return 2;
+}
+
+std::size_t plas3d_form_22::num_coefficients() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_22::original_coefficient_position(std::size_t i) const
+{
+    throw std::runtime_error("Invalid original coefficient index.");
+    return i;
+}
+
+ufc::finite_element * plas3d_form_22::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_22::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_22::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_22::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_5();
+    case 1:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_22::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_5();
+    case 1:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_22::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_22::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_22::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_22::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_22::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_22::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_22::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_22::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_22::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_22::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_22::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_22::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_22::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_22::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_22::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_22::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_22::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_22::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_22::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_22::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_22::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_22::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_22::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_22::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_22::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_22_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_22::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_22::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_22::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_22::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_22::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_22::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_22::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_23::plas3d_form_23() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_23::~plas3d_form_23()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_23::signature() const
+{
+    return "2856b6e10f1e299e3487bbb234ef7de4edfd114c9f39345e2eae431b42c54d9c13263521db6d0e917f1f7b1433f303066abc5b8453a7c12e3116d1b5bd620ed0";
+}
+
+std::size_t plas3d_form_23::rank() const
+{
+    return 1;
+}
+
+std::size_t plas3d_form_23::num_coefficients() const
+{
+    return 2;
+}
+
+std::size_t plas3d_form_23::original_coefficient_position(std::size_t i) const
+{
+    if (i >= 2)
+    {
+        throw std::runtime_error("Invalid original coefficient index.");
+    }
+    static const std::vector<std::size_t> position = {0, 1};
+    return position[i];
+}
+
+ufc::finite_element * plas3d_form_23::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_23::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_23::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_23::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_5();
+    case 1:
+        return new plas3d_finite_element_1();
+    case 2:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_23::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_5();
+    case 1:
+        return new plas3d_dofmap_1();
+    case 2:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_23::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_23::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_23::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_23::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_23::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_23::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_23::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_23::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_23::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_23::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_23::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_23::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_23::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_23::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_23::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_23::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_23::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_23::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_23::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_23::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_23::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_23::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_23::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_23::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_23::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_23_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_23::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_23::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_23::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_23::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_23::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_23::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_23::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_24::plas3d_form_24() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_24::~plas3d_form_24()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_24::signature() const
+{
+    return "9a4dae3f07b4acc2541637d3013ef8f80aac4fc8d7a6251be0e94b376dd6d455d80adba8526cdfb48183ca64d912d82db25575ab8ccd069e88bb69370233a477";
+}
+
+std::size_t plas3d_form_24::rank() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_24::num_coefficients() const
+{
+    return 2;
+}
+
+std::size_t plas3d_form_24::original_coefficient_position(std::size_t i) const
+{
+    if (i >= 2)
+    {
+        throw std::runtime_error("Invalid original coefficient index.");
+    }
+    static const std::vector<std::size_t> position = {0, 1};
+    return position[i];
+}
+
+ufc::finite_element * plas3d_form_24::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_24::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_24::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_24::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_6();
+    case 1:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_24::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_6();
+    case 1:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_24::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_24::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_24::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_24::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_24::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_24::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_24::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_24::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_24::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_24::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_24::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_24::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_24::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_24::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_24::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_24::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_24::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_24::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_24::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_24::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_24::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_24::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_24::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_24::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_24::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_24_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_24::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_24::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_24::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_24::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_24::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_24::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_24::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_25::plas3d_form_25() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_25::~plas3d_form_25()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_25::signature() const
+{
+    return "c2c91898595e7880467ac20528116ba6a7a507d0b20d8623f18199007b880b2bd0d3eb36bfb242f16a1fe31eb906ae4bb3d97d5c47c29e5b1a0ffeff09026f0f";
+}
+
+std::size_t plas3d_form_25::rank() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_25::num_coefficients() const
+{
+    return 2;
+}
+
+std::size_t plas3d_form_25::original_coefficient_position(std::size_t i) const
+{
+    if (i >= 2)
+    {
+        throw std::runtime_error("Invalid original coefficient index.");
+    }
+    static const std::vector<std::size_t> position = {0, 1};
+    return position[i];
+}
+
+ufc::finite_element * plas3d_form_25::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_25::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_25::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_25::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_1();
+    case 1:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_25::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_1();
+    case 1:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_25::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_25::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_25::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_25::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_25::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_25::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_25::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_25::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_25::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_25::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_25::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_25::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_25::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_25::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_25::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_25::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_25::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_25::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_25::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_25::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_25::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_25::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_25::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_25::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_25::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_25_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_25::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_25::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_25::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_25::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_25::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_25::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_25::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_26::plas3d_form_26() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_26::~plas3d_form_26()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_26::signature() const
+{
+    return "1693f5fff4897060543864a941205f70caa15de126622470e387dc87f34f56a5d1233b1b5715792ce933eaaca55d0a59438a4335d666adfe95092c63a72e487e";
+}
+
+std::size_t plas3d_form_26::rank() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_26::num_coefficients() const
+{
+    return 2;
+}
+
+std::size_t plas3d_form_26::original_coefficient_position(std::size_t i) const
+{
+    if (i >= 2)
+    {
+        throw std::runtime_error("Invalid original coefficient index.");
+    }
+    static const std::vector<std::size_t> position = {0, 1};
+    return position[i];
+}
+
+ufc::finite_element * plas3d_form_26::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_26::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_26::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_26::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_6();
+    case 1:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_26::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_6();
+    case 1:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_26::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_26::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_26::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_26::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_26::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_26::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_26::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_26::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_26::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_26::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_26::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_26::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_26::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_26::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_26::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_26::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_26::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_26::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_26::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_26::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_26::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_26::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_26::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_26::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_26::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_26_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_26::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_26::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_26::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_26::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_26::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_26::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_26::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_27::plas3d_form_27() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_27::~plas3d_form_27()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_27::signature() const
+{
+    return "03646d6c9010cbfce260795a311b6a4d3e5905d926030c35aa649fc8eee26b1dd485a8c9fda08a51b95f77ef0d831179cb1acac8f8efe6880d4624c61305ecfe";
+}
+
+std::size_t plas3d_form_27::rank() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_27::num_coefficients() const
+{
+    return 2;
+}
+
+std::size_t plas3d_form_27::original_coefficient_position(std::size_t i) const
+{
+    if (i >= 2)
+    {
+        throw std::runtime_error("Invalid original coefficient index.");
+    }
+    static const std::vector<std::size_t> position = {0, 1};
+    return position[i];
+}
+
+ufc::finite_element * plas3d_form_27::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_27::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_27::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_27::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_6();
+    case 1:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_27::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_6();
+    case 1:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_27::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_27::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_27::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_27::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_27::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_27::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_27::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_27::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_27::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_27::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_27::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_27::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_27::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_27::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_27::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_27::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_27::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_27::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_27::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_27::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_27::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_27::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_27::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_27::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_27::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_27_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_27::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_27::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_27::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_27::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_27::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_27::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_27::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_28::plas3d_form_28() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_28::~plas3d_form_28()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_28::signature() const
+{
+    return "79e795cf9565143f2f818ec93432c8f910ddfa5c6e6a0f66b06e6879e25be31908be88f0265c4f9a2b38bb733715a29aab902dac27905c21d50bf33a0564bc71";
+}
+
+std::size_t plas3d_form_28::rank() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_28::num_coefficients() const
+{
+    return 2;
+}
+
+std::size_t plas3d_form_28::original_coefficient_position(std::size_t i) const
+{
+    if (i >= 2)
+    {
+        throw std::runtime_error("Invalid original coefficient index.");
+    }
+    static const std::vector<std::size_t> position = {0, 1};
+    return position[i];
+}
+
+ufc::finite_element * plas3d_form_28::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_28::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_28::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_28::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_1();
+    case 1:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_28::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_1();
+    case 1:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_28::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_28::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_28::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_28::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_28::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_28::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_28::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_28::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_28::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_28::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_28::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_28::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_28::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_28::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_28::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_28::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_28::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_28::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_28::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_28::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_28::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_28::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_28::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_28::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_28::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_28_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_28::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_28::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_28::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_28::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_28::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_28::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_28::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_29::plas3d_form_29() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_29::~plas3d_form_29()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_29::signature() const
+{
+    return "8fc7634b9ca7d1ac64d66568dd1d1f18800856117b015100ceae2ab57609da2ba951cc2c275ac4081663c33c213c8b4adf42def66ac46d554296c2e36eb550b4";
+}
+
+std::size_t plas3d_form_29::rank() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_29::num_coefficients() const
+{
+    return 3;
+}
+
+std::size_t plas3d_form_29::original_coefficient_position(std::size_t i) const
+{
+    if (i >= 3)
+    {
+        throw std::runtime_error("Invalid original coefficient index.");
+    }
+    static const std::vector<std::size_t> position = {0, 1, 2};
+    return position[i];
+}
+
+ufc::finite_element * plas3d_form_29::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_29::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_29::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_29::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_6();
+    case 1:
+        return new plas3d_finite_element_1();
+    case 2:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_29::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_6();
+    case 1:
+        return new plas3d_dofmap_1();
+    case 2:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_29::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_29::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_29::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_29::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_29::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_29::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_29::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_29::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_29::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_29::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_29::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_29::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_29::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_29::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_29::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_29::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_29::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_29::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_29::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_29::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_29::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_29::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_29::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_29::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_29::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_29_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_29::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_29::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_29::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_29::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_29::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_29::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_29::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_30::plas3d_form_30() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_30::~plas3d_form_30()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_30::signature() const
+{
+    return "7f6e8eb445ba09d6c8a20df6aff7eda39ba108b33dba3868d85318c0ee69aa01e3d85bcfdb4164c1e52d0afaea32cad9e9360be109decc850340296ab827ab6b";
+}
+
+std::size_t plas3d_form_30::rank() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_30::num_coefficients() const
+{
+    return 3;
+}
+
+std::size_t plas3d_form_30::original_coefficient_position(std::size_t i) const
+{
+    if (i >= 3)
+    {
+        throw std::runtime_error("Invalid original coefficient index.");
+    }
+    static const std::vector<std::size_t> position = {0, 1, 2};
+    return position[i];
+}
+
+ufc::finite_element * plas3d_form_30::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_30::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_30::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_30::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_6();
+    case 1:
+        return new plas3d_finite_element_1();
+    case 2:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_30::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_6();
+    case 1:
+        return new plas3d_dofmap_1();
+    case 2:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_30::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_30::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_30::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_30::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_30::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_30::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_30::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_30::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_30::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_30::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_30::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_30::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_30::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_30::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_30::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_30::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_30::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_30::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_30::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_30::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_30::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_30::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_30::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_30::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_30::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_30_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_30::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_30::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_30::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_30::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_30::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_30::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_30::create_default_overlap_integral() const
+{
+    return nullptr;
+}
+
+
+plas3d_form_31::plas3d_form_31() : ufc::form()
+{
+    // Do nothing
+}
+
+plas3d_form_31::~plas3d_form_31()
+{
+    // Do nothing
+}
+
+const char * plas3d_form_31::signature() const
+{
+    return "a9283246d06dcacaab8e0a357cd41eca66a2340bb04505906b2b50c80127e4028bae50e0146182ce64cd493e5826d37d5635efb980f10aae932bab84d682614c";
+}
+
+std::size_t plas3d_form_31::rank() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_31::num_coefficients() const
+{
+    return 1;
+}
+
+std::size_t plas3d_form_31::original_coefficient_position(std::size_t i) const
+{
+    if (i >= 1)
+    {
+        throw std::runtime_error("Invalid original coefficient index.");
+    }
+    static const std::vector<std::size_t> position = {0};
+    return position[i];
+}
+
+ufc::finite_element * plas3d_form_31::create_coordinate_finite_element() const
+{
+    return new plas3d_finite_element_6();
+}
+
+ufc::dofmap * plas3d_form_31::create_coordinate_dofmap() const
+{
+    return new plas3d_dofmap_6();
+}
+
+ufc::coordinate_mapping * plas3d_form_31::create_coordinate_mapping() const
+{
+    return new plas3d_coordinate_mapping_6();
+}
+
+ufc::finite_element * plas3d_form_31::create_finite_element(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_finite_element_5();
+    default:
+        return nullptr;
+    }
+}
+
+ufc::dofmap * plas3d_form_31::create_dofmap(std::size_t i) const
+{
+    switch (i)
+    {
+    case 0:
+        return new plas3d_dofmap_5();
+    default:
+        return nullptr;
+    }
+}
+
+std::size_t plas3d_form_31::max_cell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_31::max_exterior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_31::max_interior_facet_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_31::max_vertex_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_31::max_custom_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_31::max_cutcell_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_31::max_interface_subdomain_id() const
+{
+    return 0;
+}
+
+std::size_t plas3d_form_31::max_overlap_subdomain_id() const
+{
+    return 0;
+}
+
+bool plas3d_form_31::has_cell_integrals() const
+{
+    return true;
+}
+
+bool plas3d_form_31::has_exterior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_31::has_interior_facet_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_31::has_vertex_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_31::has_custom_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_31::has_cutcell_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_31::has_interface_integrals() const
+{
+    return false;
+}
+
+bool plas3d_form_31::has_overlap_integrals() const
+{
+    return false;
+}
+
+ufc::cell_integral * plas3d_form_31::create_cell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::exterior_facet_integral * plas3d_form_31::create_exterior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_31::create_interior_facet_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_31::create_vertex_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_31::create_custom_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_31::create_cutcell_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_31::create_interface_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_31::create_overlap_integral(std::size_t subdomain_id) const
+{
+    return nullptr;
+}
+
+ufc::cell_integral * plas3d_form_31::create_default_cell_integral() const
+{
+    return new plas3d_cell_integral_31_otherwise();
+}
+
+ufc::exterior_facet_integral * plas3d_form_31::create_default_exterior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::interior_facet_integral * plas3d_form_31::create_default_interior_facet_integral() const
+{
+    return nullptr;
+}
+
+ufc::vertex_integral * plas3d_form_31::create_default_vertex_integral() const
+{
+    return nullptr;
+}
+
+ufc::custom_integral * plas3d_form_31::create_default_custom_integral() const
+{
+    return nullptr;
+}
+
+ufc::cutcell_integral * plas3d_form_31::create_default_cutcell_integral() const
+{
+    return nullptr;
+}
+
+ufc::interface_integral * plas3d_form_31::create_default_interface_integral() const
+{
+    return nullptr;
+}
+
+ufc::overlap_integral * plas3d_form_31::create_default_overlap_integral() const
 {
     return nullptr;
 }

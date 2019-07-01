@@ -27,7 +27,7 @@ v_eps = TestFunction(elementS)
 def eps(u):
     return as_vector([u[i].dx(i) for i in range(3)] + [u[i].dx(j) + u[j].dx(i) for i, j in [(0, 1), (0, 2), (1, 2)]])
 
-def sigma(s):
+def voigtToTensor(s):
     return as_matrix([[s[0], s[3], s[4]], [s[3], s[1], s[5]], [s[4], s[5], s[2]]])
 
 def tangent(t):
@@ -37,7 +37,7 @@ eps_form = inner(v_eps, eps(f)) / CellVolume(tetrahedron) * dx
 eps_ref_form = inner(v_eps, as_vector([1., 1., 1., 1., 1., 1.])) / CellVolume(tetrahedron) * dx
 
 a = inner(eps(v), dot(tangent(t), eps(u)) )*dx
-L = inner(grad(v), sigma(s))*dx - inner(v, f)*dx
+L = inner(grad(v), voigtToTensor(s))*dx - inner(v, f)*dx
 
 #ADDED BY SAM
 
@@ -46,13 +46,13 @@ elementS2 = TensorElement(FiniteElement('Lagrange', tetrahedron, 1), shape=(3, 3
 Strss = TrialFunction(elementS2)
 vstrss = TestFunction(elementS2)
 fstrss = Coefficient(elementS2)
-s2= Coefficient(elementS)
-aStrss  = inner(vstrss, Strss)*dx
-L_Strss = inner(vstrss, sigma(s2))*dx - inner(vstrss, fstrss)*dx 
+#s2= Coefficient(elementS)
+#aStrss  = inner(vstrss, Strss)*dx
+#L_Strss = inner(vstrss, voigtToTensor(s2))*dx - inner(vstrss, fstrss)*dx 
 
 #Total Strain from grad u
-elementS3 = VectorElement("Lagrange", tetrahedron, 2)
-#elementS4 = TensorElement("Lagrange", tetrahedron, 1, shape=(3, 3), symmetry={})
+elementS3 = VectorElement("Lagrange", tetrahedron, 1)
+elementS4 = FiniteElement("Lagrange", tetrahedron, 1)
 Eps = TrialFunction(elementS2)
 vEps = TestFunction(elementS2)
 u2 = Coefficient(elementS3)
@@ -66,22 +66,102 @@ vEps_p = TestFunction(elementS2)
 fEps_p = Coefficient(elementS2)
 eps_p= Coefficient(elementS)
 aEps_p  = inner(vEps, Eps_p)*dx
-LEps_p = inner(vEps_p, sigma(eps_p))*dx - inner(vEps_p, fEps_p)*dx 
+LEps_p = inner(vEps_p, voigtToTensor(eps_p))*dx - inner(vEps_p, fEps_p)*dx 
 
-E = 200.0e9
-nu = 0.3
+E = 3.46e6
+nu = 0.2
 
 mu = E / (2.0*(1.0 + nu))
 lmbda = E*nu / ((1.0 + nu)*(1.0 - 2.0*nu))
 
 def sigma2(v2,u2):
     return 2.0*mu*(v2) + lmbda*tr(v2)*Identity(u2.geometric_dimension())
-    #return 2.0*mu*sym(grad(v2)) + lmbda*tr(sym(grad(v2)))*Identity(v2.geometric_dimension())
+        
+def Tensor_vol_ngtve(sigma):
+    return -1.0/3.0*tr(sigma)
+
+def Tensor_dev(sigma,u2):
+    return sigma+Tensor_vol_ngtve(sigma)*Identity(u2.geometric_dimension())
+
+def stress_eq(sigma):
+    return sqrt(3/2*tr(Tensor_dev(sigma,u2)*transpose(Tensor_dev(sigma,u2))))
+
+def strain_eq(strain):
+    return sqrt(3/2*tr(Tensor_dev(strain,u2)*transpose(Tensor_dev(strain,u2))))
 
 #Stress from C:(eps-eps_p)
 Strss2 = TrialFunction(elementS2)
 aStrss2  = inner(vstrss, Strss2)*dx
 eps2=0.5*(grad(u2)+transpose(grad(u2)))
-L_Strss2 = inner(vstrss, sigma2(eps2-sigma(eps_p),u2))*dx - inner(vstrss, fstrss)*dx 
+L_Strss2 = inner(vstrss, sigma2(eps2-voigtToTensor(eps_p),u2))*dx - inner(vstrss, fstrss)*dx
 
-forms = [eps_form, eps_ref_form, a, L, aStrss, L_Strss, aEps, LEps, aEps_p, LEps_p, aStrss2, L_Strss2]
+#Pdash from stress
+f_zero = Coefficient(elementS4)
+uP = TrialFunction(elementS4)
+vPrjct = TestFunction(elementS4)
+aPdash = (vPrjct*uP)*dx
+LPdash = (vPrjct*Tensor_vol_ngtve(sigma2(eps2-voigtToTensor(eps_p),u2)))*dx  - (vPrjct*f_zero)*dx
+
+#Qdash from stress
+uQ = TrialFunction(elementS4)
+aQdash = (vPrjct*uQ)*dx
+LQdash = (vPrjct*stress_eq(sigma2(eps2-voigtToTensor(eps_p),u2)))*dx - (vPrjct*f_zero)*dx
+
+#---------------ADDED BY SAM---------------------------------
+
+#volumetric strain
+eps_v= TrialFunction(elementS4)
+aEps_v = (vPrjct*eps_v)*dx
+LEps_v = (vPrjct*tr(eps2))*dx - (vPrjct*f_zero)*dx
+
+#volumetric Plastic strain
+epsP_v= TrialFunction(elementS4)
+aEpsP_v = (vPrjct*epsP_v)*dx
+LEpsP_v = (vPrjct*tr(voigtToTensor(eps_p)))*dx - (vPrjct*f_zero)*dx
+
+#strain zz 
+eps_zz = TrialFunction(elementS4)
+aEps_zz = (vPrjct*eps_zz)*dx
+eps_z=eps2[2,2]
+LEps_zz = vPrjct*eps_z*dx - (vPrjct*f_zero)*dx
+
+# strain Plastic equivalent
+eps_dev= TrialFunction(elementS4)
+aEps_dev = (vPrjct*eps_dev)*dx
+LEps_dev = (vPrjct*inner(eps2,eps2))*dx - (vPrjct*f_zero)*dx
+
+epsP_dev= TrialFunction(elementS4)
+aEpsP_dev = (vPrjct*epsP_dev)*dx
+LEpsP_dev = (vPrjct*inner(voigtToTensor(eps_p),voigtToTensor(eps_p)))*dx - (vPrjct*f_zero)*dx
+
+Eps_vForm = tr(eps2)*dx - (f_zero)*dx
+EpsP_vForm = tr(voigtToTensor(eps_p))*dx - (f_zero)*dx
+Eps_zzForm = eps_z*dx - (f_zero)*dx
+Eps_devForm = inner(eps2,eps2)*dx - (f_zero)*dx
+EpsP_devForm = inner(voigtToTensor(eps_p),voigtToTensor(eps_p))*dx - (f_zero)*dx
+
+#---------------------------------------------------------------
+
+# Total Pdash and Qdash
+f_dom = Coefficient(elementS4)
+PdashForm = Tensor_vol_ngtve(sigma2(eps2-voigtToTensor(eps_p),u2))*dx - f_zero*dx
+QdashForm = stress_eq(sigma2(eps2-voigtToTensor(eps_p),u2))*dx - f_zero*dx
+
+DomainVolume = f_dom*dx
+
+
+#forms = [eps_form, eps_ref_form, a, L, aStrss, L_Strss, aEps, LEps, aEps_p, LEps_p, aStrss2, L_Strss2]
+
+forms = [eps_form, eps_ref_form, 
+         a, L, 
+         aEps, LEps, 
+         aEps_p, LEps_p, 
+         aStrss2, L_Strss2, 
+         aPdash, LPdash, 
+         aQdash, LQdash, 
+         aEps_v, LEps_v,
+         aEps_zz, LEps_zz,
+         aEpsP_v, LEpsP_v,
+         aEps_dev, LEps_dev,
+         aEpsP_dev, LEpsP_dev,
+         Eps_vForm, EpsP_vForm, Eps_zzForm, Eps_devForm, EpsP_devForm, PdashForm, QdashForm, DomainVolume]

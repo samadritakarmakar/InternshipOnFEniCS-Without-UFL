@@ -6,4 +6,4 @@ One of the FEniCS applications is the fenics-solid-mechanics library (https://bi
 
 One such model that is being aimed to be added to this library is the Sinfonietta classica (Nova 1988). It is a model for soils and soft rocks.  
 
-Later on, this library may be further extended to apply an extension of Sinfonietta classica model developed by Quentin Rousseau (quentin.rousseau AT ec-nantes.fr)and Guilio Sciarra (giulio.sciarra AT ec-nantes.fr) of GeM – Institut de Recherche en Génie Civil et Mécanique.  
+Later on, this library may be further extended to apply an extension of Sinfonietta classica model developed by Quentin Rousseau (quentin.rousseau AT ec-nantes.fr)and Guilio Sciarra (giulio.sciarra AT ec-nantes.fr) of GeM - Institut de Recherche en Genie Civil et Mecanique.  

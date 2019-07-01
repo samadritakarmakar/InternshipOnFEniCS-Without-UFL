@@ -166,13 +166,13 @@ int main()
 
   //ADDED by SAM
   //auto V2 = std::make_shared<Plas3D::CoefficientSpace_s>(mesh);
-  auto V2 =std::make_shared<Plas3D::CoefficientSpace_fstrss>(mesh); //ADDED BY Q
+  //auto V2 =std::make_shared<Plas3D::CoefficientSpace_fstrss>(mesh); //ADDED BY Q
   //auto V3 =std::make_shared<Plas3D::CoefficientSpace_s2>(mesh);
-  auto strss =std::make_shared<Function>(V2);
-  auto aStrss =std::make_shared<Plas3D::Form_aStrss>(V2,V2);
-  auto LStrss = std::make_shared<Plas3D::Form_L_Strss>(V2);
-  LStrss->s2 =stress;
-  //auto f2 = std::make_shared<Constant>(0.0, 0.0, 0.0, );
+  //auto strss =std::make_shared<Function>(V2);
+  //auto aStrss =std::make_shared<Plas3D::Form_aStrss>(V2,V2);
+  //auto LStrss = std::make_shared<Plas3D::Form_L_Strss>(V2);
+  //LStrss->s2 =stress;
+  //auto f2 = std::make_shared<Constant>(0.0, 0.0, 0.0);
   std::vector<std::size_t> value_shape;
   value_shape.push_back(3);
   value_shape.push_back(3);
@@ -181,7 +181,7 @@ int main()
       values.push_back(0.0);
 
   auto f2=std::make_shared<Constant>(value_shape, values); //ADDED BY Q
-  LStrss->fstrss =f2 ; //ADDED BY Q
+  //LStrss->fstrss =f2 ; //ADDED BY Q
 //
 //ADDED BY SAM For Eps
   auto V3= std::make_shared<Plas3D::CoefficientSpace_fEps>(mesh);
@@ -226,10 +226,10 @@ int main()
   // File names for output
   File file1("output/disp.pvd");
   File file2("output/eq_plas_strain.pvd");
-  File file3("output/stress.pvd");
-  File file4("output/eps.pvd");
-  File file5("output/eps_p.pvd");
-  File file6("output/stress2.pvd");
+  //File file3("output/stress.pvd");
+  File file3("output/eps.pvd");
+  File file4("output/eps_p.pvd");
+  File file5("output/stress.pvd");
 
   // Equivalent plastic strain for visualisation
   auto eps_eq = std::make_shared<MeshFunction<double>>(mesh, mesh->topology().dim());
@@ -256,18 +256,19 @@ int main()
     // Update variables
     constitutive_update->update_history();
     //ADDED BY SAM
-    dolfin::solve(*aStrss==*LStrss, *strss);
+    //dolfin::solve(*aStrss==*LStrss, *strss);
     dolfin::solve(*aEps==*LEps, *Eps);
     dolfin::solve(*aEps_p==*LEps_p, *Eps_p);
     dolfin::solve(*aStrss2==*LStress2, *strss2);
+
     // Write output to files
     file1 << *u;
     constitutive_update->eps_p_eq()->compute_mean(eps_eq);
     file2 << *eps_eq;
-    file3 << *strss;
-    file4 << *Eps;
-    file5 << *Eps_p;
-    file6 << *strss2;
+    //file3 << *strss;
+    file3 << *Eps;
+    file4 << *Eps_p;
+    file5 << *strss2;
     //file4.write(*Eps,t);
     //file5.write(*Eps_p,t);
     //file6.write(*strss2,t);

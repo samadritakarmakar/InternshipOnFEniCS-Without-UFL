@@ -14,7 +14,7 @@ add_library(fenics-solid-mechanics
 ConstitutiveUpdate.cpp  FenicsSolidMechanics.h  PlasticityModel.h      QuadratureFunction.h    utils.cpp
 ConstitutiveUpdate.h    HistoryData.cpp         PlasticityProblem.cpp  ReturnMapping.cpp       utils.h
 DruckerPrager.cpp       HistoryData.h           PlasticityProblem.h    ReturnMapping.h         VonMises.cpp
-SinfoniettaClassica.h   SinfoniettaClassica.cpp)
+SinfoniettaClassica.h   SinfoniettaClassica.cpp WriteToOctaveASCII.hpp)
 
 # Link to DOLFIN library
 target_link_libraries(fenics-solid-mechanics ${DOLFIN_LIBRARIES})

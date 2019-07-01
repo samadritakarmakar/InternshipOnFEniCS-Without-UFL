@@ -12,7 +12,7 @@ public:
 
     SinfoniettaClassica();
     SinfoniettaClassica(double E, double nu, double beta, double phiDegree, double betaP,
-                            double varKappa, double Pc, double varP);
+                            double varKappa, double Pc, double varP, double Pdash0);
     /// Delete copy constructor and assignement
     SinfoniettaClassica& operator=(const SinfoniettaClassica&) = delete;  // Disallow copying
     SinfoniettaClassica(const SinfoniettaClassica&) = delete;
@@ -44,6 +44,7 @@ public:
 
     void set_q_0(double q0);
 
+    Eigen::Matrix<double, 6, 6> Get_stress_eps(double& eps, Eigen::Matrix<double, 6, 1> stress) const;
     double Get_MeanStress(const Eigen::Matrix<double, 3, 3> &stressTensor) const;
     Eigen::Matrix<double, 6, 1> GetVoigt_Delta_ij_over_Delta_mn() const;
     Eigen::Matrix<double, 6, 6> Get_P4_D() const;
@@ -67,6 +68,7 @@ private:
     double varKappa_Internal;
     double Pc_0;
     double varP_Internal;
+    double Pdash0_Internal;
 };
 
 }

@@ -43,9 +43,9 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
   // ADDED BY SAM
   Eigen::Matrix<double, 7, 7> Q, XI_2, C_dud, D_dud;
   Eigen::Matrix<double, 7, 7> Qinv;
-  Eigen::Matrix<double, 1, 1> q_dot, Q4;
+  Eigen::Matrix<double, 1, 1> q_dot, Q4, zero;
   Eigen::Matrix<double, 6, 1> ddg_dsgma_dq, Q2,dM_dsgma, Q3, zeroRow;
-  Eigen::Matrix<double, 7, 1> residualCombined, df_dCombined, f_residualCombined, C_combined, delta_sigma_q, XI, zero;
+  Eigen::Matrix<double, 7, 1> residualCombined, df_dCombined, f_residualCombined, C_combined, delta_sigma_q, XI;// zero;
   Eigen::Matrix<double, 1, 7> Rn;
   double q_current,q_residual, M_current, dM_dQ, df_dQ;
   //----------------------------------------
@@ -79,9 +79,11 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
   // Evaluate yield function (trial stresses)
   double residual_f = plastic_model->f(sigma_current, q_n);
   double residual_f_trial = residual_f;
+  //std::cout<<" f trial = "<<residual_f_trial<<"\n";
 
   // Check for yielding
   if (residual_f/sigma_current.norm() > 1.0e-12)
+  //if(residual_f>1e-10)
   {
     // Compute normal vectors to yield surface and plastic potential
     plastic_model->df(df_dsigma, sigma_current);
@@ -98,10 +100,14 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
                       q_residual;
     // Perform Newton iterations to project stress onto yield surface
     while (abs(residual_f)> 1e-12*sigma_current.norm())
+    //while ((residual_f)> 1e-10)
     {
       num_iterations++;
-      if (num_iterations > _maxit)
-        dolfin::error("Return mapping iterations > %d.", _maxit);
+      if (num_iterations > 1000)//_maxit)
+      {
+          std::cout<<"Return mapping iterations > "<< _maxit<<"\n";
+          throw ;
+      }
 
       // Reset sigma_residual in first step
       //if (num_iterations == 1)
@@ -155,7 +161,7 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
       //double lambda_dot = residual_tmp/(df_dsigma.dot(XI*dg_dsigma)
       //                                  + hardening_parameter);
       const double residual_tmp = residual_f- df_dCombined.dot(Q*residualCombined);
-      double lambda_dot =residual_tmp/(df_dCombined.dot(Q*C_combined));
+      double lambda_dot = residual_tmp/(df_dCombined.dot(Q*C_combined));
       //---------------------------------------------------------------------------
 
       // Compute stress increment
@@ -163,8 +169,11 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
       //sigma_dot = Q.transpose()*(-lambda_dot*De*dg_dsigma -sigma_residual);
       // ADDED BY SAM------------------------------------------------------------
       delta_sigma_q=-Q*(residualCombined+C_combined*lambda_dot);
-      sigma_dot=delta_sigma_q.block(0,0,5,0);
-      q_dot=delta_sigma_q.block(6,0,6,0);
+      //std::cout<<"delta_sigma_q=\n"<<delta_sigma_q<<"\n";
+      //sigma_dot=delta_sigma_q.block(0,0,5,0);
+      for (int i=0; i<6; i++)
+          sigma_dot(i,0)=delta_sigma_q(i,0);
+      q_dot(0,0)=delta_sigma_q(6,0);
       //-------------------------------------------------------------------------
 
 
@@ -209,11 +218,11 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
                         q_residual;
       //std::cout<<"q_residual= "<<q_residual;
       //-------------------------------------------------------------------------
-      std::cout<<"delta lambda ="<<delta_lambda;
+     /* std::cout<<"delta lambda ="<<delta_lambda;
       std::cout<<" f trial = "<<residual_f_trial;
-      std::cout<<" while check is f "<<residual_f <<"\n";
+      std::cout<<" while check is f "<<residual_f <<"\n";*/
     }
-    std::cout<<"num of iterations = "<<num_iterations<<"\n";
+    //std::cout<<"num of iterations = "<<num_iterations<<"\n";
     // Update matrices
     plastic_model->ddg(ddg_ddsigma, sigma_current);
     // ADDED BY SAM------------------------------------------------------------
@@ -253,21 +262,16 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
     //D = XI - XI*(dg_dsigma*Rn.transpose())/(df_dsigma.dot(XI*dg_dsigma)
     //                                      + hardening_parameter);
     D_dud = XI_2 - (XI*Rn)/(df_dCombined.dot(XI));
-    D=D_dud.block(0,0,6,6);
-    //ADDED BY Q
-    /*std::cout<<"sigma_current= "<<sigma_current <<"\n";
-        std::cout<<"q_current= "<<q_current <<"\n";
-        std::cout<<"M_current= "<<M_current <<"\n";
-        std::cout<<"ddg_ddsigma= "<<ddg_ddsigma <<"\n";
-        std::cout<<"dM_dsgma= "<<dM_dsgma <<"\n";
-        std::cout<<"Q= "<<Q <<"\n";
-        std::cout<<"C_combined = "<<C_combined <<"\n";
-        std::cout<<"XI = "<<XI <<"\n";
-        std::cout<<"XI_2 = "<<XI_2 <<"\n";
-        std::cout<<"df_dCombined = "<<df_dCombined <<"\n";
-        std::cout<<"Rn = "<<Rn <<"\n";
-        std::cout<<"D = "<<D <<"\n";*/
-    //
+    //D=D_dud.block<6,6>(0,0,5,5);
+    for (int i=0; i<6; i++)
+    {
+        for (int j=0; j<6; j++)
+        {
+            D(i,j)=D_dud(i,j);
+        }
+
+    }
+
     // Stresses for next Newton iteration, trial stresses are
     // overwritten by current stresses
     trial_stresses = sigma_current;
@@ -291,7 +295,7 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
     plastic_model->df_dq(df_dQ, q_current);
     //Rn = De*df_dsigma;
     //EDITED BY SAM
-    const double denom = df_dsigma.dot(De*dg_dsigma) + hardening_parameter*df_dQ*M_current;
+    const double denom = df_dsigma.dot(De*dg_dsigma) - hardening_parameter*df_dQ*M_current;
     //---------------------------------------------------------------------------
     D = De - De*(dg_dsigma*(De*df_dsigma).transpose())/denom;
     std::cout<<"WARNING!!!! Analytical tangent operator is being used\n";
@@ -300,6 +304,7 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
   {
     // Use elastic tangent
     D = De;
+    //std::cout<<"WARNING!!!! Elastic tangent operator is being used\n";
   }
 
   return std::make_pair(plastic_flag, num_iterations);

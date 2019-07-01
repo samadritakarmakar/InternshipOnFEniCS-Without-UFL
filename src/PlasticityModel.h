@@ -79,7 +79,10 @@ namespace fenicssolid
 
     void set_q_0(double q0);
 
-
+    Eigen::Matrix<double, 6,6> GetElasticTangent()
+    {
+        return elastic_tangent;
+    }
 
     friend class ConstitutiveUpdate;
     friend class PlasticityProblem;
@@ -93,7 +96,7 @@ namespace fenicssolid
     double _hardening_parameter;
 
     // Elastic tangent
-    Eigen::Matrix<double, 6, 6> elastic_tangent;
+    Eigen::Matrix<double, 6,6> elastic_tangent;
   };
 }
 
