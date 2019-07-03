@@ -42,6 +42,8 @@ public:
 
     double q_0() const;
 
+    double miscellaneous() const;
+
     void set_q_0(double q0);
 
     Eigen::Matrix<double, 6, 6> Get_stress_eps(double& eps, Eigen::Matrix<double, 6, 1> stress) const;

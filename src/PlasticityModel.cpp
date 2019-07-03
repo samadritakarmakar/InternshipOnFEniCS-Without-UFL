@@ -92,6 +92,11 @@ double PlasticityModel:: q_0() const
     return q_0_default;
 }
 
+ double PlasticityModel::miscellaneous() const
+ {
+     return 0.0;
+ }
+
 void PlasticityModel:: set_q_0(double q0)
 {
     q_0_default=q0;

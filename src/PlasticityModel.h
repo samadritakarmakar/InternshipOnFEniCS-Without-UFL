@@ -77,6 +77,8 @@ namespace fenicssolid
 
     virtual double q_0() const;
 
+    virtual double miscellaneous() const;
+
     void set_q_0(double q0);
 
     Eigen::Matrix<double, 6,6> GetElasticTangent()

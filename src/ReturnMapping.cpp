@@ -60,7 +60,7 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
 
   // Trial stress
   sigma_current = trial_stresses;
-
+  q_n +=plastic_model->miscellaneous();
 
   // Auxiliary variables to speed up return mapping
 

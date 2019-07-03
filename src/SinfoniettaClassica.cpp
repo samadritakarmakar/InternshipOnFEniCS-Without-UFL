@@ -153,6 +153,11 @@ double SinfoniettaClassica::q_0() const
     return q_0_default;
 }
 
+double SinfoniettaClassica::miscellaneous() const
+{
+    return 0.0;
+}
+
 void SinfoniettaClassica::set_q_0(const double q0)
 {
     q_0_default=q0;
