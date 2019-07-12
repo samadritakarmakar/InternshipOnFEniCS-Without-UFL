@@ -45,6 +45,8 @@ add_executable(${PROJECT_NAME} main.cpp Plas3D.h Plas3D.cpp)
 
 add_executable(demo_3D_P2_cylinder2_SnfC mainSnfC.cpp Plas3D.h Plas3D.cpp)
 
+add_executable(3D_P2_cylndr2Force_SnfC mainSnfCWithForce.cpp Plas3DWithForce.h Plas3DWithForce.cpp)
+
 # Need to get VTK config because VTK uses advanced VTK features which
 # mean it's not enough to just link to the DOLFIN target. See
 # http://www.vtk.org/pipermail/vtk-developers/2013-October/014402.html
@@ -56,7 +58,7 @@ find_package(VTK HINTS ${VTK_DIR} $ENV{VTK_DIR} NO_MODULE QUIET)
 
 target_link_libraries(${PROJECT_NAME} ${DOLFIN_LIBRARIES} ${DOLFIN_3RD_PARTY_LIBRARIES} fenics-solid-mechanics)
 target_link_libraries(demo_3D_P2_cylinder2_SnfC ${DOLFIN_LIBRARIES} ${DOLFIN_3RD_PARTY_LIBRARIES} fenics-solid-mechanics)
-
+target_link_libraries(3D_P2_cylndr2Force_SnfC ${DOLFIN_LIBRARIES} ${DOLFIN_3RD_PARTY_LIBRARIES} fenics-solid-mechanics)
 
   set (COPY_FILES cylinder.xml)
 foreach(loop_var ${COPY_FILES})

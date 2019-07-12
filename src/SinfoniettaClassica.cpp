@@ -2,10 +2,11 @@
 #include <math.h>
 #include "SinfoniettaClassica.h"
 using namespace fenicssolid;
-SinfoniettaClassica::SinfoniettaClassica(double E, double nu, double beta, double phiDegree, double betaP,
-                        double varKappa, double Pc=0, double varP=0, double Pdash0=0):PlasticityModel(E, nu),
-        E_Internal(E), nu_Internal(nu), beta_Internal(beta), betaP_Internal(betaP),
-        varKappa_Internal(varKappa), Pc_0(Pc), varP_Internal(varP), Pdash0_Internal(Pdash0)
+
+SinfoniettaClassica::SinfoniettaClassica(double E, double nu, double beta, double phiDegree, double betaP, double varKappa,
+                                         double Pc=0, double varP=0, double Pdash0=0):PlasticityModel(E, nu),
+        E_Internal(E), nu_Internal(nu), beta_Internal(beta), betaP_Internal(betaP), varKappa_Internal(varKappa), Pc_0(Pc),
+        varP_Internal(varP), Pdash0_Internal(Pdash0)
     {
         hardeningParameter=1.0/betaP;
         q_0_default=-std::log(Pc_0);
@@ -155,13 +156,14 @@ double SinfoniettaClassica::q_0() const
 
 double SinfoniettaClassica::miscellaneous() const
 {
-    return 0.0;
+    return phi_er_dot/betaP_Internal;
 }
 
 void SinfoniettaClassica::set_q_0(const double q0)
 {
     q_0_default=q0;
 }
+
 
 Eigen::Matrix<double, 6, 6> SinfoniettaClassica::Get_stress_eps(double& eps, Eigen::Matrix<double, 6, 1> stress) const
 {

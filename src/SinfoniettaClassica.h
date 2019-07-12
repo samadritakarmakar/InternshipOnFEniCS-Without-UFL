@@ -9,6 +9,7 @@ namespace fenicssolid
 class SinfoniettaClassica: public PlasticityModel
 {
 public:
+    double phi_er_dot;
 
     SinfoniettaClassica();
     SinfoniettaClassica(double E, double nu, double beta, double phiDegree, double betaP,
@@ -64,6 +65,9 @@ private:
     double mu;
     double E_Internal;
     double nu_Internal;
+    double strt_sffsn_step;
+    double stp_sffsn_step;
+    //double phi_er_dot;
     double hardeningParameter;
     double beta_Internal;
     double betaP_Internal;
@@ -71,6 +75,8 @@ private:
     double Pc_0;
     double varP_Internal;
     double Pdash0_Internal;
+
+
 };
 
 }
