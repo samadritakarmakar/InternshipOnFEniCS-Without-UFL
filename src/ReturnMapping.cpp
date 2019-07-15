@@ -310,3 +310,171 @@ ReturnMapping::closest_point_projection(std::shared_ptr<const PlasticityModel> p
   return std::make_pair(plastic_flag, num_iterations);
 }
 //-----------------------------------------------------------------------------
+
+
+std::pair<bool, unsigned int>
+ReturnMapping::cutting_plane(std::shared_ptr<const PlasticityModel> plastic_model,
+                                        Eigen::Matrix<double, 6, 6>& D,
+                                        Eigen::Matrix<double, 6, 1>& trial_stresses,
+                                        Eigen::Matrix<double, 6, 1>& plastic_strain,
+                                        double& equivalent_plastic_strain, double &q_n,
+                                        bool use_plastic_tangent)
+{
+  // Initialise variables
+  double delta_lambda = 0.0;
+  bool plastic_flag = false;
+  unsigned int num_iterations = 0;
+
+  // Work arrays (statically allocated)
+  Eigen::Matrix<double, 6, 6> Q1;
+  Eigen::Matrix<double, 6, 6>  /*R,*/ ddg_ddsigma, inverse_Q;
+  // ADDED BY SAM
+  Eigen::Matrix<double, 7, 7> Q, XI_2, C_dud, D_dud;
+  Eigen::Matrix<double, 7, 7> Qinv;
+  //Eigen::Matrix<double, 1, 1> q_dot, Q4;
+  Eigen::Matrix<double, 6, 1> ddg_dsgma_dq, Q2,dM_dsgma, Q3, zeroRow;
+  Eigen::Matrix<double, 7, 1> residualCombined, df_dCombined, f_residualCombined, C_combined, delta_sigma_q, XI, zero;
+  Eigen::Matrix<double, 1, 7> Rn;
+  double q_current,q_residual, M_current, dM_dQ, df_dQ;
+  double q_dot;
+  //----------------------------------------
+
+  Eigen::Matrix<double, 6, 1> Rm, RinvQ;
+
+  // Variables for return mapping
+  Eigen::Matrix<double, 6, 1> df_dsigma, dg_dsigma,
+    sigma_current,
+    sigma_dot, sigma_residual;
+
+
+  // Trial stress
+  sigma_current = trial_stresses;
+
+
+  // Auxiliary variables to speed up return mapping
+
+  // Elastic tangent
+  const Eigen::Matrix<double, 6, 6>& De = plastic_model->elastic_tangent;
+
+  plastic_model->df(df_dsigma, sigma_current);
+  plastic_model->dg(dg_dsigma, sigma_current);
+  // Evaluate hardening parameter
+  double hardening_parameter
+    = plastic_model->hardening_parameter(equivalent_plastic_strain);
+
+  // Evaluate yield function (trial stresses)
+  double residual_f = plastic_model->f(sigma_current, q_n);
+  double residual_f_trial = residual_f;
+  
+  // Check for yielding
+  //std::cout<<"residual_f/sigma_current.norm = "<<residual_f/sigma_current.norm()<<"\n";
+  //if (residual_f/sigma_current.norm() > 1.0e-10)
+  if ((residual_f) > 1e-10)
+  {
+    plastic_flag = true;
+    //std::cout<<"Enter return mapping"<<"\n";
+    // ADDED BY SAM------------------------------------------------------------
+    q_current=q_n;
+    //------------------------------------------------------------------------
+    //ADDED BY SAM------------------------------------------------------------
+    //Setting Residuals to zero for 1st iteration.
+    sigma_residual.setZero();
+    q_residual=0.0;
+    residualCombined<<sigma_residual,
+                      q_residual;
+    // Perform Newton iterations to project stress onto yield surface
+    //while (std::abs(residual_f)/sigma_current.norm() > 1e-10)
+    while ((residual_f) > 1e-10)
+    {
+      //std::cout<<"Enter return mapping"<<"\n";
+      num_iterations++;
+      if (num_iterations > _maxit)
+        dolfin::error("Return mapping iterations > %d.", _maxit);
+	// Compute normal vectors to yield surface and plastic potential
+    	plastic_model->df(df_dsigma, sigma_current);
+    	plastic_model->dg(dg_dsigma, sigma_current);
+      // Compute second derivative (with respect to stresses) of
+      // plastic potential
+      plastic_model->ddg(ddg_ddsigma, sigma_current);
+      // ADDED BY SAM
+      plastic_model->M(M_current, sigma_current, q_current);
+      plastic_model->df_dq(df_dQ, q_current);
+      plastic_model->ddg_dsigma_dq(ddg_dsgma_dq, sigma_current, q_current);
+      plastic_model->dM_dsigma(dM_dsgma, sigma_current,q_current);
+      plastic_model->dM_dq(dM_dQ, q_current);
+      //-------------------------------------------------------------
+      double lambda_dot = (-residual_f)/(-df_dsigma.transpose().dot(De*dg_dsigma)-df_dQ*hardening_parameter*M_current);
+      //---------------------------------------------------------------------------
+      // Increment plastic multiplier
+      delta_lambda += lambda_dot;
+      //std::cout<<"delta_lambda = "<<delta_lambda<<"\n";
+      // Compute stress increment
+      sigma_dot = -lambda_dot*De*dg_dsigma;
+      q_dot = -lambda_dot*hardening_parameter*M_current;
+      // Update current stress state
+      sigma_current += sigma_dot;
+      q_current += q_dot;
+      //-------------------------------------------------------------------------
+      // Update equivalent plastic strain
+      equivalent_plastic_strain
+        = plastic_model->kappa(equivalent_plastic_strain, sigma_current,
+                              lambda_dot);
+      //-------------------------------------------------------------------------
+      // Compute hardening parameter
+      hardening_parameter
+        = plastic_model->hardening_parameter(equivalent_plastic_strain);
+      // Evaluate yield function at new stress state
+      residual_f = plastic_model->f(sigma_current, q_current);
+      // Compute normal to yield surface at new stress state
+      plastic_model->df(df_dsigma, sigma_current);
+      // Compute normal normal to plastic potential at new stress state
+      plastic_model->dg(dg_dsigma, sigma_current);
+      //ADDED BY SAM----------------------------------------------------------------
+      plastic_model->M(M_current, sigma_current, q_current);
+      // Compute residual vector
+      sigma_residual = sigma_current
+        - (trial_stresses - delta_lambda*De*dg_dsigma);
+      // ADDED BY SAM------------------------------------------------------------
+      q_residual = q_current -q_n+ delta_lambda*hardening_parameter*M_current;
+      residualCombined<<sigma_residual,
+                        q_residual;
+      //std::cout<<"residual_f/sigma_current.norm = "<<residual_f/sigma_current.norm()<<"\n";
+    }
+    // Update matrices
+    plastic_model->ddg(ddg_ddsigma, sigma_current);
+    // ADDED BY SAM------------------------------------------------------------
+    plastic_model->M(M_current, sigma_current, q_current);
+    plastic_model->df_dq(df_dQ, q_current);
+    plastic_model->ddg_dsigma_dq(ddg_dsgma_dq, sigma_current, q_current);
+    plastic_model->dM_dsigma(dM_dsgma, sigma_current, q_current);
+    plastic_model->dM_dq(dM_dQ, q_current);
+    //-------------------------------------------------------------------------
+    // Stresses for next Newton iteration, trial stresses are
+    // overwritten by current stresses
+    trial_stresses = sigma_current;
+    //ADDED BY SAM-------------------------------------------
+    q_n=q_current;
+    //std::cout<<"epsilon plastic = "<<delta_lambda*dg_dsigma<<"\n";
+    //-------------------------------------------------------
+    // Update plastic strains
+    plastic_strain += delta_lambda*dg_dsigma;
+    // Compute continuum tangent operator
+    plastic_model->df(df_dsigma, sigma_current);
+    plastic_model->dg(dg_dsigma, sigma_current);
+    //ADDED BY SAM
+    plastic_model->M(M_current, sigma_current, q_current);
+    plastic_model->df_dq(df_dQ, q_current);
+    //EDITED BY SAM
+    const double denom = df_dsigma.dot(De*dg_dsigma) + df_dQ*hardening_parameter*M_current;
+    D = De - De*(dg_dsigma*(De*df_dsigma).transpose())/denom;
+    //std::cout<<"D = "<<D<<"\n";
+    //std::cout<<"WARNING!!!! Analytical tangent operator is being used\n";
+  }
+  else
+  {
+    // Use elastic tangent
+    D = De;
+  }
+  return std::make_pair(plastic_flag, num_iterations);
+}
+//-----------------------------------------------------------------------------

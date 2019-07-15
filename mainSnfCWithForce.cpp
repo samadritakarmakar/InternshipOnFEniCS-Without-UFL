@@ -31,6 +31,7 @@ using namespace dolfin;
     const double& t;
 };*/
 
+
 class Traction : public Expression
 {
   public:
@@ -48,6 +49,15 @@ class Traction : public Expression
     const double& traction;
 };
 
+class NeumannBC : public SubDomain
+{
+  bool inside(const Array<double>& x, bool on_boundary) const
+  {
+      //return std::abs(x[2] - 0.05) < DOLFIN_EPS;
+      return x[2] >= 0.05 - DOLFIN_EPS;
+
+  }
+};
 
 // Sub domain for Dirichlet boundary condition
 /*class DirichletBoundaryX1 : public SubDomain
@@ -184,6 +194,7 @@ int main()
                                          constitutive_update->w_stress());
   L->s = stress;
   L->traction= TractionObject;
+  L->ds;
 
 
   //ADDED by SAM
