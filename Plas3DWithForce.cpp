@@ -30279,7 +30279,7 @@ void plas3dwithforce_cell_integral_23_otherwise::tabulate_tensor(double * A,
     // 
     // and the following integral 0 metadata:
     // 
-    // estimated_polynomial_degree: 7
+    // estimated_polynomial_degree: 9
     // optimize:                    True
     // precision:                   16
     // quadrature_degree:           3
@@ -30320,15 +30320,12 @@ void plas3dwithforce_cell_integral_23_otherwise::tabulate_tensor(double * A,
     {
       A[r] = 0.0;
     } // end loop over 'r'
-    // Number of operations to compute geometry constants: 1.
-    double G[1];
-    G[0] = 2.0*det;
     
     // Compute element tensor using UFL quadrature representation
     // Optimisations: ('eliminate zeros', True), ('ignore ones', True), ('ignore zero tables', True), ('optimisation', 'simplify_expressions'), ('remove zero terms', True)
     
     // Loop quadrature points for integral.
-    // Number of operations to compute element tensor for following IP loop = 155
+    // Number of operations to compute element tensor for following IP loop = 310
     for (unsigned int ip = 0; ip < 5; ip++)
     {
       
@@ -30341,10 +30338,10 @@ void plas3dwithforce_cell_integral_23_otherwise::tabulate_tensor(double * A,
         F0 += FE0[ip][r]*w[1][r];
       } // end loop over 'r'
       
-      // Number of operations to compute ip constants: 15
+      // Number of operations to compute ip constants: 46
       double I[1];
-      // Number of operations: 15
-      I[0] = W5[ip]*(G[0]*(w[0][ip + 15]*w[0][ip + 15] + w[0][ip + 20]*w[0][ip + 20] + w[0][ip + 25]*w[0][ip + 25]) + det*(w[0][ip + 10]*w[0][ip + 10] + w[0][ip + 5]*w[0][ip + 5] + w[0][ip]*w[0][ip] - F0));
+      // Number of operations: 46
+      I[0] = W5[ip]*det*(std::sqrt(0.6666666666666666*((w[0][ip + 10]-0.3333333333333333*(w[0][ip + 10] + w[0][ip + 5] + w[0][ip]))*(w[0][ip + 10]-0.3333333333333333*(w[0][ip + 10] + w[0][ip + 5] + w[0][ip])) + (w[0][ip + 5]-0.3333333333333333*(w[0][ip + 10] + w[0][ip + 5] + w[0][ip]))*(w[0][ip + 5]-0.3333333333333333*(w[0][ip + 10] + w[0][ip + 5] + w[0][ip])) + (w[0][ip]-0.3333333333333333*(w[0][ip + 10] + w[0][ip + 5] + w[0][ip]))*(w[0][ip]-0.3333333333333333*(w[0][ip + 10] + w[0][ip + 5] + w[0][ip])) + w[0][ip + 15]*w[0][ip + 15] + w[0][ip + 15]*w[0][ip + 15] + w[0][ip + 20]*w[0][ip + 20] + w[0][ip + 20]*w[0][ip + 20] + w[0][ip + 25]*w[0][ip + 25] + w[0][ip + 25]*w[0][ip + 25])) - F0);
       
       
       // Number of operations for primary indices: 8
@@ -36981,7 +36978,7 @@ plas3dwithforce_form_23::~plas3dwithforce_form_23()
 
 const char * plas3dwithforce_form_23::signature() const
 {
-    return "2856b6e10f1e299e3487bbb234ef7de4edfd114c9f39345e2eae431b42c54d9c13263521db6d0e917f1f7b1433f303066abc5b8453a7c12e3116d1b5bd620ed0";
+    return "d66530ba900f2ecb307b5e7bd0c20505e0dbdfcc440f8f478af01c9e8e99ffbfe2c356bfb5de3c89d44eef7ee1b35eeff96163463a3fa278139fe0663808e74b";
 }
 
 std::size_t plas3dwithforce_form_23::rank() const

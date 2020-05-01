@@ -88,7 +88,7 @@ def stress_eq(sigma):
     return sqrt(3/2*tr(Tensor_dev(sigma,u2)*transpose(Tensor_dev(sigma,u2))))
 
 def strain_eq(strain):
-    return sqrt(3/2*tr(Tensor_dev(strain,u2)*transpose(Tensor_dev(strain,u2))))
+    return sqrt(2/3*tr(Tensor_dev(strain,u2)*transpose(Tensor_dev(strain,u2))))
 
 #Stress from C:(eps-eps_p)
 Strss2 = TrialFunction(elementS2)
@@ -133,7 +133,8 @@ LEps_dev = (vPrjct*inner(eps2,eps2))*dx - (vPrjct*f_zero)*dx
 
 epsP_dev= TrialFunction(elementS4)
 aEpsP_dev = (vPrjct*epsP_dev)*dx
-LEpsP_dev = (vPrjct*inner(voigtToTensor(eps_p),voigtToTensor(eps_p)))*dx - (vPrjct*f_zero)*dx
+#LEpsP_dev = (vPrjct*inner(voigtToTensor(eps_p),voigtToTensor(eps_p)))*dx - (vPrjct*f_zero)*dx
+LEpsP_dev = (vPrjct*strain_eq(voigtToTensor(eps_p)))*dx - (vPrjct*f_zero)*dx
 
 Eps_vForm = tr(eps2)*dx - (f_zero)*dx
 EpsP_vForm = tr(voigtToTensor(eps_p))*dx - (f_zero)*dx

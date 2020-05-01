@@ -3,7 +3,7 @@
 //
 // First added:  2006-11-13
 // Last changed: 2011-02-06
-
+ 
 #include <dolfin.h>
 #include <FenicsSolidMechanics.h>
 #include <WriteToOctaveASCII.hpp>
@@ -171,7 +171,7 @@ int main()
   double beta=1.2, phiDegree=38.5, betaP=0.01, varKappa=0, Pc=50e3, varP=0;
   double Pdash0 = 0.2*Pc;
 
-  double Phi_er_dot=0.001;
+  double Phi_er_dot=0.0025;
   auto SncF = std::make_shared<fenicssolid::SinfoniettaClassica>(E, nu, beta, phiDegree, betaP, varKappa, Pc, varP, Pdash0);
 
   // Constituive update
